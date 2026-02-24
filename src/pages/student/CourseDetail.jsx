@@ -23,7 +23,6 @@ const CourseDetail = () => {
     const [progress, setProgress] = useState(0);
     const [completedLessons, setCompletedLessons] = useState([]);
     const [assignments, setAssignments] = useState([]);
-    const [quizzes, setQuizzes] = useState([]);
 
     // sidebarItems removed to use default from DashboardLayout
 
@@ -41,7 +40,7 @@ const CourseDetail = () => {
                     return;
                 }
 
-                const courseRes = await axios.get(`http://localhost:5000/api/courses/${id}`);
+                const courseRes = await axios.get(`${import.meta.env.VITE_API_URL}/courses/${id}`);
                 setCourse(courseRes.data);
 
                 // pick first lesson if exists
@@ -51,23 +50,17 @@ const CourseDetail = () => {
                 }
 
                 const progressRes = await axios.get(
-                    `http://localhost:5000/api/student/courses/${id}/progress`,
+                    `${import.meta.env.VITE_API_URL}/student/courses/${id}/progress`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setProgress(progressRes.data.progress || 0);
                 setCompletedLessons(progressRes.data.completedLessons || []);
 
                 // Fetch Assignments
-                const assignRes = await axios.get(`http://localhost:5000/api/assignments/course/${id}`, {
+                const assignRes = await axios.get(`${import.meta.env.VITE_API_URL}/assignments/course/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setAssignments(assignRes.data);
-
-                // Fetch Quizzes
-                const quizRes = await axios.get(`http://localhost:5000/api/quiz/course/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setQuizzes(quizRes.data);
 
                 setLoading(false);
             } catch (err) {
@@ -95,7 +88,7 @@ const CourseDetail = () => {
             const { token } = JSON.parse(userInfoString);
 
             const res = await axios.post(
-                `http://localhost:5000/api/student/courses/${course._id}/lessons/${lesson._id}/complete`,
+                `${import.meta.env.VITE_API_URL}/student/courses/${course._id}/lessons/${lesson._id}/complete`,
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -160,13 +153,23 @@ const CourseDetail = () => {
                 <div className="flex-1">
                     {/* Video Player */}
                     <div className="bg-slate-900 rounded-xl overflow-hidden aspect-video mb-6 relative">
-                        {lesson?.content ? (
+                        {lesson?.type === 'quiz' ? (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-slate-800 p-6 text-center">
+                                <BookOpen className="h-16 w-16 opacity-70 mb-4" />
+                                <h3 className="text-2xl font-bold mb-2">{lesson.title}</h3>
+                                <p className="text-slate-300 mb-6">This lesson is a quiz component. Click below to begin the assessment.</p>
+                                <Button onClick={() => navigate(`/student/quiz/${lesson.content}`, { state: { courseId: course._id, lessonId: lesson._id } })}>
+                                    Start Quiz
+                                </Button>
+                            </div>
+                        ) : lesson?.content ? (
                             <video
                                 key={lesson._id}
                                 className="w-full h-full"
                                 controls
                                 src={lesson.content}
                                 onError={(e) => console.error("Video Error:", e.target.error, lesson.content)}
+                                onEnded={handleMarkCompleted}
                             >
                                 <p className="text-white p-4">
                                     Your browser cannot play this video.
@@ -174,16 +177,18 @@ const CourseDetail = () => {
                                 </p>
                             </video>
                         ) : (
-                            <div className="absolute inset-0 flex items-center justify-center text-white">
-                                <PlayCircle className="h-16 w-16 opacity-70" />
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                                <PlayCircle className="h-16 w-16 opacity-70 mb-2" />
                             </div>
                         )}
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
-                            <h2 className="text-white text-xl font-bold">{lesson?.title || 'Select a lesson'}</h2>
-                            <p className="text-slate-300 text-sm">
-                                {module?.title || ''} • {lesson?.duration || ''}
-                            </p>
-                        </div>
+                        {lesson?.type !== 'quiz' && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
+                                <h2 className="text-white text-xl font-bold">{lesson?.title || 'Select a lesson'}</h2>
+                                <p className="text-slate-300 text-sm">
+                                    {module?.title || ''} • {lesson?.duration || ''}
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Course Info */}
@@ -209,11 +214,11 @@ const CourseDetail = () => {
                                 />
                             </div>
                             <span className="text-sm font-medium text-slate-700">{progress}% Complete</span>
-                            {lesson && (
-                                <Button size="sm" variant={isCompleted ? 'outline' : 'primary'} onClick={handleMarkCompleted}>
-                                    {isCompleted ? <CheckCircle className="h-4 w-4 mr-2" /> : <PlayCircle className="h-4 w-4 mr-2" />}
-                                    {isCompleted ? 'Completed' : 'Mark as watched'}
-                                </Button>
+                            {lesson && isCompleted && (
+                                <Badge variant="success" className="flex items-center">
+                                    <CheckCircle className="h-4 w-4 mr-1" />
+                                    Completed
+                                </Badge>
                             )}
                         </div>
                     </div>
@@ -221,7 +226,7 @@ const CourseDetail = () => {
                     {/* Tabs */}
                     <div className="mb-6 border-b border-slate-200">
                         <div className="flex space-x-8 overflow-x-auto">
-                            {['Overview', 'Assignments', 'Quizzes', 'Discussion'].map((tab) => (
+                            {['Overview', 'Assignments', 'Discussion'].map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab.toLowerCase())}
@@ -313,27 +318,6 @@ const CourseDetail = () => {
                             </div>
                         )}
 
-                        {activeTab === 'quizzes' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {quizzes.length === 0 ? (
-                                    <div className="col-span-2 text-center py-8 text-slate-500">No quizzes available.</div>
-                                ) : (
-                                    quizzes.map(quiz => (
-                                        <div key={quiz._id} className="bg-white border border-slate-200 rounded-xl p-6 hover:border-blue-400 transition-colors">
-                                            <h4 className="text-lg font-bold text-slate-900 mb-2">{quiz.title}</h4>
-                                            <div className="flex justify-between items-center text-sm text-slate-500 mb-4">
-                                                <span>{quiz.questions.length} Questions</span>
-                                                <span>{quiz.timeLimit} Mins</span>
-                                            </div>
-                                            <Button className="w-full" onClick={() => navigate(`/student/quiz/${quiz._id}`)}>
-                                                Take Quiz
-                                            </Button>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        )}
-
                         {activeTab === 'discussion' && (
                             <div className="text-sm text-slate-500">Discussion coming soon.</div>
                         )}
@@ -364,10 +348,16 @@ const CourseDetail = () => {
                                                 <button
                                                     key={l._id || lIndex}
                                                     className={`w-full px-4 py-3 flex items-center space-x-3 hover:bg-primary/5 transition-colors text-left ${isCurrent ? 'bg-primary/5' : ''}`}
-                                                    onClick={() => setCurrentLesson({ moduleIndex: mIndex, lessonIndex: lIndex })}
+                                                    onClick={() => {
+                                                        if (l.type === 'quiz') {
+                                                            navigate(`/student/quiz/${l.content}`, { state: { courseId: course._id, lessonId: l._id } });
+                                                        } else {
+                                                            setCurrentLesson({ moduleIndex: mIndex, lessonIndex: lIndex });
+                                                        }
+                                                    }}
                                                 >
                                                     <div className={`h-8 w-8 rounded-full flex items-center justify-center ${lessonDone ? 'bg-green-100 text-green-600' : 'bg-slate-100 text-slate-500'}`}>
-                                                        {lessonDone ? <CheckCircle className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />}
+                                                        {lessonDone ? <CheckCircle className="h-4 w-4" /> : (l.type === 'quiz' ? <BookOpen className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />)}
                                                     </div>
                                                     <div className="flex-1">
                                                         <p className="text-sm font-medium text-slate-900">{l.title}</p>

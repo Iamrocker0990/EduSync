@@ -24,7 +24,7 @@ const MyCourses = () => {
                     return;
                 }
                 const { token } = JSON.parse(userInfoString);
-                const response = await axios.get('http://localhost:5000/api/student/dashboard', {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/student/dashboard`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 // The dashboard endpoint returns object { stats, courses }, we just need courses

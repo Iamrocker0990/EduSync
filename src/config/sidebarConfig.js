@@ -14,7 +14,6 @@ export const teacherSidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/teacher' },
     { icon: BookOpen, label: 'My Courses', href: '/teacher/courses' },
     { icon: PlusCircle, label: 'Create Course', href: '/teacher/create-course' },
-    { icon: Upload, label: 'Upload Content', href: '/teacher/upload' },
     { icon: FileText, label: 'Assignments', href: '/teacher/assignments' },
     { icon: Award, label: 'Quizzes', href: '/teacher/quizzes' },
     { icon: Users, label: 'Students', href: '/teacher/students' },

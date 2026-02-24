@@ -14,7 +14,7 @@ const protect = async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
 
             // DEBUGGING: Remove this console.log after you fix the error
-            console.log("Incoming Token:", token); 
+            console.log("Incoming Token:", token);
 
             // SAFETY CHECK: If token is "null", "undefined" or empty
             if (!token || token === 'null' || token === 'undefined') {
@@ -26,7 +26,7 @@ const protect = async (req, res, next) => {
 
             // Get user from the token
             req.user = await User.findById(decoded.id).select('-password');
-            
+
             if (!req.user) {
                 return res.status(401).json({ message: 'User not found' });
             }
@@ -45,7 +45,7 @@ const admin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         next();
     } else {
-        res.status(401).json({ message: 'Not authorized as an admin' });
+        res.status(403).json({ message: 'Forbidden: Not authorized as an admin' });
     }
 };
 
@@ -54,8 +54,16 @@ const teacher = (req, res, next) => {
     if (req.user && (req.user.role === 'teacher' || req.user.role === 'admin')) {
         next();
     } else {
-        res.status(401).json({ message: 'Not authorized as a teacher' });
+        res.status(403).json({ message: 'Forbidden: Not authorized as a teacher' });
     }
 };
 
-module.exports = { protect, admin, teacher };
+const student = (req, res, next) => {
+    if (req.user && req.user.role === 'student') {
+        next();
+    } else {
+        res.status(403).json({ message: 'Forbidden: Not authorized as a student' });
+    }
+};
+
+module.exports = { protect, admin, teacher, student };

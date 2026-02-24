@@ -50,7 +50,7 @@ const CreateAssignment = () => {
                 fileUrl: formData.fileUrl // In a real app, optimize file upload before this
             };
 
-            await axios.post('http://localhost:5000/api/assignments', payload, config);
+            await axios.post(`${import.meta.env.VITE_API_URL}/assignments`, payload, config);
             navigate(`/teacher/course/${courseId}/content`);
         } catch (error) {
             console.error("Error creating assignment:", error);

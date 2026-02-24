@@ -26,11 +26,11 @@ const CourseContent = () => {
                 const config = { headers: { Authorization: `Bearer ${token}` } };
 
                 // Fetch course details
-                const courseRes = await axios.get(`http://localhost:5000/api/courses/${courseId}`, config);
+                const courseRes = await axios.get(`${import.meta.env.VITE_API_URL}/courses/${courseId}`, config);
                 setCourse(courseRes.data);
 
                 // Fetch assignments
-                const assignRes = await axios.get(`http://localhost:5000/api/assignments/course/${courseId}`, config);
+                const assignRes = await axios.get(`${import.meta.env.VITE_API_URL}/assignments/course/${courseId}`, config);
                 setAssignments(assignRes.data);
 
                 setLoading(false);

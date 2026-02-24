@@ -42,7 +42,7 @@ const UploadContent = () => {
                     navigate('/student');
                     return;
                 }
-                const { data } = await axios.get('http://localhost:5000/api/courses/mine', {
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/courses/mine`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setCourses(data);
@@ -83,7 +83,7 @@ const UploadContent = () => {
             // Upload Video
             const fd = new FormData();
             fd.append('video', uploadedFile);
-            const uploadRes = await axios.post('http://localhost:5000/api/courses/upload/video', fd, {
+            const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/courses/upload/video`, fd, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -92,7 +92,7 @@ const UploadContent = () => {
             const contentUrl = uploadRes.data.url;
 
             await axios.post(
-                `http://localhost:5000/api/courses/${selectedCourse}/lessons`,
+                `${import.meta.env.VITE_API_URL}/courses/${selectedCourse}/lessons`,
                 {
                     moduleTitle: moduleTitle || 'Module 1',
                     lessonTitle,

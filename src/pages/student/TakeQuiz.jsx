@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Clock, CheckCircle, AlertCircle, ChevronLeft } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
@@ -9,6 +9,7 @@ import Button from '../../components/ui/Button';
 const TakeQuiz = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const [quiz, setQuiz] = useState(null);
     const [loading, setLoading] = useState(true);
     const [answers, setAnswers] = useState({}); // { questionId: selectedOptionIndex }
@@ -20,7 +21,7 @@ const TakeQuiz = () => {
         const fetchQuiz = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get(`http://localhost:5000/api/quiz/${id}`, {
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/quiz/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setQuiz(res.data);
@@ -63,10 +64,23 @@ const TakeQuiz = () => {
                 selectedOption: opt.toString() // Backend expects string usually, check controller
             }));
 
-            const res = await axios.post(`http://localhost:5000/api/quiz/${id}/submit`,
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/quiz/${id}/submit`,
                 { answers: formattedAnswers },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
+
+            // Auto-complete course lesson progress if router state was provided
+            if (location.state?.courseId && location.state?.lessonId) {
+                try {
+                    await axios.post(
+                        `${import.meta.env.VITE_API_URL}/student/courses/${location.state.courseId}/lessons/${location.state.lessonId}/complete`,
+                        {},
+                        { headers: { Authorization: `Bearer ${token}` } }
+                    );
+                } catch (progressErr) {
+                    console.error("Progress update failed silently:", progressErr);
+                }
+            }
 
             setResult(res.data);
             setSubmitted(true);

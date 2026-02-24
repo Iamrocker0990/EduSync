@@ -38,7 +38,7 @@ const TeacherDashboard = () => {
                 // We'll fetch the teacher's courses and calculate stats locally for now, 
                 // until a backend dashboard endpoint is fully ready/migrated.
                 // Or if the backend endpoint exists, we can use it via a service.
-                // The current code uses `http://localhost:5000/api/teachers/dashboard`.
+                // The current code uses `${import.meta.env.VITE_API_URL}/teachers/dashboard`.
                 // Let's modify `courseService` or `dashboardService` if we want to stick to the plan.
                 // The plan mentions `dashboardService` but I haven't implemented it yet.
                 // I'll stick to fetching courses manually and computing stats for MVP

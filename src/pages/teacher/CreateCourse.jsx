@@ -289,7 +289,7 @@ const CreateCourse = () => {
                         // Use our backend upload route
                         const fd = new FormData();
                         fd.append('video', file);
-                        const uploadRes = await axios.post('http://localhost:5000/api/courses/upload/video', fd, {
+                        const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/courses/upload/video`, fd, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
                                 'Content-Type': 'multipart/form-data',

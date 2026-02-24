@@ -1,0 +1,1 @@
+const { execSync } = require('child_process'); try { execSync('npx eslint .', { stdio: 'inherit' }); } catch (error) { console.error('ESLint Error Output:', error.stdout ? error.stdout.toString() : error.message); console.error(error.stderr ? error.stderr.toString() : ''); }

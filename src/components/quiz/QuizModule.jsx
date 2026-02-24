@@ -15,8 +15,8 @@ const QuizModule = ({ userType = 'student', courseId = null, initialView = 'list
     try {
       const token = localStorage.getItem('token');
       const url = courseId
-        ? `http://localhost:5000/api/quiz/course/${courseId}`
-        : 'http://localhost:5000/api/quiz/mine';
+        ? `${import.meta.env.VITE_API_URL}/quiz/course/${courseId}`
+        : `${import.meta.env.VITE_API_URL}/quiz/mine`;
 
       const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
       const data = await response.json();
@@ -44,7 +44,7 @@ const QuizModule = ({ userType = 'student', courseId = null, initialView = 'list
     }
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/quiz', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/quiz`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

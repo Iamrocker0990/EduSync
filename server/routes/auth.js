@@ -126,9 +126,9 @@ router.post('/login', async (req, res) => {
 
         // If a role was provided by the client (student/teacher tab),
         // enforce that it matches the actual user role.
-        if (role && user.role !== role) {
-            return res.status(401).json({
-                message: `Please sign in as a ${user.role} instead.`,
+        if (!role || user.role !== role) {
+            return res.status(403).json({
+                message: `Forbidden: Please sign in as a ${user.role} instead.`,
             });
         }
 

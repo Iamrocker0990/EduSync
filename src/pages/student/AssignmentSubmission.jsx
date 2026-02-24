@@ -28,7 +28,7 @@ const AssignmentSubmission = () => {
                 const config = { headers: { Authorization: `Bearer ${token}` } };
 
                 // Fetch Assignment Details
-                const assignRes = await axios.get(`http://localhost:5000/api/assignments/course/${id}`, config); // This fetches all course assignments, need specific one?
+                const assignRes = await axios.get(`${import.meta.env.VITE_API_URL}/assignments/course/${id}`, config); // This fetches all course assignments, need specific one?
                 // Wait, the route is /api/assignments/:id/submissions for teacher...
                 // And /api/assignments/course/:courseId for list.
                 // I don't have a "get single assignment by ID" route for student yet? 
@@ -50,11 +50,11 @@ const AssignmentSubmission = () => {
 
                 // For this step, I will write the code assuming the endpoint exists: `GET /api/assignments/:id`
 
-                const assignResSingle = await axios.get(`http://localhost:5000/api/assignments/${id}`, config);
+                const assignResSingle = await axios.get(`${import.meta.env.VITE_API_URL}/assignments/${id}`, config);
                 setAssignment(assignResSingle.data);
 
                 // Fetch My Submission
-                const subRes = await axios.get(`http://localhost:5000/api/assignments/${id}/my-submission`, config);
+                const subRes = await axios.get(`${import.meta.env.VITE_API_URL}/assignments/${id}/my-submission`, config);
                 setSubmission(subRes.data);
 
                 setLoading(false);
@@ -76,12 +76,12 @@ const AssignmentSubmission = () => {
                 fileUrl: fileUrl
             };
 
-            await axios.post(`http://localhost:5000/api/assignments/${id}/submit`, payload, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/assignments/${id}/submit`, payload, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
             // Refresh data
-            const subRes = await axios.get(`http://localhost:5000/api/assignments/${id}/my-submission`, {
+            const subRes = await axios.get(`${import.meta.env.VITE_API_URL}/assignments/${id}/my-submission`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSubmission(subRes.data);
