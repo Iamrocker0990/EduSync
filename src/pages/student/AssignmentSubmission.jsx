@@ -20,6 +20,7 @@ const AssignmentSubmission = () => {
     // Form State
     const [textSubmission, setTextSubmission] = useState('');
     const [fileUrl, setFileUrl] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,13 +72,20 @@ const AssignmentSubmission = () => {
         setSubmitting(true);
         try {
             const token = localStorage.getItem('token');
-            const payload = {
-                submissionText: textSubmission,
-                fileUrl: fileUrl
-            };
+            const formData = new FormData();
+            formData.append('submissionText', textSubmission);
 
-            await axios.post(`${import.meta.env.VITE_API_URL}/assignments/${id}/submit`, payload, {
-                headers: { Authorization: `Bearer ${token}` }
+            if (selectedFile) {
+                formData.append('file', selectedFile);
+            } else if (fileUrl) {
+                formData.append('fileUrl', fileUrl);
+            }
+
+            await axios.post(`${import.meta.env.VITE_API_URL}/assignments/${id}/submit`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
             });
 
             // Refresh data
@@ -93,23 +101,12 @@ const AssignmentSubmission = () => {
         }
     };
 
-    // Cloudinary Widget
-    const handleUpload = () => {
-        const myWidget = window.cloudinary.createUploadWidget(
-            {
-                cloudName: 'dqy3w10ba',
-                uploadPreset: 'final-year-project',
-                sources: ['local', 'url', 'google_drive'],
-                multiple: false,
-                resourceType: 'auto',
-            },
-            (error, result) => {
-                if (!error && result && result.event === "success") {
-                    setFileUrl(result.info.secure_url);
-                }
-            }
-        );
-        myWidget.open();
+    // File Handler
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedFile(e.target.files[0]);
+            setFileUrl(''); // reset cloud url if file is selected locally
+        }
     };
 
     if (loading) return <DashboardLayout userType="student" title="Loading...">Loading...</DashboardLayout>;
@@ -179,20 +176,23 @@ const AssignmentSubmission = () => {
                                         {['file', 'both'].includes(assignment.submissionType) && (
                                             <div>
                                                 <label className="block text-sm font-medium text-slate-700 mb-1.5">File Upload</label>
-                                                <div
-                                                    onClick={handleUpload}
-                                                    className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer"
-                                                >
-                                                    {fileUrl ? (
+                                                <div className="relative border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer">
+                                                    <input
+                                                        type="file"
+                                                        onChange={handleFileChange}
+                                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                        accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip,.png,.jpg,.jpeg"
+                                                    />
+                                                    {selectedFile || fileUrl ? (
                                                         <div className="text-green-600 flex flex-col items-center">
                                                             <CheckCircle className="h-8 w-8 mb-2" />
                                                             <span className="text-sm font-medium">File Selected</span>
-                                                            <span className="text-xs text-slate-400 mt-1 break-all">{fileUrl}</span>
+                                                            <span className="text-xs text-slate-400 mt-1 break-all">{selectedFile ? selectedFile.name : fileUrl}</span>
                                                         </div>
                                                     ) : (
                                                         <>
                                                             <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                                                            <p className="text-sm text-slate-600">Click to upload your work</p>
+                                                            <p className="text-sm text-slate-600">Click or drag a file to upload</p>
                                                         </>
                                                     )}
                                                 </div>

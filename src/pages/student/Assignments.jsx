@@ -1,57 +1,45 @@
-import React from 'react';
-import { BookOpen, Video, FileText, BarChart2, Award, MessageCircle, Upload, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Clock } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
 
 const Assignments = () => {
+    const navigate = useNavigate();
+    const [assignments, setAssignments] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const assignments = [
-        {
-            id: 1,
-            title: 'React Context Theme Switcher',
-            course: 'Advanced React',
-            dueDate: 'Tomorrow, 11:59 PM',
-            status: 'Pending',
-            score: null,
-            description: 'Implement a theme switcher using React Context API. Include tests for your implementation.'
-        },
-        {
-            id: 2,
-            title: 'Wireframe Project',
-            course: 'UI/UX Design Principles',
-            dueDate: 'Yesterday',
-            status: 'Submitted',
-            score: null,
-            description: 'Create low-fidelity wireframes for the e-commerce mobile app project.'
-        },
-        {
-            id: 3,
-            title: 'Python Data Analysis',
-            course: 'Introduction to Python',
-            dueDate: 'Last Week',
-            status: 'Graded',
-            score: '95/100',
-            description: 'Analyze the provided dataset using Pandas and generate 3 visualizations.'
-        },
-        {
-            id: 4,
-            title: 'Final Project Proposal',
-            course: 'Web Dev Bootcamp',
-            dueDate: 'Dec 01, 11:59 PM',
-            status: 'Pending',
-            score: null,
-            description: 'Submit a PDF document outlining your final project idea, tech stack, and timeline.'
-        }
-    ];
+    useEffect(() => {
+        const fetchAssignments = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    navigate('/login');
+                    return;
+                }
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/assignments/student`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setAssignments(response.data);
+            } catch (error) {
+                console.error("Error fetching student assignments:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    // FIXED: Removed ": string" type annotation
+        fetchAssignments();
+    }, [navigate]);
+
     const getStatusBadge = (status) => {
         switch (status) {
             case 'Pending': return <Badge variant="warning">Pending</Badge>;
             case 'Submitted': return <Badge variant="primary">Submitted</Badge>;
             case 'Graded': return <Badge variant="success">Graded</Badge>;
+            case 'Overdue': return <Badge variant="danger">Overdue</Badge>;
             default: return <Badge variant="neutral">{status}</Badge>;
         }
     };
@@ -74,30 +62,46 @@ const Assignments = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {assignments.map((assignment) => (
-                                    <tr key={assignment.id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <p className="font-medium text-slate-900">{assignment.title}</p>
-                                            <p className="text-xs text-slate-500 md:hidden">{assignment.course}</p>
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-slate-600 hidden md:table-cell">{assignment.course}</td>
-                                        <td className="px-6 py-4 text-sm text-slate-600">
-                                            <div className="flex items-center">
-                                                <Clock className="h-3 w-3 mr-1.5 text-slate-400" />
-                                                {assignment.dueDate}
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
+                                            <div className="flex justify-center items-center">
+                                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">{getStatusBadge(assignment.status)}</td>
-                                        <td className="px-6 py-4 text-sm font-medium text-slate-900">
-                                            {assignment.score || '-'}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <Button size="sm" variant={assignment.status === 'Pending' ? 'primary' : 'outline'}>
-                                                {assignment.status === 'Pending' ? 'Submit' : 'View'}
-                                            </Button>
+                                    </tr>
+                                ) : assignments.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
+                                            No assignments found for your enrolled courses.
                                         </td>
                                     </tr>
-                                ))}
+                                ) : (
+                                    assignments.map((assignment) => (
+                                        <tr key={assignment.id} className="hover:bg-slate-50 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <p className="font-medium text-slate-900">{assignment.title}</p>
+                                                <p className="text-xs text-slate-500 md:hidden">{assignment.course}</p>
+                                            </td>
+                                            <td className="px-6 py-4 text-sm text-slate-600 hidden md:table-cell">{assignment.course}</td>
+                                            <td className="px-6 py-4 text-sm text-slate-600">
+                                                <div className="flex items-center">
+                                                    <Clock className="h-3 w-3 mr-1.5 text-slate-400" />
+                                                    {new Date(assignment.dueDate).toLocaleString()}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">{getStatusBadge(assignment.status)}</td>
+                                            <td className="px-6 py-4 text-sm font-medium text-slate-900">
+                                                {assignment.score || '-'}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <Button size="sm" variant={assignment.status === 'Pending' ? 'primary' : 'outline'} onClick={() => navigate(`/student/assignment/${assignment.id}`)}>
+                                                    {assignment.status === 'Pending' ? 'Submit' : 'View'}
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

@@ -23,6 +23,7 @@ const CreateAssignment = () => {
         submissionType: 'file',
         fileUrl: ''
     });
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -40,17 +41,26 @@ const CreateAssignment = () => {
             // Combine date and time
             const dueDateTime = new Date(`${formData.dueDate}T${formData.dueTime || '23:59'}`);
 
-            const payload = {
-                courseId,
-                title: formData.title,
-                description: formData.description,
-                dueDate: dueDateTime,
-                maxMarks: formData.maxMarks,
-                submissionType: formData.submissionType,
-                fileUrl: formData.fileUrl // In a real app, optimize file upload before this
-            };
+            const payloadData = new FormData();
+            payloadData.append('courseId', courseId);
+            payloadData.append('title', formData.title);
+            payloadData.append('description', formData.description);
+            payloadData.append('dueDate', dueDateTime.toISOString());
+            payloadData.append('maxMarks', formData.maxMarks);
+            payloadData.append('submissionType', formData.submissionType);
 
-            await axios.post(`${import.meta.env.VITE_API_URL}/assignments`, payload, config);
+            if (selectedFile) {
+                payloadData.append('file', selectedFile);
+            } else if (formData.fileUrl) {
+                payloadData.append('fileUrl', formData.fileUrl);
+            }
+
+            await axios.post(`${import.meta.env.VITE_API_URL}/assignments`, payloadData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             navigate(`/teacher/course/${courseId}/content`);
         } catch (error) {
             console.error("Error creating assignment:", error);
@@ -60,23 +70,11 @@ const CreateAssignment = () => {
         }
     };
 
-    // Cloudinary Widget (simplified adaptation from CreateCourse)
-    const handleUpload = () => {
-        const myWidget = window.cloudinary.createUploadWidget(
-            {
-                cloudName: 'dqy3w10ba',
-                uploadPreset: 'final-year-project',
-                sources: ['local', 'url'],
-                multiple: false,
-                resourceType: 'auto',
-            },
-            (error, result) => {
-                if (!error && result && result.event === "success") {
-                    setFormData(prev => ({ ...prev, fileUrl: result.info.secure_url }));
-                }
-            }
-        );
-        myWidget.open();
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedFile(e.target.files[0]);
+            setFormData(prev => ({ ...prev, fileUrl: '' })); // reset any string URL if a file is selected
+        }
     };
 
     return (
@@ -183,20 +181,19 @@ const CreateAssignment = () => {
 
                         <div>
                             <label className="label">Attachments (Optional)</label>
-                            <div
-                                onClick={handleUpload}
-                                className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer group ${formData.fileUrl
-                                        ? 'border-green-300 bg-green-50'
-                                        : 'border-slate-300 hover:border-primary hover:bg-slate-50'
-                                    }`}
-                            >
-                                {formData.fileUrl ? (
+                            <div className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer group ${selectedFile || formData.fileUrl ? 'border-green-300 bg-green-50' : 'border-slate-300 hover:border-primary hover:bg-slate-50'}`}>
+                                <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                                {selectedFile || formData.fileUrl ? (
                                     <div className="flex flex-col items-center animate-in fade-in zoom-in duration-300">
                                         <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-3 shadow-sm">
                                             <CheckCircle className="h-6 w-6" />
                                         </div>
                                         <span className="text-sm font-semibold text-green-800">File Attached Successfully</span>
-                                        <span className="text-xs text-green-600 mt-1 max-w-xs truncate">{formData.fileUrl}</span>
+                                        <span className="text-xs text-green-600 mt-1 max-w-xs truncate">{selectedFile ? selectedFile.name : formData.fileUrl}</span>
                                         <span className="text-xs text-green-500 mt-4 underline group-hover:text-green-700">Click to replace</span>
                                     </div>
                                 ) : (
@@ -204,7 +201,7 @@ const CreateAssignment = () => {
                                         <div className="h-12 w-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-3 group-hover:bg-blue-50 group-hover:text-primary transition-colors">
                                             <Upload className="h-6 w-6" />
                                         </div>
-                                        <p className="text-sm font-medium text-slate-700">Click to upload reference materials</p>
+                                        <p className="text-sm font-medium text-slate-700">Click or drag a file to upload</p>
                                         <p className="text-xs text-slate-500 mt-1">PDF, DOCX, Images supported</p>
                                     </div>
                                 )}

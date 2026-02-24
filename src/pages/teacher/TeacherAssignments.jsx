@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { BookOpen, Users, FileText, Award, BarChart2, MessageCircle, Plus, Upload, Search, Filter, CheckCircle, Clock, Download, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Search, Upload, CheckCircle, FileText } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -7,61 +9,125 @@ import Input from '../../components/ui/Input';
 import Badge from '../../components/ui/Badge';
 
 const TeacherAssignments = () => {
-    // sidebarItems removed to use default from DashboardLayout
-
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('all');
+    const [assignments, setAssignments] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCourseFilter, setSelectedCourseFilter] = useState('all');
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState('all');
 
-    const assignments = [
-        {
-            id: 1,
-            title: 'React Context API Implementation',
-            course: 'Advanced React Patterns',
-            dueDate: 'Tomorrow, 11:59 PM',
-            submissions: '45/85',
-            status: 'Active'
-        },
-        {
-            id: 2,
-            title: 'Wireframe Project',
-            course: 'UI/UX Design Principles',
-            dueDate: 'Yesterday',
-            submissions: '62/65',
-            status: 'Closed'
-        },
-        {
-            id: 3,
-            title: 'Python Data Analysis',
-            course: 'Introduction to Python',
-            dueDate: 'Last Week',
-            submissions: '90/92',
-            status: 'Graded'
+    const [formData, setFormData] = useState({
+        title: '',
+        courseId: '',
+        description: '',
+        dueDate: '',
+        dueTime: '',
+        maxMarks: 100,
+        submissionType: 'file'
+    });
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const [assignmentsRes, coursesRes] = await Promise.all([
+                axios.get(`${import.meta.env.VITE_API_URL}/assignments`, { headers: { Authorization: `Bearer ${token}` } }),
+                axios.get(`${import.meta.env.VITE_API_URL}/courses/mine`, { headers: { Authorization: `Bearer ${token}` } })
+            ]);
+            setAssignments(assignmentsRes.data);
+            setCourses(coursesRes.data);
+        } catch (error) {
+            console.error("Error fetching assignments:", error);
+        } finally {
+            setLoading(false);
         }
-    ];
+    };
+
+    const handleCreateAssignment = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        try {
+            const token = localStorage.getItem('token');
+            const dueDateTime = new Date(`${formData.dueDate}T${formData.dueTime || '23:59'}`);
+
+            const payloadData = new FormData();
+            payloadData.append('courseId', formData.courseId);
+            payloadData.append('title', formData.title);
+            payloadData.append('description', formData.description);
+            payloadData.append('dueDate', dueDateTime.toISOString());
+            payloadData.append('maxMarks', formData.maxMarks);
+            payloadData.append('submissionType', formData.submissionType);
+
+            if (selectedFile) {
+                payloadData.append('file', selectedFile);
+            }
+
+            await axios.post(`${import.meta.env.VITE_API_URL}/assignments`, payloadData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            alert("Assignment created successfully");
+            setFormData({ title: '', courseId: '', description: '', dueDate: '', dueTime: '', maxMarks: 100, submissionType: 'file' });
+            setSelectedFile(null);
+            fetchData();
+            setActiveTab('all');
+        } catch (error) {
+            console.error("Error creating assignment:", error);
+            alert("Failed to create assignment");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const filteredAssignments = assignments.filter(a => {
+        const matchesSearch = a.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCourse = selectedCourseFilter === 'all' || a.courseId === selectedCourseFilter;
+        const isPast = new Date(a.dueDate) < new Date();
+        const status = isPast ? 'Closed' : 'Active';
+        const matchesStatus = selectedStatusFilter === 'all' || status.toLowerCase() === selectedStatusFilter.toLowerCase();
+        return matchesSearch && matchesCourse && matchesStatus;
+    });
 
     return (
         <DashboardLayout userType="teacher" title="Assignments">
             <div className="mb-6 border-b border-slate-200">
                 <div className="flex space-x-8">
-                    <button
-                        onClick={() => setActiveTab('all')}
-                        className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'all' ? 'text-primary' : 'text-slate-500 hover:text-slate-700'
-                            }`}
-                    >
+                    <button onClick={() => setActiveTab('all')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'all' ? 'text-primary' : 'text-slate-500 hover:text-slate-700'}`}>
                         All Assignments
                         {activeTab === 'all' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                     </button>
-                    <button
-                        onClick={() => setActiveTab('create')}
-                        className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'create' ? 'text-primary' : 'text-slate-500 hover:text-slate-700'
-                            }`}
-                    >
+                    <button onClick={() => setActiveTab('create')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'create' ? 'text-primary' : 'text-slate-500 hover:text-slate-700'}`}>
                         Create Assignment
                         {activeTab === 'create' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                     </button>
                 </div>
             </div>
 
-            {activeTab === 'all' ? (
+            {loading ? (
+                <div className="flex justify-center items-center h-64">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+            ) : activeTab === 'all' ? (
                 <div className="space-y-6">
                     <div className="flex justify-between items-center">
                         <div className="relative w-64">
@@ -69,102 +135,143 @@ const TeacherAssignments = () => {
                             <input
                                 type="text"
                                 placeholder="Search assignments..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                             />
                         </div>
                         <div className="flex space-x-2">
-                            <select className="px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white text-slate-600">
-                                <option>All Courses</option>
-                                <option>Advanced React Patterns</option>
-                                <option>UI/UX Design Principles</option>
+                            <select value={selectedCourseFilter} onChange={(e) => setSelectedCourseFilter(e.target.value)} className="px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white text-slate-600">
+                                <option value="all">All Courses</option>
+                                {courses.map(c => <option key={c._id} value={c._id}>{c.title}</option>)}
                             </select>
-                            <select className="px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white text-slate-600">
-                                <option>All Status</option>
-                                <option>Active</option>
-                                <option>Closed</option>
-                                <option>Graded</option>
+                            <select value={selectedStatusFilter} onChange={(e) => setSelectedStatusFilter(e.target.value)} className="px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white text-slate-600">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="closed">Closed</option>
                             </select>
                         </div>
                     </div>
 
                     <Card className="overflow-hidden">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200">
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Assignment Title</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Course</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Due Date</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Submissions</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Status</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-100">
-                                {assignments.map((assignment) => (
-                                    <tr key={assignment.id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-slate-900">{assignment.title}</td>
-                                        <td className="px-6 py-4 text-slate-600">{assignment.course}</td>
-                                        <td className="px-6 py-4 text-slate-600">{assignment.dueDate}</td>
-                                        <td className="px-6 py-4 text-slate-600">{assignment.submissions}</td>
-                                        <td className="px-6 py-4">
-                                            <Badge variant={assignment.status === 'Active' ? 'primary' : assignment.status === 'Graded' ? 'success' : 'neutral'}>
-                                                {assignment.status}
-                                            </Badge>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <Button size="sm" variant="outline">View Submissions</Button>
-                                        </td>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-50 border-b border-slate-200">
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Assignment Title</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Course</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Due Date</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Status</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    {filteredAssignments.length > 0 ? (
+                                        filteredAssignments.map((assignment) => {
+                                            const isPast = new Date(assignment.dueDate) < new Date();
+                                            const statusLabel = isPast ? 'Closed' : 'Active';
+                                            return (
+                                                <tr key={assignment._id} className="hover:bg-slate-50 transition-colors">
+                                                    <td className="px-6 py-4 font-medium text-slate-900">{assignment.title}</td>
+                                                    <td className="px-6 py-4 text-slate-600 truncate max-w-[200px]">{assignment.courseName}</td>
+                                                    <td className="px-6 py-4 text-slate-600">{new Date(assignment.dueDate).toLocaleString()}</td>
+                                                    <td className="px-6 py-4">
+                                                        <Badge variant={statusLabel === 'Active' ? 'primary' : 'neutral'}>
+                                                            {statusLabel}
+                                                        </Badge>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-right">
+                                                        <Button size="sm" variant="outline" onClick={() => navigate(`/teacher/course/${assignment.courseId}/assignments/${assignment._id}/grade`)}>
+                                                            View Submissions
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="5" className="px-6 py-12 text-center text-slate-500">
+                                                No assignments found.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </Card>
                 </div>
             ) : (
                 <div className="max-w-3xl mx-auto">
                     <Card className="p-8">
-                        <h2 className="text-xl font-bold text-slate-900 mb-6">Create New Assignment</h2>
-                        <div className="space-y-6">
-                            <Input label="Assignment Title" placeholder="e.g., Final Project Proposal" />
+                        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center">
+                            <FileText className="mr-2 text-primary h-6 w-6" /> Create New Assignment
+                        </h2>
+                        <form onSubmit={handleCreateAssignment} className="space-y-6">
+                            <Input label="Assignment Title" name="title" value={formData.title} onChange={handleInputChange} placeholder="e.g., Final Project Proposal" required />
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Course</label>
-                                <select className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white">
-                                    <option>Select Course</option>
-                                    <option>Advanced React Patterns</option>
-                                    <option>UI/UX Design Principles</option>
+                                <select name="courseId" value={formData.courseId} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white" required>
+                                    <option value="">Select Course</option>
+                                    {courses.map(c => <option key={c._id} value={c._id}>{c.title}</option>)}
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
                                 <textarea
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleInputChange}
                                     className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none h-32 resize-none"
                                     placeholder="Instructions for students..."
+                                    required
                                 ></textarea>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <Input label="Due Date" type="date" />
-                                <Input label="Due Time" type="time" />
+                                <Input label="Due Date" type="date" name="dueDate" value={formData.dueDate} onChange={handleInputChange} required />
+                                <Input label="Due Time" type="time" name="dueTime" value={formData.dueTime} onChange={handleInputChange} />
                             </div>
 
-                            <div>
-                                <Input label="Total Points" type="number" placeholder="100" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <Input label="Total Points" type="number" name="maxMarks" value={formData.maxMarks} onChange={handleInputChange} required />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Submission Type</label>
+                                    <select name="submissionType" value={formData.submissionType} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white" required>
+                                        <option value="file">File Upload</option>
+                                        <option value="text">Text Only</option>
+                                        <option value="both">File & Text</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Attachments (Optional)</label>
-                                <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer">
-                                    <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                                    <p className="text-sm text-slate-600">Upload reference files</p>
+                                <div className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-colors cursor-pointer group ${selectedFile ? 'border-green-300 bg-green-50' : 'border-slate-300 hover:border-primary hover:bg-slate-50'}`}>
+                                    <input type="file" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                                    {selectedFile ? (
+                                        <div className="flex flex-col items-center">
+                                            <CheckCircle className="h-8 w-8 text-green-500 mb-2" />
+                                            <p className="text-sm font-semibold text-green-800">{selectedFile.name}</p>
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col items-center">
+                                            <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2 group-hover:text-primary transition-colors" />
+                                            <p className="text-sm font-medium text-slate-700">Click or drag a file to upload</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="flex justify-end pt-6 border-t border-slate-100">
-                                <Button>Create Assignment</Button>
+                                <Button type="submit" disabled={submitting}>
+                                    {submitting ? 'Creating Assignment...' : 'Create Assignment'}
+                                </Button>
                             </div>
-                        </div>
+                        </form>
                     </Card>
                 </div>
             )}

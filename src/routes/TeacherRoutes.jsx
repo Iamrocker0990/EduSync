@@ -14,6 +14,7 @@ import TeacherMessages from '../pages/teacher/TeacherMessages';
 import CourseContent from '../pages/teacher/CourseContent';
 import CreateAssignment from '../pages/teacher/CreateAssignment';
 import CreateQuiz from '../pages/teacher/CreateQuiz';
+import TeacherAssignmentSubmissions from '../pages/teacher/TeacherAssignmentSubmissions';
 
 const TeacherRoutes = () => {
     return (
@@ -30,6 +31,7 @@ const TeacherRoutes = () => {
             <Route path="/messages" element={<TeacherMessages />} />
             <Route path="/course/:courseId/content" element={<CourseContent />} />
             <Route path="/course/:courseId/assignments/create" element={<CreateAssignment />} />
+            <Route path="/course/:courseId/assignments/:assignmentId/grade" element={<TeacherAssignmentSubmissions />} />
             <Route path="/course/:courseId/quiz/create" element={<CreateQuiz />} />
         </Routes>
     );
