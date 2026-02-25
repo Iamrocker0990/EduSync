@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 const { protect, teacher } = require('../middleware/auth');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const {
     getAllCourses,
     getTeacherCourses,
@@ -15,31 +15,17 @@ const {
     deleteCourse
 } = require('../controllers/courseController');
 
-// Ensure upload directory exists
-const uploadDir = path.join(__dirname, '..', 'uploads', 'videos');
-// Use synchronous mkdir for startup/init to ensure it exists before requests come in
-try {
-    if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-    }
-} catch (err) {
-    console.error("Error creating upload directory:", err);
-}
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir);
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'edusync/courses',
+        resource_type: 'auto', // Allows video and images
     },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const ext = path.extname(file.originalname) || '.mp4';
-        cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-    }
 });
 
 const upload = multer({
     storage,
-    limits: { fileSize: 2 * 1024 * 1024 * 1024 }, // 2GB
+    limits: { fileSize: 2 * 1024 * 1024 * 1024 }, // 2GB limit checked before upload
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith('video/') || file.mimetype.startsWith('image/')) {
             cb(null, true);
@@ -64,8 +50,8 @@ router.post('/upload/video', protect, teacher, upload.single('video'), (req, res
         if (!req.file) {
             return res.status(400).json({ message: 'No file uploaded' });
         }
-        // Construct URL based on server address (req.get('host'))
-        const url = `${req.protocol}://${req.get('host')}/uploads/videos/${req.file.filename}`;
+        // req.file.path contains the secure Cloudinary URL 
+        const url = req.file.path;
         res.status(201).json({ url });
     } catch (error) {
         res.status(500).json({ message: error.message || 'Upload failed' });
@@ -78,7 +64,8 @@ router.post('/upload/image', protect, teacher, upload.single('image'), (req, res
         if (!req.file) {
             return res.status(400).json({ message: 'No image file uploaded' });
         }
-        const url = `${req.protocol}://${req.get('host')}/uploads/videos/${req.file.filename}`;
+        // req.file.path contains the secure Cloudinary URL 
+        const url = req.file.path;
         res.status(201).json({ url });
     } catch (error) {
         res.status(500).json({ message: error.message || 'Upload failed' });

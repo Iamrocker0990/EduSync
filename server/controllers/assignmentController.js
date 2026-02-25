@@ -53,7 +53,7 @@ const createAssignment = async (req, res) => {
         // Handle uploaded file url
         let finalFileUrl = fileUrl;
         if (req.file) {
-            finalFileUrl = `/uploads/${req.file.filename}`;
+            finalFileUrl = req.file.path; // Cloudinary secure URL
         }
 
         const assignment = new Assignment({
@@ -248,7 +248,7 @@ const submitAssignment = async (req, res) => {
         // Handle uploaded file url
         let finalFileUrl = fileUrl;
         if (req.file) {
-            finalFileUrl = `/uploads/${req.file.filename}`;
+            finalFileUrl = req.file.path; // Cloudinary secure URL
         }
 
         const submission = new Submission({

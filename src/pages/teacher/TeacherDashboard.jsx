@@ -35,31 +35,13 @@ const TeacherDashboard = () => {
                 }
 
                 // 2. FETCH REAL DATA USING SERVICE
-                // We'll fetch the teacher's courses and calculate stats locally for now, 
-                // until a backend dashboard endpoint is fully ready/migrated.
-                // Or if the backend endpoint exists, we can use it via a service.
-                // The current code uses `${import.meta.env.VITE_API_URL}/teachers/dashboard`.
-                // Let's modify `courseService` or `dashboardService` if we want to stick to the plan.
-                // The plan mentions `dashboardService` but I haven't implemented it yet.
-                // I'll stick to fetching courses manually and computing stats for MVP
-                // OR use direct axios if the endpoint is specific to stats.
-                // However, the prompt says "Replace hardcoded cards... fetching the teacher's own uploaded courses."
-                // So I will fetch courses and display stats based on that.
-
-                const myCourses = await courseService.getTeacherCourses();
-
-                // Mock stats based on courses (since we don't have enrollment/assignment data fully linked yet)
-                const mockStats = {
-                    totalCourses: myCourses.length,
-                    totalStudents: myCourses.reduce((sum, c) => sum + (c.studentsCount || 0), 0), // Assuming backend returns count
-                    totalAssignments: 0, // Placeholder
-                    pendingQuizzes: 0 // Placeholder
-                };
+                // 2. FETCH REAL DATA USING SERVICE
+                const dashboard = await courseService.getDashboardData();
 
                 setDashboardData({
-                    stats: mockStats,
-                    recentActivity: [], // Placeholder
-                    chartData: myCourses.map(c => ({ name: c.title, count: c.studentsCount || 0, color: 'bg-blue-500' }))
+                    stats: dashboard.stats,
+                    recentActivity: dashboard.recentActivity,
+                    chartData: dashboard.chartData || []
                 });
 
                 setLoading(false);
@@ -152,30 +134,7 @@ const TeacherDashboard = () => {
                 </Card>
             </div>
 
-            {/* 4. ACTIVE STUDENTS CHART (Dynamic) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Card className="p-6">
-                    <h3 className="text-lg font-bold text-slate-900 mb-6">Popular Courses</h3>
-                    <div className="space-y-4">
-                        {dashboardData.chartData.length === 0 ? <p className="text-sm text-slate-500">No data available.</p> :
-                            dashboardData.chartData.map((course, index) => (
-                                <div key={index}>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="font-medium text-slate-700">{course.name}</span>
-                                        <span className="text-slate-500">{course.count} Students</span>
-                                    </div>
-                                    <div className="w-full bg-slate-100 rounded-full h-2">
-                                        <div
-                                            className={`h-2 rounded-full ${course.color}`}
-                                            style={{ width: `${(course.count / 20) * 100}%` }} // Adjusted scale for demo
-                                        ></div>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </Card>
-            </div>
+            {/* 4. ACTIVE STUDENTS CHART (Dynamic) - Removed Popular Courses per request */}
         </DashboardLayout>
     );
 };

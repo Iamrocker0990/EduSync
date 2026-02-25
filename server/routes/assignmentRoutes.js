@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const { protect, admin, teacher } = require('../middleware/auth');
 const {
     createAssignment,
@@ -13,30 +13,22 @@ const {
     gradeSubmission
 } = require('../controllers/assignmentController');
 
-// Ensure upload directories exist
-const assignmentsDir = path.join(__dirname, '../uploads/assignments');
-const submissionsDir = path.join(__dirname, '../uploads/submissions');
-if (!fs.existsSync(assignmentsDir)) fs.mkdirSync(assignmentsDir, { recursive: true });
-if (!fs.existsSync(submissionsDir)) fs.mkdirSync(submissionsDir, { recursive: true });
-
 // Multer storage for teacher assignments
-const assignmentStorage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, 'uploads/assignments/');
-    },
-    filename(req, file, cb) {
-        cb(null, `assignment-${Date.now()}${path.extname(file.originalname)}`);
+const assignmentStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'edusync/assignments',
+        resource_type: 'auto',
     }
 });
 const uploadAssignment = multer({ storage: assignmentStorage });
 
 // Multer storage for student submissions
-const submissionStorage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, 'uploads/submissions/');
-    },
-    filename(req, file, cb) {
-        cb(null, `submission-${Date.now()}${path.extname(file.originalname)}`);
+const submissionStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'edusync/submissions',
+        resource_type: 'auto',
     }
 });
 const uploadSubmission = multer({ storage: submissionStorage });

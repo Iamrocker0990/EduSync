@@ -13,6 +13,12 @@ const courseService = {
         return response.data;
     },
 
+    // Teacher: Get dashboard metrics and recent enrollments
+    getDashboardData: async () => {
+        const response = await api.get('/teachers/dashboard');
+        return response.data;
+    },
+
     // Public/Student: Get course details
     getCourseById: async (id) => {
         const response = await api.get(`/courses/${id}`);

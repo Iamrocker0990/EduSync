@@ -1,4 +1,5 @@
 const Course = require('../models/Course');
+const Enrollment = require('../models/Enrollment');
 const path = require('path');
 const fs = require('fs');
 
@@ -33,19 +34,16 @@ const getAllCourses = async (req, res) => {
 const getTeacherCourses = async (req, res) => {
     try {
         const courses = await Course.find({
-            // Support both 'instructor' (ref) and 'createdBy' (ref) for backward compatibility/migration
-            // The plan says `createdBy` in Course model, but original used `instructor`.
-            // Let's check the Schema update. We added `createdBy` but didn't remove `instructor`.
-            // The original Schema used `instructor` as the ref.
-            // For safety, let's use `instructor` as it was the primary one, 
-            // OR checks both if we want to migrate. 
-            // implementation_plan.md specified `createdBy`.
-            // Let's use `instructor` to match existing `Course.js` usage, or `createdBy` if we strictly follow plan.
-            // The updated Course.js has BOTH `instructor` (line 27) and `createdBy` (line 44).
-            // We should populate BOTH when creating to be safe.
             $or: [{ instructor: req.user._id }, { createdBy: req.user._id }]
-        }).select('title description thumbnail createdAt status price');
-        res.json(courses);
+        }).select('title description thumbnail createdAt status price').lean();
+
+        // Attach student counts for dashboard
+        const coursesWithCounts = await Promise.all(courses.map(async (course) => {
+            const studentsCount = await Enrollment.countDocuments({ course: course._id });
+            return { ...course, studentsCount };
+        }));
+
+        res.json(coursesWithCounts);
     } catch (error) {
         console.error('Error fetching teacher courses:', error);
         res.status(500).json({ message: 'Server Error' });
