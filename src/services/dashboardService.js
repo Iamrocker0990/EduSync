@@ -11,6 +11,12 @@ const dashboardService = {
     getTeacherDashboard: async () => {
         const response = await api.get('/teachers/dashboard');
         return response.data;
+    },
+
+    // Get all students for a teacher
+    getTeacherStudents: async () => {
+        const response = await api.get('/teachers/students');
+        return response.data;
     }
 };
 

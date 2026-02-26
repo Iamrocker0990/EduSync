@@ -6,7 +6,16 @@ import Button from '../ui/Button';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isScrolled, setIsScrolled] = React.useState(false);
     const location = useLocation();
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const userInfoString = localStorage.getItem('userInfo');
     const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
@@ -16,45 +25,69 @@ const Navbar = () => {
         return null;
     }
 
+    const scrollToSection = (e, targetId) => {
+        e.preventDefault();
+
+        // If we are not on the home page, we should navigate to home first, then scroll. 
+        // For simplicity now, let's just assume we are on home or use basic behavior
+        if (location.pathname !== '/') {
+            window.location.href = `/#${targetId}`;
+            return;
+        }
+
+        if (targetId === 'home') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        const element = document.getElementById(targetId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        setIsMenuOpen(false);
+    };
+
     return (
-        <nav className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
+        <nav className={`fixed w-full top-0 z-50 transition-all duration-300 ease-in-out ${isScrolled ? 'bg-white/70 backdrop-blur-md border-b border-slate-100 shadow-sm py-2' : 'bg-transparent border-transparent py-4'
+            }`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-20">
+                <div className="flex justify-between items-center h-16">
                     <div className="flex items-center">
-                        <Link to="/" className="flex items-center space-x-3 group">
+                        <Link to="/" onClick={(e) => scrollToSection(e, 'home')} className="flex items-center space-x-3 group cursor-pointer">
                             <div className="bg-primary/10 p-2 rounded-xl group-hover:rotate-12 transition-transform duration-300">
-                                <GraduationCap className="h-7 w-7 text-primary" />
+                                <GraduationCap className="h-6 w-6 text-primary" />
                             </div>
-                            <span className="text-2xl font-bold text-slate-900 tracking-tight">EduSync</span>
+                            <span className="text-xl font-bold text-secondary tracking-tight">EduSync</span>
                         </Link>
                     </div>
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-10">
                         <div className="flex items-center space-x-8">
-                            {['Home', 'Courses', 'Features', 'Contact'].map((item) => (
-                                <Link 
-                                    key={item} 
-                                    to={item === 'Home' ? '/' : `/${item.toLowerCase()}`} 
-                                    className="text-sm font-bold text-slate-500 hover:text-primary transition-colors uppercase tracking-widest"
+                            {['Features', 'Courses', 'Contact'].map((item) => (
+                                <a
+                                    key={item}
+                                    href={`#${item.toLowerCase()}`}
+                                    onClick={(e) => scrollToSection(e, item.toLowerCase())}
+                                    className="text-sm font-medium text-secondary-light hover:text-primary transition-colors cursor-pointer"
                                 >
                                     {item}
-                                </Link>
+                                </a>
                             ))}
                         </div>
 
-                        <div className="flex items-center space-x-4 border-l border-slate-100 pl-10">
+                        <div className="flex items-center space-x-4 border-l border-slate-200 pl-8">
                             {userInfo ? (
                                 <Link to={userInfo.role === 'student' ? '/student' : '/teacher'}>
-                                    <Button size="md" className="shadow-lg shadow-primary/20">Dashboard</Button>
+                                    <Button size="md" className="rounded-xl shadow-sm hover:shadow-md">Dashboard</Button>
                                 </Link>
                             ) : (
                                 <>
                                     <Link to="/login">
-                                        <button className="text-sm font-bold text-slate-900 hover:text-primary transition-colors uppercase tracking-widest px-4">Log In</button>
+                                        <button className="text-sm font-medium text-secondary hover:text-primary transition-colors px-4">Log In</button>
                                     </Link>
                                     <Link to="/signup">
-                                        <Button size="md" className="shadow-lg shadow-primary/20">Join Free</Button>
+                                        <Button size="md" className="rounded-xl shadow-sm hover:shadow-md">Join Free</Button>
                                     </Link>
                                 </>
                             )}
@@ -65,7 +98,7 @@ const Navbar = () => {
                     <div className="md:hidden flex items-center">
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2 text-slate-600 hover:text-primary bg-slate-50 rounded-xl transition-all"
+                            className="p-2 text-secondary-light hover:text-primary bg-slate-50 rounded-xl transition-all"
                         >
                             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                         </button>
@@ -76,35 +109,35 @@ const Navbar = () => {
             {/* Mobile Menu */}
             <AnimatePresence>
                 {isMenuOpen && (
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-white border-t border-slate-100 overflow-hidden"
+                        className="md:hidden bg-white border-t border-slate-100 overflow-hidden shadow-lg absolute w-full"
                     >
                         <div className="flex flex-col space-y-4 px-6 py-8">
-                            {['Home', 'Courses', 'Features', 'Contact'].map((item) => (
-                                <Link 
+                            {['Features', 'Courses', 'Contact'].map((item) => (
+                                <a
                                     key={item}
-                                    to={item === 'Home' ? '/' : `/${item.toLowerCase()}`} 
-                                    className="text-lg font-bold text-slate-900"
-                                    onClick={() => setIsMenuOpen(false)}
+                                    href={`#${item.toLowerCase()}`}
+                                    onClick={(e) => scrollToSection(e, item.toLowerCase())}
+                                    className="text-lg font-medium text-secondary hover:text-primary transition-colors"
                                 >
                                     {item}
-                                </Link>
+                                </a>
                             ))}
                             <div className="flex flex-col space-y-3 pt-6 border-t border-slate-100">
                                 {userInfo ? (
                                     <Link to={userInfo.role === 'student' ? '/student' : '/teacher'} onClick={() => setIsMenuOpen(false)}>
-                                        <Button className="w-full h-14 text-lg">Dashboard</Button>
+                                        <Button className="w-full h-12 text-md rounded-xl">Dashboard</Button>
                                     </Link>
                                 ) : (
                                     <>
                                         <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                                            <Button variant="secondary" className="w-full h-14 text-lg border-slate-200">Log In</Button>
+                                            <Button variant="secondary" className="w-full h-12 text-md rounded-xl border-slate-200">Log In</Button>
                                         </Link>
                                         <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
-                                            <Button className="w-full h-14 text-lg">Join Free</Button>
+                                            <Button className="w-full h-12 text-md rounded-xl">Join Free</Button>
                                         </Link>
                                     </>
                                 )}

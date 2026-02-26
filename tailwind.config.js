@@ -5,15 +5,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#4F46E5', // Indigo-600
-          hover: '#4338CA',   // Indigo-700
-          light: '#818CF8',   // Indigo-400
+          DEFAULT: '#6366f1', // Indigo-500
+          hover: '#4f46e5',   // Indigo-600
+          light: '#818cf8',   // Indigo-400
         },
         secondary: {
-          DEFAULT: '#0F172A', // Slate-900
-          hover: '#1E293B',   // Slate-800
-          light: '#334155',   // Slate-700
+          DEFAULT: '#111827', // Gray-900 (Text Primary)
+          hover: '#1f2937',   // Gray-800
+          light: '#6b7280',   // Gray-500 (Text Secondary)
         },
+        background: '#FAFAFB', // Soft Neutral Background
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
