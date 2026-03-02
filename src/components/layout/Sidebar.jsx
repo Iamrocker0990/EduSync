@@ -66,20 +66,7 @@ const Sidebar = ({ items, userType }) => {
                     ))}
                 </nav>
 
-                <div className="mt-auto pt-6 border-t border-slate-100">
-                    <div className="p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl text-white overflow-hidden relative group">
-                        <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:scale-150 transition-transform duration-700">
-                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
-                                <div className="w-20 h-20 border-4 border-white rounded-full border-t-transparent" />
-                            </motion.div>
-                        </div>
-                        <p className="text-xs font-bold text-slate-400 uppercase mb-1">Pro Plan</p>
-                        <p className="text-sm font-bold mb-3">Unlimited Access</p>
-                        <button className="w-full py-2 bg-white text-slate-900 text-[10px] font-extrabold rounded-lg hover:bg-slate-100 transition-colors uppercase tracking-widest">
-                            Upgrade
-                        </button>
-                    </div>
-                </div>
+                
             </div>
         </aside>
     );

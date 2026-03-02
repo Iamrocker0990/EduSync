@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import courseService from '../../services/courseService';
-import { BookOpen, Users, Video, BarChart2, MessageCircle, Shield, ArrowRight } from 'lucide-react';
+import { BookOpen, Users, User, CheckCircle, Video, BarChart2, MessageCircle, Shield, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
+import HeroOrbit from '../../components/ui/HeroOrbit';
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -98,58 +99,16 @@ const LandingPage = () => {
                             </div>
                         </motion.div>
 
+                        {/* Animated SaaS Atomic Orbit */}
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.7, delay: 0.2 }}
-                            className="relative lg:ml-10 hidden md:block"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                            className="relative w-full flex justify-end z-20 hidden lg:flex"
                         >
-                            {/* Abstract Soft 3D/Floating UI Illustration replacing static image */}
-                            <div className="relative w-full aspect-square max-w-md mx-auto">
-                                <motion.div
-                                    animate={{ y: [-10, 10, -10] }}
-                                    transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-                                    className="absolute top-10 right-10 w-64 h-64 bg-white rounded-3xl shadow-xl border border-slate-100/50 p-6 z-20 backdrop-blur-xl"
-                                >
-                                    <div className="w-12 h-12 bg-primary/10 rounded-xl mb-6 flex items-center justify-center">
-                                        <Video className="w-6 h-6 text-primary" />
-                                    </div>
-                                    <div className="space-y-3">
-                                        <div className="h-4 w-3/4 bg-slate-100 rounded-md"></div>
-                                        <div className="h-4 w-1/2 bg-slate-100 rounded-md"></div>
-                                    </div>
-                                    <div className="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
-                                        <div className="flex -space-x-2">
-                                            <div className="w-8 h-8 rounded-full bg-indigo-200 border-2 border-white"></div>
-                                            <div className="w-8 h-8 rounded-full bg-purple-200 border-2 border-white"></div>
-                                            <div className="w-8 h-8 rounded-full bg-blue-200 border-2 border-white"></div>
-                                        </div>
-                                        <div className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-md"></div>
-                                    </div>
-                                </motion.div>
-
-                                <motion.div
-                                    animate={{ y: [10, -10, 10] }}
-                                    transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
-                                    className="absolute bottom-10 left-0 w-72 h-48 bg-white/80 backdrop-blur-2xl rounded-3xl shadow-lg border border-white/60 p-6 z-30"
-                                >
-                                    <div className="flex items-start space-x-4">
-                                        <div className="w-14 h-14 bg-gradient-to-br from-primary to-indigo-400 rounded-2xl flex-shrink-0 shadow-inner"></div>
-                                        <div>
-                                            <div className="h-5 w-32 bg-slate-800 rounded-md mb-2"></div>
-                                            <div className="h-3 w-20 bg-slate-300 rounded-md mb-4"></div>
-                                            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                                <div className="bg-primary w-2/3 h-full rounded-full"></div>
-                                            </div>
-                                            <div className="text-[10px] text-slate-400 mt-2 font-medium">67% Completed</div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-
-                                {/* Soft background decorative circles */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-br from-primary/20 to-indigo-300/20 rounded-full blur-3xl z-10"></div>
-                            </div>
+                            <HeroOrbit />
                         </motion.div>
+
                     </div>
                 </div>
             </section>
