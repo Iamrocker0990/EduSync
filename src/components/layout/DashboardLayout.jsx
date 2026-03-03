@@ -29,8 +29,16 @@ const DashboardLayout = ({ children, sidebarItems, userType, title }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const [user, setUser] = useState(getUserFromStorage());
 
-    const user = getUserFromStorage();
+    useEffect(() => {
+        const handleUserUpdate = () => {
+            setUser(getUserFromStorage());
+        };
+        window.addEventListener('userUpdated', handleUserUpdate);
+        return () => window.removeEventListener('userUpdated', handleUserUpdate);
+    }, []);
+
     let defaultDisplayName = 'User';
     let defaultInitials = 'US';
 

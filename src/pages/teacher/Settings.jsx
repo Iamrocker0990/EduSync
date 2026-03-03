@@ -4,7 +4,7 @@ import AccountSettings from '../shared/AccountSettings';
 
 const Settings = () => {
     return (
-        <DashboardLayout userType="student" title="Settings">
+        <DashboardLayout userType="teacher" title="Settings">
             <AccountSettings />
         </DashboardLayout>
     );

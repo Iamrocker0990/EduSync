@@ -23,7 +23,16 @@ const getInitials = (name) => {
 };
 
 const Sidebar = ({ items, userType }) => {
-    const user = getUserFromStorage();
+    const [user, setUser] = React.useState(getUserFromStorage());
+
+    React.useEffect(() => {
+        const handleUserUpdate = () => {
+            setUser(getUserFromStorage());
+        };
+        window.addEventListener('userUpdated', handleUserUpdate);
+        return () => window.removeEventListener('userUpdated', handleUserUpdate);
+    }, []);
+
     const displayName = user?.name || (userType === 'student' ? 'Student' : 'Teacher');
     const initials = getInitials(user?.name) || (userType === 'student' ? 'ST' : 'TC');
 
@@ -66,7 +75,7 @@ const Sidebar = ({ items, userType }) => {
                     ))}
                 </nav>
 
-                
+
             </div>
         </aside>
     );

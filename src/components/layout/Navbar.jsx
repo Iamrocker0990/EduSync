@@ -9,6 +9,20 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = React.useState(false);
     const location = useLocation();
 
+    const [userInfo, setUserInfo] = React.useState(() => {
+        const userInfoString = localStorage.getItem('userInfo');
+        return userInfoString ? JSON.parse(userInfoString) : null;
+    });
+
+    React.useEffect(() => {
+        const handleUserUpdate = () => {
+            const userInfoString = localStorage.getItem('userInfo');
+            setUserInfo(userInfoString ? JSON.parse(userInfoString) : null);
+        };
+        window.addEventListener('userUpdated', handleUserUpdate);
+        return () => window.removeEventListener('userUpdated', handleUserUpdate);
+    }, []);
+
     React.useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
@@ -16,9 +30,6 @@ const Navbar = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    const userInfoString = localStorage.getItem('userInfo');
-    const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
 
     // Hide navbar on dashboard pages
     if (location.pathname.startsWith('/student') || location.pathname.startsWith('/teacher')) {

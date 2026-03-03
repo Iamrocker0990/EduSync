@@ -163,4 +163,37 @@ router.get('/profile', protect, async (req, res) => {
     }
 });
 
+// @desc    Update user profile (username)
+// @route   PUT /api/auth/profile
+// @access  Private
+router.put('/profile', protect, async (req, res) => {
+    const { name } = req.body;
+
+    if (!name || name.trim().length < 3) {
+        return res.status(400).json({ message: 'Username must be at least 3 characters long' });
+    }
+
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (user) {
+            user.name = name.trim();
+            const updatedUser = await user.save();
+
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                token: generateToken(updatedUser._id),
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error("🔥 UPDATE PROFILE ERROR:", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 module.exports = router;
