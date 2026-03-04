@@ -62,11 +62,23 @@ router.post('/send-otp', async (req, res) => {
     }
 });
 
+// @desc    Get all approved institutions
+// @route   GET /api/auth/public/institutions
+// @access  Public
+router.get('/public/institutions', async (req, res) => {
+    try {
+        const institutions = await User.find({ role: 'institution', approvalStatus: 'approved' }).select('_id name');
+        res.json(institutions);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 // @desc    Register new user
 // @route   POST /api/auth/register
 // @access  Public
 router.post('/register', async (req, res) => {
-    const { name, email, password, role, otp } = req.body;
+    const { name, email, password, role, otp, institutionId } = req.body;
 
     const validationError = validateInputs(email, password);
     if (validationError) {
@@ -85,22 +97,48 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
+        // Validate teacher requiring institutionId
+        if (role === 'teacher' && !institutionId) {
+            return res.status(400).json({ message: 'Teachers must belong to an institution' });
+        }
+
+        if (role === 'teacher') {
+            const institution = await User.findById(institutionId);
+            if (!institution || institution.role !== 'institution' || institution.approvalStatus !== 'approved') {
+                return res.status(400).json({ message: 'Invalid or unapproved institution selected.' });
+            }
+        }
+
         const user = await User.create({
             name,
             email,
             password,
             role: role || 'student',
+            institutionId: role === 'teacher' ? institutionId : undefined,
         });
 
         // Delete OTP after successful registration
         await OTP.deleteOne({ email });
 
         if (user) {
+            // Check if approval is still pending
+            if (user.approvalStatus === 'pending') {
+                return res.status(201).json({
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    approvalStatus: user.approvalStatus,
+                    message: 'Registration successful. Your account is pending approval.'
+                });
+            }
+
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                approvalStatus: user.approvalStatus,
                 token: generateToken(user._id),
             });
         } else {
@@ -115,7 +153,7 @@ router.post('/register', async (req, res) => {
 // @route   POST /api/auth/login
 // @access  Public
 router.post('/login', async (req, res) => {
-    const { email, password, role } = req.body;
+    const { email, password, role, institutionId } = req.body;
 
     try {
         const user = await User.findOne({ email });
@@ -124,12 +162,27 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
+        // Enforce approval status check
+        if (user.approvalStatus !== 'approved') {
+            return res.status(403).json({ message: 'Your account is under review. Please wait for approval.' });
+        }
+
         // If a role was provided by the client (student/teacher tab),
         // enforce that it matches the actual user role.
-        if (!role || user.role !== role) {
+        // Also map 'superadmin' or 'institution' if logging in from respective portals later.
+        if (role && user.role !== role && !(role === 'admin' && user.role === 'superadmin')) {
             return res.status(403).json({
                 message: `Forbidden: Please sign in as a ${user.role} instead.`,
             });
+        }
+
+        if (user.role === 'teacher') {
+            if (!institutionId) {
+                return res.status(400).json({ message: 'Please select an institution' });
+            }
+            if (user.institutionId.toString() !== institutionId) {
+                return res.status(401).json({ message: 'You are not registered under this institution' });
+            }
         }
 
         res.json({
@@ -137,6 +190,7 @@ router.post('/login', async (req, res) => {
             name: user.name,
             email: user.email,
             role: user.role,
+            approvalStatus: user.approvalStatus,
             token: generateToken(user._id),
         });
     } catch (error) {

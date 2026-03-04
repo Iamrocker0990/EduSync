@@ -17,8 +17,32 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['student', 'teacher', 'admin'],
+        enum: ['student', 'teacher', 'admin', 'superadmin', 'institution'], // kept admin for backward compatibility temporally
         default: 'student',
+    },
+    approvalStatus: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: function () {
+            if (['student', 'superadmin', 'admin'].includes(this.role)) {
+                return 'approved';
+            }
+            return 'pending';
+        }
+    },
+    institutionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: function () {
+            return this.role === 'teacher';
+        }
+    },
+    approvedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    approvedAt: {
+        type: Date,
     },
     avatar: {
         type: String,
@@ -38,6 +62,11 @@ const userSchema = new mongoose.Schema({
         ref: 'Course',
     }],
 }, { timestamps: true });
+
+// Add database indexes for query performance
+userSchema.index({ approvalStatus: 1 });
+userSchema.index({ role: 1 });
+userSchema.index({ institutionId: 1 });
 
 // Encrypt password before saving
 userSchema.pre('save', async function (next) {

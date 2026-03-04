@@ -1,4 +1,4 @@
-import { BookOpen, Video, FileText, BarChart2, Award, MessageCircle, Settings, LayoutDashboard, PlusCircle, Upload, Users, FileBarChart, Search } from 'lucide-react';
+import { BookOpen, Video, FileText, BarChart2, Award, MessageCircle, Settings, LayoutDashboard, PlusCircle, Upload, Users, FileBarChart, Search, Shield } from 'lucide-react';
 
 export const studentSidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/student' },
@@ -24,4 +24,14 @@ export const teacherSidebarItems = [
 
 export const adminSidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/admin' },
+];
+
+export const superadminSidebarItems = [
+    { icon: Shield, label: 'Dashboard', href: '/superadmin' },
+];
+
+export const institutionSidebarItems = [
+    { icon: LayoutDashboard, label: 'Overview', href: '/institution' },
+    { icon: Users, label: 'Manage Teachers', href: '/institution/teachers' },
+    { icon: BookOpen, label: 'Pending Courses', href: '/institution/courses' },
 ];

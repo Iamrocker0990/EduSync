@@ -32,9 +32,16 @@ const Navbar = () => {
     }, []);
 
     // Hide navbar on dashboard pages
-    if (location.pathname.startsWith('/student') || location.pathname.startsWith('/teacher')) {
+    if (location.pathname.startsWith('/student') || location.pathname.startsWith('/teacher') || location.pathname.startsWith('/institution') || location.pathname.startsWith('/superadmin') || location.pathname.startsWith('/admin')) {
         return null;
     }
+
+    const getDashboardLink = (role) => {
+        if (role === 'admin' || role === 'superadmin') return '/superadmin';
+        if (role === 'institution') return '/institution';
+        if (role === 'student') return '/student';
+        return '/teacher';
+    };
 
     const scrollToSection = (e, targetId) => {
         e.preventDefault();
@@ -89,7 +96,7 @@ const Navbar = () => {
 
                         <div className="flex items-center space-x-4 border-l border-slate-200 pl-8">
                             {userInfo ? (
-                                <Link to={userInfo.role === 'student' ? '/student' : '/teacher'}>
+                                <Link to={getDashboardLink(userInfo.role)}>
                                     <Button size="md" className="rounded-xl shadow-sm hover:shadow-md">Dashboard</Button>
                                 </Link>
                             ) : (
@@ -139,7 +146,7 @@ const Navbar = () => {
                             ))}
                             <div className="flex flex-col space-y-3 pt-6 border-t border-slate-100">
                                 {userInfo ? (
-                                    <Link to={userInfo.role === 'student' ? '/student' : '/teacher'} onClick={() => setIsMenuOpen(false)}>
+                                    <Link to={getDashboardLink(userInfo.role)} onClick={() => setIsMenuOpen(false)}>
                                         <Button className="w-full h-12 text-md rounded-xl">Dashboard</Button>
                                     </Link>
                                 ) : (

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GraduationCap, Bell, Search, LogOut, Settings } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from './Sidebar';
-import { studentSidebarItems, teacherSidebarItems, adminSidebarItems } from '../../config/sidebarConfig';
+import { studentSidebarItems, teacherSidebarItems, adminSidebarItems, superadminSidebarItems, institutionSidebarItems } from '../../config/sidebarConfig';
 
 const getUserFromStorage = () => {
     const userInfoString = localStorage.getItem('userInfo');
@@ -51,6 +51,12 @@ const DashboardLayout = ({ children, sidebarItems, userType, title }) => {
     } else if (userType === 'admin') {
         defaultDisplayName = 'Admin';
         defaultInitials = 'AD';
+    } else if (userType === 'superadmin') {
+        defaultDisplayName = 'Super Admin';
+        defaultInitials = 'SA';
+    } else if (userType === 'institution') {
+        defaultDisplayName = 'Institution';
+        defaultInitials = 'IN';
     }
 
     const displayName = user?.name || defaultDisplayName;
@@ -61,6 +67,10 @@ const DashboardLayout = ({ children, sidebarItems, userType, title }) => {
         defaultSidebarItems = studentSidebarItems;
     } else if (userType === 'admin') {
         defaultSidebarItems = adminSidebarItems;
+    } else if (userType === 'superadmin') {
+        defaultSidebarItems = superadminSidebarItems;
+    } else if (userType === 'institution') {
+        defaultSidebarItems = institutionSidebarItems;
     } else {
         defaultSidebarItems = teacherSidebarItems;
     }

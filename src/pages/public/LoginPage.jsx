@@ -12,8 +12,19 @@ const LoginPage = () => {
     const [role, setRole] = useState('student');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [institutionId, setInstitutionId] = useState('');
+    const [institutionsList, setInstitutionsList] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (role === 'teacher' && institutionsList.length === 0) {
+            fetch(`${import.meta.env.VITE_API_URL}/auth/public/institutions`)
+                .then(res => res.json())
+                .then(data => setInstitutionsList(data))
+                .catch(err => console.error("Failed to load institutions", err));
+        }
+    }, [role]);
 
     useEffect(() => {
         // Redirect if already logged in
@@ -23,12 +34,15 @@ const LoginPage = () => {
             const user = JSON.parse(userInfo);
             if (user.role === 'student') navigate('/student');
             else if (user.role === 'teacher') navigate('/teacher');
-            else if (user.role === 'admin') navigate('/admin');
+            else if (user.role === 'institution') navigate('/institution');
+            else if (user.role === 'superadmin' || user.role === 'admin') navigate('/superadmin');
         }
 
         const roleParam = searchParams.get('role');
         if (roleParam === 'teacher') {
             setRole('teacher');
+        } else if (roleParam === 'institution') {
+            setRole('institution');
         } else if (roleParam === 'student') {
             setRole('student');
         }
@@ -49,6 +63,7 @@ const LoginPage = () => {
                     email,
                     password,
                     role,
+                    institutionId: role === 'teacher' ? institutionId : undefined,
                 }),
             });
 
@@ -66,6 +81,8 @@ const LoginPage = () => {
             // Use the role from the backend response to ensure consistency
             if (data.role === 'student') {
                 navigate('/student');
+            } else if (data.role === 'institution') {
+                navigate('/institution');
             } else {
                 navigate('/teacher');
             }
@@ -116,6 +133,16 @@ const LoginPage = () => {
                         >
                             Teacher
                         </button>
+                        <button
+                            type="button"
+                            onClick={() => setRole('institution')}
+                            className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${role === 'institution'
+                                ? 'bg-white text-slate-900 shadow-sm'
+                                : 'text-slate-500 hover:text-slate-900'
+                                }`}
+                        >
+                            Institution
+                        </button>
                     </div>
 
                     {error && (
@@ -133,6 +160,25 @@ const LoginPage = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="you@example.com"
                         />
+
+                        {role === 'teacher' && (
+                            <div className="space-y-1">
+                                <label className="block text-sm font-medium text-slate-700">
+                                    Institution <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    required
+                                    value={institutionId}
+                                    onChange={(e) => setInstitutionId(e.target.value)}
+                                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                >
+                                    <option value="">Select an institution</option>
+                                    {institutionsList.map(inst => (
+                                        <option key={inst._id} value={inst._id}>{inst.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
                         <div>
                             <Input
@@ -157,7 +203,7 @@ const LoginPage = () => {
                             className="w-full flex justify-center"
                             isLoading={isLoading}
                         >
-                            Sign in as {role === 'student' ? 'Student' : 'Teacher'} <ArrowRight className="ml-2 h-4 w-4" />
+                            Sign in as {role.charAt(0).toUpperCase() + role.slice(1)} <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                     </form>
 

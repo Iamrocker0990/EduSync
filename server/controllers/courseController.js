@@ -116,7 +116,7 @@ const createCourse = async (req, res) => {
             targetAudience,
             instructor: req.user._id,
             createdBy: req.user._id,
-            status: 'approved',
+            status: 'pending',
             modules: [] // We will populate this next
         });
 

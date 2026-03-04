@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { GraduationCap, ArrowRight, User, BookOpen, Lock } from 'lucide-react';
+import { GraduationCap, ArrowRight, User, BookOpen, Lock, Building } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Card from '../../components/ui/Card';
@@ -18,6 +18,17 @@ const SignupPage = () => {
     const [showOtp, setShowOtp] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [institutionId, setInstitutionId] = useState('');
+    const [institutionsList, setInstitutionsList] = useState([]);
+
+    useEffect(() => {
+        if (role === 'teacher' && institutionsList.length === 0) {
+            fetch(`${import.meta.env.VITE_API_URL}/auth/public/institutions`)
+                .then(res => res.json())
+                .then(data => setInstitutionsList(data))
+                .catch(err => console.error("Failed to load institutions", err));
+        }
+    }, [role]);
 
     useEffect(() => {
         const userInfo = localStorage.getItem('userInfo');
@@ -88,7 +99,8 @@ const SignupPage = () => {
                     email,
                     password,
                     role,
-                    otp
+                    otp,
+                    institutionId: role === 'teacher' ? institutionId : undefined
                 }),
             });
 
@@ -101,8 +113,11 @@ const SignupPage = () => {
             // Save user data and token to localStorage
             localStorage.setItem('userInfo', JSON.stringify(data));
 
-            // Redirect based on role
-            if (data.role === 'student') {
+            // Redirect based on role or approval status
+            if (data.approvalStatus === 'pending') {
+                alert(data.message);
+                navigate('/login');
+            } else if (data.role === 'student') {
                 navigate('/student');
             } else {
                 navigate('/teacher');
@@ -136,7 +151,8 @@ const SignupPage = () => {
                     <div className="flex gap-4 mb-8">
                         {[
                             { id: 'student', icon: User, label: 'Student' },
-                            { id: 'teacher', icon: BookOpen, label: 'Teacher' }
+                            { id: 'teacher', icon: BookOpen, label: 'Teacher' },
+                            { id: 'institution', icon: Building, label: 'Institution' },
                         ].map((r) => (
                             <button
                                 key={r.id}
@@ -163,7 +179,7 @@ const SignupPage = () => {
 
                     <form className="space-y-5" onSubmit={handleSubmit}>
                         <Input
-                            label="Full Name"
+                            label="Full Name / Inst. Name"
                             type="text"
                             required
                             placeholder="John Doe"
@@ -171,6 +187,25 @@ const SignupPage = () => {
                             onChange={(e) => setName(e.target.value)}
                             className="h-12"
                         />
+
+                        {role === 'teacher' && (
+                            <div className="space-y-1">
+                                <label className="block text-sm font-bold text-slate-700">
+                                    Institution <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    required
+                                    value={institutionId}
+                                    onChange={(e) => setInstitutionId(e.target.value)}
+                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                >
+                                    <option value="">Select an institution</option>
+                                    {institutionsList.map(inst => (
+                                        <option key={inst._id} value={inst._id}>{inst.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
                         <div className="flex items-end gap-2">
                             <div className="flex-1">
