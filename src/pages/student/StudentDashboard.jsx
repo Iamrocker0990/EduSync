@@ -110,7 +110,15 @@ const StudentDashboard = () => {
                                                 </div>
                                             </div>
                                             <div className="p-6">
-                                                <h3 className="font-bold text-slate-900 mb-4 line-clamp-1 group-hover:text-primary transition-colors">{course.title}</h3>
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <h3 className="font-bold text-slate-900 line-clamp-1 group-hover:text-primary transition-colors flex-1">{course.title}</h3>
+                                                    {course.duration && (
+                                                        <div className="flex flex-shrink-0 items-center text-xs text-slate-500 font-medium bg-slate-100 px-2 py-1 rounded-md ml-2">
+                                                            <Clock className="w-3 h-3 mr-1 text-slate-400" />
+                                                            {course.duration}
+                                                        </div>
+                                                    )}
+                                                </div>
                                                 <div className="flex items-center justify-between mb-6">
                                                     <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{course.progress}% Complete</span>
                                                     <span className="text-xs font-bold text-primary bg-primary/5 px-2 py-1 rounded">Resume</span>

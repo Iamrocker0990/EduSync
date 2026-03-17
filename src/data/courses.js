@@ -1,6 +1,4 @@
-import { Course } from '../types';
-
-export const courses: Course[] = [
+export const courses = [
   {
     id: '1',
     title: 'Complete React Developer Course',

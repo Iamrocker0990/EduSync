@@ -1,11 +1,6 @@
 import React from 'react';
 import { Code, Palette, TrendingUp, BarChart3, Lightbulb, Briefcase } from 'lucide-react';
 
-interface CategoriesProps {
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
-}
-
 const categories = [
   { name: 'All', icon: Lightbulb, color: 'from-amber-500 to-orange-500' },
   { name: 'Development', icon: Code, color: 'from-blue-500 to-indigo-500' },
@@ -15,7 +10,7 @@ const categories = [
   { name: 'Business', icon: Briefcase, color: 'from-gray-600 to-slate-600' },
 ];
 
-const Categories: React.FC<CategoriesProps> = ({ selectedCategory, onCategoryChange }) => {
+const Categories = ({ selectedCategory, onCategoryChange }) => {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

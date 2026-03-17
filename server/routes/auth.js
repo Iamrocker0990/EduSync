@@ -78,7 +78,7 @@ router.get('/public/institutions', async (req, res) => {
 // @route   POST /api/auth/register
 // @access  Public
 router.post('/register', async (req, res) => {
-    const { name, email, password, role, otp, institutionId } = req.body;
+    const { name, email, password, role, otp, institutionId, experienceYears, specialization, portfolioLink, certifications } = req.body;
 
     const validationError = validateInputs(email, password);
     if (validationError) {
@@ -115,6 +115,10 @@ router.post('/register', async (req, res) => {
             password,
             role: role || 'student',
             institutionId: role === 'teacher' ? institutionId : undefined,
+            experienceYears: role === 'teacher' ? (Number(experienceYears) || 0) : undefined,
+            specialization: role === 'teacher' ? (specialization || '') : undefined,
+            portfolioLink: role === 'teacher' ? (portfolioLink || '') : undefined,
+            certifications: role === 'teacher' ? (certifications || '') : undefined,
         });
 
         // Delete OTP after successful registration
@@ -206,12 +210,22 @@ router.get('/profile', protect, async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-        res.json({
+        const profileData = {
             _id: user._id,
             name: user.name,
             email: user.email,
             role: user.role,
-        });
+        };
+
+        // Include teacher-specific fields
+        if (user.role === 'teacher') {
+            profileData.experienceYears = user.experienceYears || 0;
+            profileData.specialization = user.specialization || '';
+            profileData.portfolioLink = user.portfolioLink || '';
+            profileData.certifications = user.certifications || '';
+        }
+
+        res.json(profileData);
     } else {
         res.status(404).json({ message: 'User not found' });
     }
@@ -221,7 +235,7 @@ router.get('/profile', protect, async (req, res) => {
 // @route   PUT /api/auth/profile
 // @access  Private
 router.put('/profile', protect, async (req, res) => {
-    const { name } = req.body;
+    const { name, experienceYears, specialization, portfolioLink, certifications } = req.body;
 
     if (!name || name.trim().length < 3) {
         return res.status(400).json({ message: 'Username must be at least 3 characters long' });
@@ -232,15 +246,33 @@ router.put('/profile', protect, async (req, res) => {
 
         if (user) {
             user.name = name.trim();
+
+            // Update teacher-specific fields if the user is a teacher
+            if (user.role === 'teacher') {
+                if (experienceYears !== undefined) user.experienceYears = Number(experienceYears);
+                if (specialization !== undefined) user.specialization = specialization;
+                if (portfolioLink !== undefined) user.portfolioLink = portfolioLink;
+                if (certifications !== undefined) user.certifications = certifications;
+            }
+
             const updatedUser = await user.save();
 
-            res.json({
+            const responseData = {
                 _id: updatedUser._id,
                 name: updatedUser.name,
                 email: updatedUser.email,
                 role: updatedUser.role,
                 token: generateToken(updatedUser._id),
-            });
+            };
+
+            if (updatedUser.role === 'teacher') {
+                responseData.experienceYears = updatedUser.experienceYears;
+                responseData.specialization = updatedUser.specialization;
+                responseData.portfolioLink = updatedUser.portfolioLink;
+                responseData.certifications = updatedUser.certifications;
+            }
+
+            res.json(responseData);
         } else {
             res.status(404).json({ message: 'User not found' });
         }

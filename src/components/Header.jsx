@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { Search, ShoppingCart, Bell, User, Menu, BookOpen } from 'lucide-react';
 
-interface HeaderProps {
-  onSearch: (query: string) => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ onSearch }) => {
+const Header = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
     onSearch(query);

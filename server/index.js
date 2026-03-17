@@ -6,8 +6,19 @@ const path = require('path');
 
 dotenv.config();
 
+const http = require('http');
+const { Server } = require("socket.io");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: "*", // Adjust as necessary for production
+        methods: ["GET", "POST"]
+    }
+});
 
 // Middleware
 app.use(cors());
@@ -37,11 +48,37 @@ app.use('/api/enrollments', require('./routes/enrollments'));
 app.use('/api/assignments', require('./routes/assignments'));
 app.use('/api/superadmin', require('./routes/superadmin'));
 app.use('/api/institution', require('./routes/institution'));
+app.use('/api/chat', require('./routes/chatRoutes'));
 
 app.get('/', (req, res) => {
     res.send('EduSync API is running');
 });
 
-app.listen(PORT, () => {
+// Socket.io connection logic
+io.on("connection", (socket) => {
+    console.log("User connected to chat:", socket.id);
+
+    // User joins their personal room securely with their User ID
+    socket.on("setup", (userId) => {
+        socket.join(userId);
+        socket.emit("connected");
+    });
+
+    socket.on("new_message", (newMessage) => {
+        // Assume newMessage contains receiverId or sender/text structured in a way frontend can read
+        const receiverId = newMessage.receiverId;
+
+        // Emit to the receiver's personal room
+        if (receiverId) {
+            socket.in(receiverId).emit("message_received", newMessage);
+        }
+    });
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected from chat");
+    });
+});
+
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

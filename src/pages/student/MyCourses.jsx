@@ -109,9 +109,17 @@ const MyCourses = () => {
                             </div>
                             <div className="p-5 flex-1 flex flex-col">
                                 <h3 className="font-bold text-slate-900 mb-2 text-lg line-clamp-1">{course.title}</h3>
-                                <div className="flex items-center text-sm text-slate-500 mb-4">
-                                    <User className="h-4 w-4 mr-2" />
-                                    <span>{course.instructor || 'Unknown Instructor'}</span>
+                                <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
+                                    <div className="flex items-center">
+                                        <User className="h-4 w-4 mr-2" />
+                                        <span>{course.instructor || 'Unknown Instructor'}</span>
+                                    </div>
+                                    {course.duration && (
+                                        <div className="flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-2 py-1 rounded-md">
+                                            <Clock className="w-3 h-3 mr-1 text-slate-400" />
+                                            {course.duration}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="mb-4">

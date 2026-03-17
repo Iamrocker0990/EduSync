@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../../components/ui/Button';
+import Input from '../../components/ui/Input';
+import { Briefcase, GraduationCap, Link as LinkIcon, Award } from 'lucide-react';
 
 const AccountSettings = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [role, setRole] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+
+    // Teacher qualification fields
+    const [experienceYears, setExperienceYears] = useState('');
+    const [specialization, setSpecialization] = useState('');
+    const [portfolioLink, setPortfolioLink] = useState('');
+    const [certifications, setCertifications] = useState('');
 
     useEffect(() => {
         const userInfoString = localStorage.getItem('userInfo');
@@ -15,10 +24,34 @@ const AccountSettings = () => {
                 const user = JSON.parse(userInfoString);
                 setName(user.name || '');
                 setEmail(user.email || '');
+                setRole(user.role || '');
             } catch (err) {
                 console.error("Error parsing user info:", err);
             }
         }
+
+        // Fetch full profile from API (includes teacher fields)
+        const fetchProfile = async () => {
+            try {
+                const userInfoString = localStorage.getItem('userInfo');
+                if (!userInfoString) return;
+                const { token } = JSON.parse(userInfoString);
+
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setExperienceYears(data.experienceYears || '');
+                    setSpecialization(data.specialization || '');
+                    setPortfolioLink(data.portfolioLink || '');
+                    setCertifications(data.certifications || '');
+                }
+            } catch (err) {
+                console.error("Error fetching profile:", err);
+            }
+        };
+        fetchProfile();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -33,14 +66,27 @@ const AccountSettings = () => {
 
         try {
             setIsLoading(true);
-            const token = localStorage.getItem('token');
+            const userInfoString = localStorage.getItem('userInfo');
+            if (!userInfoString) return;
+            const { token } = JSON.parse(userInfoString);
+
+            const body = { name: name.trim() };
+
+            // Include teacher fields if teacher
+            if (role === 'teacher') {
+                body.experienceYears = experienceYears;
+                body.specialization = specialization;
+                body.portfolioLink = portfolioLink;
+                body.certifications = certifications;
+            }
+
             const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({ name: name.trim() })
+                body: JSON.stringify(body)
             });
 
             let data;
@@ -57,21 +103,13 @@ const AccountSettings = () => {
             }
 
             // Update local storage
-            const userInfoString = localStorage.getItem('userInfo');
-            if (userInfoString) {
-                const user = JSON.parse(userInfoString);
-                const updatedUser = { ...user, name: data.name };
-                localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            const currentUser = JSON.parse(localStorage.getItem('userInfo'));
+            const updatedUser = { ...currentUser, name: data.name };
+            if (data.token) updatedUser.token = data.token;
+            localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            if (data.token) localStorage.setItem('token', data.token);
 
-                // If token was refreshed, valid to update it here
-                if (data.token) {
-                    localStorage.setItem('token', data.token);
-                }
-
-                // Dispatch event to trigger UI updates without reload
-                window.dispatchEvent(new Event('userUpdated'));
-            }
-
+            window.dispatchEvent(new Event('userUpdated'));
             setMessage('Profile updated successfully!');
         } catch (err) {
             setError(err.message || 'Something went wrong');
@@ -81,7 +119,8 @@ const AccountSettings = () => {
     };
 
     return (
-        <div className="max-w-2xl">
+        <div className="max-w-2xl space-y-6">
+            {/* Profile Settings Card */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                 <h2 className="text-xl font-bold text-slate-900 mb-6">Profile Settings</h2>
 
@@ -123,6 +162,80 @@ const AccountSettings = () => {
                             className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 cursor-not-allowed font-medium"
                         />
                     </div>
+
+                    {/* Teacher Qualifications Section */}
+                    {role === 'teacher' && (
+                        <div className="pt-6 border-t border-slate-100">
+                            <div className="flex items-center gap-2 mb-5">
+                                <div className="p-2 bg-blue-50 rounded-lg">
+                                    <GraduationCap className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <h3 className="text-lg font-bold text-slate-900">Teacher Qualifications</h3>
+                            </div>
+                            <p className="text-sm text-slate-500 mb-5">
+                                This information will be automatically linked to every course you create.
+                            </p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        <span className="flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5 text-slate-400" /> Years of Experience</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={experienceYears}
+                                        onChange={(e) => setExperienceYears(e.target.value)}
+                                        min="0"
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        placeholder="e.g. 5"
+                                        disabled={isLoading}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        <span className="flex items-center gap-1.5"><GraduationCap className="h-3.5 w-3.5 text-slate-400" /> Specialization</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={specialization}
+                                        onChange={(e) => setSpecialization(e.target.value)}
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        placeholder="e.g. Full Stack Development"
+                                        disabled={isLoading}
+                                    />
+                                </div>
+
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        <span className="flex items-center gap-1.5"><LinkIcon className="h-3.5 w-3.5 text-slate-400" /> Portfolio Link</span>
+                                    </label>
+                                    <input
+                                        type="url"
+                                        value={portfolioLink}
+                                        onChange={(e) => setPortfolioLink(e.target.value)}
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        placeholder="https://yourportfolio.com"
+                                        disabled={isLoading}
+                                    />
+                                </div>
+
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                        <span className="flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-slate-400" /> Certifications</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={certifications}
+                                        onChange={(e) => setCertifications(e.target.value)}
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        placeholder="e.g. AWS Certified, Google Cloud Professional"
+                                        disabled={isLoading}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="pt-4 flex items-center gap-4">
                         <Button

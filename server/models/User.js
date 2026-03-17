@@ -61,6 +61,24 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
     }],
+
+    // Teacher Qualifications (only used when role === 'teacher')
+    experienceYears: {
+        type: Number,
+        default: 0,
+    },
+    specialization: {
+        type: String,
+        default: '',
+    },
+    portfolioLink: {
+        type: String,
+        default: '',
+    },
+    certifications: {
+        type: String,
+        default: '',
+    },
 }, { timestamps: true });
 
 // Add database indexes for query performance

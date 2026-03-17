@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { GraduationCap, ArrowRight, User, BookOpen, Lock, Building } from 'lucide-react';
+import { GraduationCap, ArrowRight, User, BookOpen, Lock, Building, Briefcase, Link as LinkIcon, Award } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Card from '../../components/ui/Card';
@@ -20,6 +20,12 @@ const SignupPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [institutionId, setInstitutionId] = useState('');
     const [institutionsList, setInstitutionsList] = useState([]);
+
+    // Teacher qualification fields
+    const [experienceYears, setExperienceYears] = useState('');
+    const [specialization, setSpecialization] = useState('');
+    const [portfolioLink, setPortfolioLink] = useState('');
+    const [certifications, setCertifications] = useState('');
 
     useEffect(() => {
         if (role === 'teacher' && institutionsList.length === 0) {
@@ -100,7 +106,11 @@ const SignupPage = () => {
                     password,
                     role,
                     otp,
-                    institutionId: role === 'teacher' ? institutionId : undefined
+                    institutionId: role === 'teacher' ? institutionId : undefined,
+                    experienceYears: role === 'teacher' ? experienceYears : undefined,
+                    specialization: role === 'teacher' ? specialization : undefined,
+                    portfolioLink: role === 'teacher' ? portfolioLink : undefined,
+                    certifications: role === 'teacher' ? certifications : undefined,
                 }),
             });
 
@@ -205,6 +215,47 @@ const SignupPage = () => {
                                     ))}
                                 </select>
                             </div>
+                        )}
+
+                        {/* Teacher Qualification Fields */}
+                        {role === 'teacher' && (
+                            <>
+                                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                    <Input
+                                        label="Years of Experience"
+                                        type="number"
+                                        placeholder="e.g. 5"
+                                        value={experienceYears}
+                                        onChange={(e) => setExperienceYears(e.target.value)}
+                                        min="0"
+                                        className="h-12"
+                                    />
+                                    <Input
+                                        label="Specialization"
+                                        type="text"
+                                        placeholder="e.g. Web Development"
+                                        value={specialization}
+                                        onChange={(e) => setSpecialization(e.target.value)}
+                                        className="h-12"
+                                    />
+                                </div>
+                                <Input
+                                    label="Portfolio Link"
+                                    type="url"
+                                    placeholder="https://yourportfolio.com"
+                                    value={portfolioLink}
+                                    onChange={(e) => setPortfolioLink(e.target.value)}
+                                    className="h-12"
+                                />
+                                <Input
+                                    label="Certifications"
+                                    type="text"
+                                    placeholder="e.g. AWS Certified, Google Cloud Professional"
+                                    value={certifications}
+                                    onChange={(e) => setCertifications(e.target.value)}
+                                    className="h-12"
+                                />
+                            </>
                         )}
 
                         <div className="flex items-end gap-2">

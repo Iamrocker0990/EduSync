@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import courseService from '../../services/courseService';
-import { BookOpen, Users, User, CheckCircle, Video, BarChart2, MessageCircle, Shield, ArrowRight } from 'lucide-react';
+import { BookOpen, Users, User, CheckCircle, Video, BarChart2, MessageCircle, Shield, ArrowRight, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
@@ -195,7 +195,15 @@ const LandingPage = () => {
                                             </div>
                                         </div>
                                         <div className="flex flex-col flex-1 pb-2 px-2">
-                                            <div className="text-xs font-semibold text-primary uppercase tracking-widest mb-2">{course.category || 'General'}</div>
+                                            <div className="flex justify-between items-center mb-2">
+                                                <div className="text-xs font-semibold text-primary uppercase tracking-widest">{course.category || 'General'}</div>
+                                                {course.duration && (
+                                                    <div className="flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-2 py-1 rounded-md">
+                                                        <Clock className="w-3 h-3 mr-1 text-slate-400" />
+                                                        {course.duration}
+                                                    </div>
+                                                )}
+                                            </div>
                                             <h3 className="text-lg font-bold text-secondary mb-3 group-hover:text-primary transition-colors leading-snug line-clamp-2">{course.title}</h3>
 
                                             <div className="mt-auto pt-4 flex items-center text-primary text-sm font-medium group-hover:text-primary-hover transition-colors">

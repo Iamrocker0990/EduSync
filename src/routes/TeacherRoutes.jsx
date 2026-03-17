@@ -7,7 +7,6 @@ import TeacherCourses from '../pages/teacher/TeacherCourses';
 import CreateCourse from '../pages/teacher/CreateCourse';
 import UploadContent from '../pages/teacher/UploadContent';
 import TeacherAssignments from '../pages/teacher/TeacherAssignments';
-import TeacherQuizzes from '../pages/teacher/TeacherQuizzes';
 import StudentsList from '../pages/teacher/StudentsList';
 import Reports from '../pages/teacher/Reports';
 import TeacherMessages from '../pages/teacher/TeacherMessages';
@@ -26,7 +25,6 @@ const TeacherRoutes = () => {
             <Route path="/edit-course/:id" element={<CreateCourse />} />
             <Route path="/upload" element={<UploadContent />} />
             <Route path="/assignments" element={<TeacherAssignments />} />
-            <Route path="/quizzes" element={<TeacherQuizzes />} />
             <Route path="/students" element={<StudentsList />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/messages" element={<TeacherMessages />} />

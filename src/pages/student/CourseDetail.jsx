@@ -23,6 +23,8 @@ const CourseDetail = () => {
     const [progress, setProgress] = useState(0);
     const [completedLessons, setCompletedLessons] = useState([]);
     const [assignments, setAssignments] = useState([]);
+    const [userName, setUserName] = useState('');
+    const [customThemeColor, setCustomThemeColor] = useState('');
 
     // sidebarItems removed to use default from DashboardLayout
 
@@ -34,7 +36,9 @@ const CourseDetail = () => {
                     navigate('/login');
                     return;
                 }
-                const { token, role } = JSON.parse(userInfoString);
+                const parsedInfo = JSON.parse(userInfoString);
+                const { token, role } = parsedInfo;
+                setUserName(parsedInfo.name || parsedInfo.username || 'Student');
                 if (role !== 'student' && role !== 'admin') {
                     navigate('/teacher');
                     return;
@@ -376,21 +380,51 @@ const CourseDetail = () => {
 
             {/* Certificate Modal */}
             {showCertificate && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full relative">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full relative my-8">
                         <button
                             onClick={() => setShowCertificate(false)}
-                            className="absolute top-3 right-3 text-slate-400 hover:text-slate-600"
+                            className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 z-20"
                         >
                             <X className="h-6 w-6" />
                         </button>
-                        <div ref={certificateRef}>
-                            <CertificateTemplate studentName="Student" courseTitle={course.title} />
+
+                        <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-800">Your Certificate</h3>
+                                <p className="text-sm text-slate-500">Issued to <span className="font-semibold text-slate-700">{userName}</span></p>
+                            </div>
+                            <div className="flex items-center gap-3 pr-8 bg-slate-50 p-2 px-4 rounded-xl border border-slate-200">
+                                <label className="text-sm font-medium text-slate-700">Customize Color Theme:</label>
+                                <input
+                                    type="color"
+                                    value={customThemeColor || course.certificateSettings?.themeColor || '#3b82f6'}
+                                    onChange={(e) => setCustomThemeColor(e.target.value)}
+                                    className="w-8 h-8 rounded cursor-pointer border-0 p-0"
+                                    title="Choose your certificate color"
+                                />
+                            </div>
                         </div>
-                        <div className="p-6 flex justify-end">
+
+                        <div className="p-8 flex justify-center bg-slate-50 overflow-x-auto min-h-[400px]">
+                            <div ref={certificateRef} className="shadow-lg transform scale-90 md:scale-100 origin-top">
+                                <CertificateTemplate
+                                    studentName={userName}
+                                    courseName={course.title}
+                                    instructorName={course.instructor?.name || 'Instructor'}
+                                    date={new Date().toLocaleDateString()}
+                                    settings={{
+                                        ...course.certificateSettings,
+                                        themeColor: customThemeColor || course.certificateSettings?.themeColor
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="p-6 bg-white rounded-b-2xl border-t border-slate-100 flex justify-end">
                             <Button onClick={handleDownloadCertificate}>
                                 <Download className="h-4 w-4 mr-2" />
-                                Download Certificate
+                                Download PDF Certificate
                             </Button>
                         </div>
                     </div>

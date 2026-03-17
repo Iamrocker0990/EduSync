@@ -50,15 +50,15 @@ const courseSchema = new mongoose.Schema({
     level: { type: String, required: true },
     duration: { type: String, required: true },
 
-    // Teacher Info (Snapshot at creation or link to profile)
+    // Teacher Info (Auto-populated from teacher profile)
     experienceYears: {
         type: Number,
-        required: true,
+        default: 0,
         min: 0
     },
     specialization: {
         type: String,
-        required: true
+        default: ''
     },
     portfolioLink: {
         type: String,
@@ -95,6 +95,13 @@ const courseSchema = new mongoose.Schema({
     // Status Timeline
     actionTimestamp: {
         type: Date // When it was approved/rejected
+    },
+
+    // Certificate settings
+    certificateSettings: {
+        template: { type: String, enum: ['modern', 'classic', 'minimalistic'], default: 'modern' },
+        logo: { type: String, default: '' },
+        themeColor: { type: String, default: '#3b82f6' }
     },
 
     // 4. Status (Admin Approval)

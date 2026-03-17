@@ -10,7 +10,7 @@ exports.getStudentDashboard = async (req, res) => {
         const enrollments = await Enrollment.find({ student: userId })
             .populate({
                 path: 'course',
-                select: 'title thumbnail description instructor modules', // Include modules to count lessons
+                select: 'title thumbnail description instructor modules duration category level', // Include modules to count lessons
                 populate: [
                     {
                         path: 'instructor',
@@ -75,6 +75,9 @@ exports.getStudentDashboard = async (req, res) => {
                 _id: course._id,
                 title: course.title,
                 thumbnail: course.thumbnail,
+                duration: course.duration,
+                category: course.category,
+                level: course.level,
                 instructor: course.instructor ? course.instructor.name : 'Unknown Instructor',
                 progress: progress,
                 totalLessons: totalLessons,
