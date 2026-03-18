@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, User, PlayCircle } from 'lucide-react';
+import { BookOpen, User, PlayCircle, Clock } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -65,6 +65,13 @@ const MyEnrollments = () => {
                                 <p className="text-sm text-slate-500 mb-4 line-clamp-2">
                                     {enrollment.course.description}
                                 </p>
+
+                                {enrollment.course.duration && (
+                                    <div className="flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-2 py-1 rounded-md mb-4 max-w-max">
+                                        <Clock className="w-3 h-3 mr-1 text-slate-400" />
+                                        {enrollment.course.duration}
+                                    </div>
+                                )}
 
                                 <div className="mt-auto">
                                     <div className="w-full bg-slate-100 rounded-full h-2 mb-4">

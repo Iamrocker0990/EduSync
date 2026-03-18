@@ -10,6 +10,51 @@ const uploadDir = path.join(__dirname, '..', '..', 'uploads', 'videos');
 // We'll assume the route file handles multer config, this controller handles business logic.
 
 /**
+ * Helper to calculate total duration from modules
+ * Assumes duration comes in formats like "10", "10 min", "10:30"
+ */
+const calculateTotalDuration = (modules) => {
+    let totalMinutes = 0;
+
+    if (!modules || !Array.isArray(modules)) return "0 min";
+
+    for (const m of modules) {
+        if (!m.lessons || !Array.isArray(m.lessons)) continue;
+
+        for (const l of m.lessons) {
+            if (l.duration) {
+                // Remove whitespace and convert to lower
+                const durStr = String(l.duration).trim().toLowerCase();
+
+                if (durStr.includes(':')) {
+                    // Handle mm:ss or hh:mm:ss
+                    const parts = durStr.split(':').reverse(); // [sec, min, hour]
+                    const sec = parseInt(parts[0]) || 0;
+                    const min = parseInt(parts[1]) || 0;
+                    const hr = parseInt(parts[2]) || 0;
+                    totalMinutes += (hr * 60) + min + (sec / 60);
+                } else {
+                    // Handle "10", "10 min", "10m", "10.5"
+                    const parsed = parseFloat(durStr.replace(/[^0-9.]/g, ''));
+                    if (!isNaN(parsed)) {
+                        totalMinutes += parsed;
+                    }
+                }
+            }
+        }
+    }
+
+    totalMinutes = Math.round(totalMinutes);
+    if (totalMinutes < 60) {
+        return `${totalMinutes} min`;
+    } else {
+        const hours = Math.floor(totalMinutes / 60);
+        const mins = totalMinutes % 60;
+        return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+    }
+};
+
+/**
  * @desc    Get all APPROVED courses (Public/Student view)
  * @route   GET /api/courses
  * @access  Public
@@ -18,7 +63,7 @@ const getAllCourses = async (req, res) => {
     try {
         const courses = await Course.find({ status: 'approved' })
             .populate('instructor', 'name email')
-            .select('title description thumbnail price instructor createdAt status');
+            .select('title description thumbnail price instructor createdAt status duration category level');
         res.json(courses);
     } catch (error) {
         console.error('Error fetching courses:', error);
@@ -35,7 +80,7 @@ const getTeacherCourses = async (req, res) => {
     try {
         const courses = await Course.find({
             $or: [{ instructor: req.user._id }, { createdBy: req.user._id }]
-        }).select('title description thumbnail createdAt status price').lean();
+        }).select('title description thumbnail createdAt status price duration category level').lean();
 
         // Attach student counts for dashboard
         const coursesWithCounts = await Promise.all(courses.map(async (course) => {
@@ -93,10 +138,17 @@ const createCourse = async (req, res) => {
             title, description, thumbnail, price, category, level, duration,
             shortDescription, experienceYears, specialization, portfolioLink, certifications,
             learningOutcomes, estimatedDuration, prerequisites, targetAudience,
-            modules // Get modules from body
+            modules, // Get modules from body
+            certificateSettings // Certificate templates and theme
         } = req.body;
 
         // 1. Create the Course first
+        // Auto-populate teacher fields from profile if not in body
+        const teacherExp = experienceYears || req.user.experienceYears || 0;
+        const teacherSpec = specialization || req.user.specialization || '';
+        const teacherPortfolio = portfolioLink || req.user.portfolioLink || '';
+        const teacherCerts = certifications || req.user.certifications || '';
+
         const course = new Course({
             title,
             description,
@@ -106,17 +158,18 @@ const createCourse = async (req, res) => {
             category,
             level,
             duration,
-            experienceYears,
-            specialization,
-            portfolioLink,
-            certifications,
+            experienceYears: teacherExp,
+            specialization: teacherSpec,
+            portfolioLink: teacherPortfolio,
+            certifications: teacherCerts,
             learningOutcomes,
             estimatedDuration,
             prerequisites,
             targetAudience,
+            certificateSettings: certificateSettings || { template: 'modern', logo: '', themeColor: '#3b82f6' },
             instructor: req.user._id,
             createdBy: req.user._id,
-            status: 'approved',
+            status: 'pending',
             modules: [] // We will populate this next
         });
 
@@ -138,7 +191,7 @@ const createCourse = async (req, res) => {
                             course: savedCourse._id,
                             instructor: req.user._id,
                             questions: l.questions || [],
-                            timeLimit: 30, // Default or from input
+                            timeLimit: l.duration ? Number(l.duration) : 30, // Default or from input
                             totalMarks: l.questions ? l.questions.length * 10 : 100 // Simple logic
                         });
                         const savedQuiz = await newQuiz.save();
@@ -161,6 +214,10 @@ const createCourse = async (req, res) => {
 
             // Update course with processed modules
             savedCourse.modules = processedModules;
+
+            // Calculate total duration from the newly processed modules
+            savedCourse.duration = calculateTotalDuration(processedModules);
+
             await savedCourse.save();
         }
 
@@ -234,7 +291,8 @@ const updateCourse = async (req, res) => {
             title, description, thumbnail, price, category, level, duration,
             shortDescription, experienceYears, specialization, portfolioLink, certifications,
             learningOutcomes, estimatedDuration, prerequisites, targetAudience,
-            modules // Get modules from body
+            modules, // Get modules from body
+            certificateSettings // certificate setup
         } = req.body;
 
         const course = await Course.findById(req.params.id);
@@ -254,16 +312,26 @@ const updateCourse = async (req, res) => {
             course.price = price || course.price;
             course.category = category || course.category;
             course.level = level || course.level;
-            course.duration = duration || course.duration;
+
+            // Note: course.duration might be overwritten below if modules are updated
+            if (duration) course.duration = duration;
+
             course.shortDescription = shortDescription || course.shortDescription;
-            course.experienceYears = experienceYears || course.experienceYears;
-            course.specialization = specialization || course.specialization;
-            course.portfolioLink = portfolioLink || course.portfolioLink;
-            course.certifications = certifications || course.certifications;
+            course.experienceYears = experienceYears || req.user.experienceYears || course.experienceYears;
+            course.specialization = specialization || req.user.specialization || course.specialization;
+            course.portfolioLink = portfolioLink || req.user.portfolioLink || course.portfolioLink;
+            course.certifications = certifications || req.user.certifications || course.certifications;
             course.learningOutcomes = learningOutcomes || course.learningOutcomes;
             course.estimatedDuration = estimatedDuration || course.estimatedDuration;
             course.prerequisites = prerequisites || course.prerequisites;
             course.targetAudience = targetAudience || course.targetAudience;
+
+            if (certificateSettings) {
+                course.certificateSettings = {
+                    ...course.certificateSettings,
+                    ...certificateSettings
+                };
+            }
 
             // Process Modules and Lessons if provided
             if (modules && modules.length > 0) {
@@ -278,7 +346,7 @@ const updateCourse = async (req, res) => {
                                 course: course._id,
                                 instructor: req.user._id,
                                 questions: l.questions || [],
-                                timeLimit: 30,
+                                timeLimit: l.duration ? Number(l.duration) : 30,
                                 totalMarks: l.questions ? l.questions.length * 10 : 100
                             });
                             const savedQuiz = await newQuiz.save();
@@ -298,6 +366,9 @@ const updateCourse = async (req, res) => {
                     });
                 }
                 course.modules = processedModules;
+
+                // Recalculate duration if modules were updated
+                course.duration = calculateTotalDuration(processedModules);
             }
 
             const updatedCourse = await course.save();

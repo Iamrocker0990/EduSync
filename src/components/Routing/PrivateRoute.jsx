@@ -32,9 +32,9 @@ const PrivateRoute = ({ allowedRoles }) => {
   const { role } = user;
 
   // 3. Wrong Role? -> Redirect to their correct home
-  // 3. Wrong Role? -> Redirect to their correct home
   if (allowedRoles && !allowedRoles.includes(role)) {
-    if (role === 'admin') return <Navigate to="/admin" replace />;
+    if (role === 'admin' || role === 'superadmin') return <Navigate to="/superadmin" replace />;
+    if (role === 'institution') return <Navigate to="/institution" replace />;
     return <Navigate to={role === 'student' ? '/student' : '/teacher'} replace />;
   }
 

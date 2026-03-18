@@ -1,7 +1,5 @@
-import { Language } from '../types';
-
 // Sentiment Analysis
-export const analyzeSentiment = (text: string): 'happy' | 'sad' | 'neutral' => {
+export const analyzeSentiment = (text) => {
   const happyWords = [
     'happy', 'excited', 'great', 'awesome', 'fantastic', 'wonderful', 'amazing', 'excellent', 'love', 'perfect',
     'good', 'nice', 'best', 'brilliant', 'outstanding', 'superb', 'marvelous', 'terrific', 'fabulous', 'incredible',
@@ -32,10 +30,10 @@ export const analyzeSentiment = (text: string): 'happy' | 'sad' | 'neutral' => {
 
 // Response Generation based on sentiment and language
 export const generateResponse = async (
-  userMessage: string, 
-  sentiment: 'happy' | 'sad' | 'neutral', 
-  language: Language
-): Promise<string> => {
+  userMessage, 
+  sentiment, 
+  language
+) => {
   const responses = {
     en: {
       happy: [
@@ -132,7 +130,7 @@ export const generateResponse = async (
   return sentimentResponses[Math.floor(Math.random() * sentimentResponses.length)];
 };
 
-export const getLanguageName = (language: Language): string => {
+export const getLanguageName = (language) => {
   const names = {
     en: 'English',
     hi: 'हिंदी',

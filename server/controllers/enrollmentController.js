@@ -53,7 +53,7 @@ const getMyEnrollments = async (req, res) => {
         const enrollments = await Enrollment.find({ student: req.user._id })
             .populate({
                 path: 'course',
-                select: 'title thumbnail description instructor',
+                select: 'title thumbnail description duration instructor',
                 populate: {
                     path: 'instructor',
                     select: 'name'

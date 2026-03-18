@@ -5,3 +5,7 @@ build/
 .bolt/
 karad's work/
 server/uploads/
+
+# Logs and debug output
+*.log
+server/error*.txt

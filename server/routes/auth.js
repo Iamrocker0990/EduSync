@@ -62,11 +62,64 @@ router.post('/send-otp', async (req, res) => {
     }
 });
 
+// @desc    Reset password using OTP
+// @route   POST /api/auth/reset-password
+// @access  Public
+router.post('/reset-password', async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+        return res.status(400).json({ message: 'Email, OTP, and new password are required.' });
+    }
+
+    if (newPassword.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
+    }
+
+    try {
+        // Verify OTP
+        const otpRecord = await OTP.findOne({ email });
+        if (!otpRecord || otpRecord.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid or expired OTP.' });
+        }
+
+        // Find user and update password
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'No account found with this email.' });
+        }
+
+        user.password = newPassword; // Pre-save hook will hash it
+        await user.save();
+
+        // Delete OTP after successful reset
+        await OTP.deleteOne({ email });
+
+        console.log(`Password reset successful for: ${email}`);
+        res.status(200).json({ message: 'Password reset successfully! You can now log in.' });
+    } catch (error) {
+        console.error("Reset password error:", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
+// @desc    Get all approved institutions
+// @route   GET /api/auth/public/institutions
+// @access  Public
+router.get('/public/institutions', async (req, res) => {
+    try {
+        const institutions = await User.find({ role: 'institution', approvalStatus: 'approved' }).select('_id name');
+        res.json(institutions);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 // @desc    Register new user
 // @route   POST /api/auth/register
 // @access  Public
 router.post('/register', async (req, res) => {
-    const { name, email, password, role, otp } = req.body;
+    const { name, email, password, role, otp, institutionId, experienceYears, specialization, portfolioLink, certifications } = req.body;
 
     const validationError = validateInputs(email, password);
     if (validationError) {
@@ -85,22 +138,52 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
+        // Validate teacher requiring institutionId
+        if (role === 'teacher' && !institutionId) {
+            return res.status(400).json({ message: 'Teachers must belong to an institution' });
+        }
+
+        if (role === 'teacher') {
+            const institution = await User.findById(institutionId);
+            if (!institution || institution.role !== 'institution' || institution.approvalStatus !== 'approved') {
+                return res.status(400).json({ message: 'Invalid or unapproved institution selected.' });
+            }
+        }
+
         const user = await User.create({
             name,
             email,
             password,
             role: role || 'student',
+            institutionId: role === 'teacher' ? institutionId : undefined,
+            experienceYears: role === 'teacher' ? (Number(experienceYears) || 0) : undefined,
+            specialization: role === 'teacher' ? (specialization || '') : undefined,
+            portfolioLink: role === 'teacher' ? (portfolioLink || '') : undefined,
+            certifications: role === 'teacher' ? (certifications || '') : undefined,
         });
 
         // Delete OTP after successful registration
         await OTP.deleteOne({ email });
 
         if (user) {
+            // Check if approval is still pending
+            if (user.approvalStatus === 'pending') {
+                return res.status(201).json({
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    approvalStatus: user.approvalStatus,
+                    message: 'Registration successful. Your account is pending approval.'
+                });
+            }
+
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                approvalStatus: user.approvalStatus,
                 token: generateToken(user._id),
             });
         } else {
@@ -115,7 +198,7 @@ router.post('/register', async (req, res) => {
 // @route   POST /api/auth/login
 // @access  Public
 router.post('/login', async (req, res) => {
-    const { email, password, role } = req.body;
+    const { email, password, role, institutionId } = req.body;
 
     try {
         const user = await User.findOne({ email });
@@ -124,12 +207,27 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
+        // Enforce approval status check
+        if (user.approvalStatus !== 'approved') {
+            return res.status(403).json({ message: 'Your account is under review. Please wait for approval.' });
+        }
+
         // If a role was provided by the client (student/teacher tab),
         // enforce that it matches the actual user role.
-        if (!role || user.role !== role) {
+        // Also map 'superadmin' or 'institution' if logging in from respective portals later.
+        if (role && user.role !== role && !(role === 'admin' && user.role === 'superadmin')) {
             return res.status(403).json({
                 message: `Forbidden: Please sign in as a ${user.role} instead.`,
             });
+        }
+
+        if (user.role === 'teacher') {
+            if (!institutionId) {
+                return res.status(400).json({ message: 'Please select an institution' });
+            }
+            if (user.institutionId.toString() !== institutionId) {
+                return res.status(401).json({ message: 'You are not registered under this institution' });
+            }
         }
 
         res.json({
@@ -137,6 +235,7 @@ router.post('/login', async (req, res) => {
             name: user.name,
             email: user.email,
             role: user.role,
+            approvalStatus: user.approvalStatus,
             token: generateToken(user._id),
         });
     } catch (error) {
@@ -152,14 +251,75 @@ router.get('/profile', protect, async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-        res.json({
+        const profileData = {
             _id: user._id,
             name: user.name,
             email: user.email,
             role: user.role,
-        });
+        };
+
+        // Include teacher-specific fields
+        if (user.role === 'teacher') {
+            profileData.experienceYears = user.experienceYears || 0;
+            profileData.specialization = user.specialization || '';
+            profileData.portfolioLink = user.portfolioLink || '';
+            profileData.certifications = user.certifications || '';
+        }
+
+        res.json(profileData);
     } else {
         res.status(404).json({ message: 'User not found' });
+    }
+});
+
+// @desc    Update user profile (username)
+// @route   PUT /api/auth/profile
+// @access  Private
+router.put('/profile', protect, async (req, res) => {
+    const { name, experienceYears, specialization, portfolioLink, certifications } = req.body;
+
+    if (!name || name.trim().length < 3) {
+        return res.status(400).json({ message: 'Username must be at least 3 characters long' });
+    }
+
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (user) {
+            user.name = name.trim();
+
+            // Update teacher-specific fields if the user is a teacher
+            if (user.role === 'teacher') {
+                if (experienceYears !== undefined) user.experienceYears = Number(experienceYears);
+                if (specialization !== undefined) user.specialization = specialization;
+                if (portfolioLink !== undefined) user.portfolioLink = portfolioLink;
+                if (certifications !== undefined) user.certifications = certifications;
+            }
+
+            const updatedUser = await user.save();
+
+            const responseData = {
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                token: generateToken(updatedUser._id),
+            };
+
+            if (updatedUser.role === 'teacher') {
+                responseData.experienceYears = updatedUser.experienceYears;
+                responseData.specialization = updatedUser.specialization;
+                responseData.portfolioLink = updatedUser.portfolioLink;
+                responseData.certifications = updatedUser.certifications;
+            }
+
+            res.json(responseData);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error("🔥 UPDATE PROFILE ERROR:", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 
