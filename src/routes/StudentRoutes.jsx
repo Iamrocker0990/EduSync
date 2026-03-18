@@ -7,8 +7,6 @@ import MyCourses from '../pages/student/MyCourses';
 import CourseDetail from '../pages/student/CourseDetail';
 import Assignments from '../pages/student/Assignments';
 import Quizzes from '../pages/student/Quizzes';
-import LiveClasses from '../pages/student/LiveClasses';
-import ProgressReport from '../pages/student/ProgressReport';
 import Messages from '../pages/student/Messages';
 import Settings from '../pages/student/Settings';
 import StudentCourseList from '../pages/student/StudentCourseList';
@@ -24,8 +22,6 @@ const StudentRoutes = () => {
             <Route path="/courses/:id" element={<CourseDetail />} />
             <Route path="/assignments" element={<Assignments />} />
             <Route path="/quizzes" element={<Quizzes />} />
-            <Route path="/live-classes" element={<LiveClasses />} />
-            <Route path="/progress" element={<ProgressReport />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/catalog" element={<StudentCourseList />} />

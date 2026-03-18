@@ -5,6 +5,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import LandingPage from './pages/public/LandingPage';
 import LoginPage from './pages/public/LoginPage';
 import SignupPage from './pages/public/SignupPage';
+import ForgotPasswordPage from './pages/public/ForgotPasswordPage';
 
 // Routes Components
 import StudentRoutes from './routes/StudentRoutes';
@@ -38,6 +39,7 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
       {/* ---------- Student Routes ---------- */}
       <Route element={<PrivateRoute allowedRoles={['student']} />}>

@@ -13,7 +13,6 @@ const protect = async (req, res, next) => {
             // Get token from header (split by space)
             token = req.headers.authorization.split(' ')[1];
 
-            // DEBUGGING: Remove this console.log after you fix the error
             console.log("Incoming Token:", token);
 
             // SAFETY CHECK: If token is "null", "undefined" or empty
@@ -34,7 +33,6 @@ const protect = async (req, res, next) => {
             }
 
             console.log("Protect Middleware: Authenticated User Role -", req.user.role);
-
             next();
         } catch (error) {
             console.error("JWT Verification Error:", error.message);
@@ -83,7 +81,6 @@ const authorizeRoles = (...roles) => {
     return (req, res, next) => {
         console.log("Authorize Roles Check. User Role:", req.user?.role, "Allowed Roles:", roles);
         if (!req.user || !roles.includes(req.user.role)) {
-            console.log("Authorize Roles FAILED. Access Denied.");
             return res.status(403).json({ message: 'Access denied: Unauthorized role' });
         }
         next();

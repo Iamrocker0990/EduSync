@@ -8,7 +8,6 @@ import CreateCourse from '../pages/teacher/CreateCourse';
 import UploadContent from '../pages/teacher/UploadContent';
 import TeacherAssignments from '../pages/teacher/TeacherAssignments';
 import StudentsList from '../pages/teacher/StudentsList';
-import Reports from '../pages/teacher/Reports';
 import TeacherMessages from '../pages/teacher/TeacherMessages';
 import CourseContent from '../pages/teacher/CourseContent';
 import CreateAssignment from '../pages/teacher/CreateAssignment';
@@ -26,7 +25,6 @@ const TeacherRoutes = () => {
             <Route path="/upload" element={<UploadContent />} />
             <Route path="/assignments" element={<TeacherAssignments />} />
             <Route path="/students" element={<StudentsList />} />
-            <Route path="/reports" element={<Reports />} />
             <Route path="/messages" element={<TeacherMessages />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/course/:courseId/content" element={<CourseContent />} />

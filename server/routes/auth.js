@@ -62,6 +62,47 @@ router.post('/send-otp', async (req, res) => {
     }
 });
 
+// @desc    Reset password using OTP
+// @route   POST /api/auth/reset-password
+// @access  Public
+router.post('/reset-password', async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+        return res.status(400).json({ message: 'Email, OTP, and new password are required.' });
+    }
+
+    if (newPassword.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
+    }
+
+    try {
+        // Verify OTP
+        const otpRecord = await OTP.findOne({ email });
+        if (!otpRecord || otpRecord.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid or expired OTP.' });
+        }
+
+        // Find user and update password
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'No account found with this email.' });
+        }
+
+        user.password = newPassword; // Pre-save hook will hash it
+        await user.save();
+
+        // Delete OTP after successful reset
+        await OTP.deleteOne({ email });
+
+        console.log(`Password reset successful for: ${email}`);
+        res.status(200).json({ message: 'Password reset successfully! You can now log in.' });
+    } catch (error) {
+        console.error("Reset password error:", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 // @desc    Get all approved institutions
 // @route   GET /api/auth/public/institutions
 // @access  Public
