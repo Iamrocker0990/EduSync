@@ -1,0 +1,8 @@
+﻿.env.example
+src/pages/public/LandingPage.jsx
+src/pages/shared/AccountSettings.jsx
+src/pages/student/CourseDetail.jsx
+src/pages/student/MyCourses.jsx
+src/pages/student/StudentDashboard.jsx
+src/pages/teacher/CreateCourse.jsx
+src/types/index.ts

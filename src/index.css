@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply antialiased text-secondary-light bg-background;
+    @apply antialiased text-secondary-light bg-background dark:bg-slate-950 dark:text-slate-400 transition-colors duration-300;
   }
 
   h1,
@@ -13,8 +13,9 @@
   h4,
   h5,
   h6 {
-    @apply font-medium text-secondary tracking-tight;
+    @apply font-medium text-secondary dark:text-white tracking-tight;
   }
+
 }
 
 @keyframes fade-in-up {

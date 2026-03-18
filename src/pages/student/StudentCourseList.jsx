@@ -68,7 +68,8 @@ const StudentCourseList = () => {
 
     return (
         <DashboardLayout userType="student" title="Browse Courses">
-            <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+
                 {/* Search */}
                 <div className="relative w-full md:w-1/3">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
@@ -77,8 +78,9 @@ const StudentCourseList = () => {
                         placeholder="Search courses..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary outline-none transition-all"
                     />
+
                 </div>
 
                 {/* Filters */}
@@ -86,29 +88,33 @@ const StudentCourseList = () => {
                     <select
                         value={categoryFilter}
                         onChange={(e) => setCategoryFilter(e.target.value)}
-                        className="px-4 py-2 rounded-lg border border-slate-200 bg-white focus:border-blue-600 outline-none cursor-pointer"
+                        className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary outline-none cursor-pointer"
                     >
                         {uniqueCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                     </select>
 
+
                     <select
                         value={priceFilter}
                         onChange={(e) => setPriceFilter(e.target.value)}
-                        className="px-4 py-2 rounded-lg border border-slate-200 bg-white focus:border-blue-600 outline-none cursor-pointer"
+                        className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary outline-none cursor-pointer"
                     >
                         <option value="All">All Prices</option>
                         <option value="Free">Free</option>
                         <option value="Paid">Paid</option>
                     </select>
+
                 </div>
             </div>
 
             {loading ? (
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                 </div>
+
             ) : error ? (
-                <div className="p-4 bg-red-50 text-red-600 rounded-lg">{error}</div>
+                <div className="p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg">{error}</div>
+
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredCourses.length > 0 ? (
@@ -129,10 +135,10 @@ const StudentCourseList = () => {
                                         </div>
                                     </div>
                                     <div className="p-6 flex-1 flex flex-col">
-                                        <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2" title={course.title}>{course.title}</h3>
-                                        <p className="text-slate-600 mb-4 line-clamp-2 text-sm">{course.description}</p>
+                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 line-clamp-2" title={course.title}>{course.title}</h3>
+                                        <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2 text-sm">{course.description}</p>
 
-                                        <div className="flex items-center justify-between text-sm text-slate-500 mt-auto mb-4">
+                                        <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 mt-auto mb-4">
                                             <div className="flex items-center">
                                                 <User className="h-4 w-4 mr-1" />
                                                 <span className="truncate max-w-[100px]">{course.instructor?.name || 'Instructor'}</span>
@@ -145,9 +151,9 @@ const StudentCourseList = () => {
                                             )}
                                         </div>
 
-                                        <div className="flex items-center justify-between pt-4 border-t border-slate-100 gap-2">
-                                            <span className="text-lg font-bold text-slate-900">
-                                                {course.price > 0 ? `$${course.price}` : <span className="text-green-600">Free</span>}
+                                        <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 gap-2">
+                                            <span className="text-lg font-bold text-slate-900 dark:text-white">
+                                                {course.price > 0 ? `$${course.price}` : <span className="text-green-600 dark:text-green-400">Free</span>}
                                             </span>
 
                                             {isEnrolled ? (
@@ -170,12 +176,13 @@ const StudentCourseList = () => {
                         })
                     ) : (
                         <div className="col-span-full py-16 text-center">
-                            <div className="inline-flex justify-center items-center w-16 h-16 rounded-full bg-slate-100 mb-4">
-                                <Search className="h-8 w-8 text-slate-400" />
+                            <div className="inline-flex justify-center items-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
+                                <Search className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                             </div>
-                            <h3 className="text-lg font-medium text-slate-900">No courses found</h3>
-                            <p className="text-slate-500">Try adjusting your search or filters.</p>
+                            <h3 className="text-lg font-medium text-slate-900 dark:text-white">No courses found</h3>
+                            <p className="text-slate-500 dark:text-slate-400">Try adjusting your search or filters.</p>
                         </div>
+
                     )}
                 </div>
             )}

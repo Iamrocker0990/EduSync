@@ -94,53 +94,59 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300">
+
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <Link to="/" className="flex items-center justify-center space-x-2 mb-6">
                     <div className="bg-primary/10 p-2 rounded-lg">
                         <GraduationCap className="h-8 w-8 text-primary" />
                     </div>
-                    <span className="text-2xl font-bold text-slate-900">EduSync</span>
+                    <span className="text-2xl font-bold text-slate-900 dark:text-white">EduSync</span>
                 </Link>
-                <h2 className="mt-6 text-center text-3xl font-bold text-slate-900">
+
+                <h2 className="mt-6 text-center text-3xl font-bold text-slate-900 dark:text-white uppercase tracking-tight">
                     Welcome back
                 </h2>
-                <p className="mt-2 text-center text-sm text-slate-600">
+                <p className="mt-2 text-center text-sm text-slate-600 dark:text-slate-400">
                     Sign in to your account to continue
                 </p>
+
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <Card className="py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <div className="flex rounded-md bg-slate-100 p-1 mb-6">
+                    <div className="flex rounded-md bg-slate-100 dark:bg-slate-800 p-1 mb-6">
                         <button
                             type="button"
                             onClick={() => setRole('student')}
                             className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${role === 'student'
-                                ? 'bg-white text-slate-900 shadow-sm'
-                                : 'text-slate-500 hover:text-slate-900'
+                                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                                : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'
                                 }`}
                         >
+
                             Student
                         </button>
                         <button
                             type="button"
                             onClick={() => setRole('teacher')}
                             className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${role === 'teacher'
-                                ? 'bg-white text-slate-900 shadow-sm'
-                                : 'text-slate-500 hover:text-slate-900'
+                                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                                : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'
                                 }`}
                         >
+
                             Teacher
                         </button>
                         <button
                             type="button"
                             onClick={() => setRole('institution')}
                             className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${role === 'institution'
-                                ? 'bg-white text-slate-900 shadow-sm'
-                                : 'text-slate-500 hover:text-slate-900'
+                                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                                : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'
                                 }`}
                         >
+
                             Institution
                         </button>
                     </div>
@@ -163,15 +169,17 @@ const LoginPage = () => {
 
                         {role === 'teacher' && (
                             <div className="space-y-1">
-                                <label className="block text-sm font-medium text-slate-700">
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                                     Institution <span className="text-red-500">*</span>
                                 </label>
+
                                 <select
                                     required
                                     value={institutionId}
                                     onChange={(e) => setInstitutionId(e.target.value)}
-                                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                                 >
+
                                     <option value="">Select an institution</option>
                                     {institutionsList.map(inst => (
                                         <option key={inst._id} value={inst._id}>{inst.name}</option>
@@ -210,14 +218,15 @@ const LoginPage = () => {
                     <div className="mt-6">
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-slate-200" />
+                                <div className="w-full border-t border-slate-200 dark:border-slate-800" />
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="bg-white px-2 text-slate-500">
+                                <span className="bg-white dark:bg-slate-900 px-2 text-slate-500 dark:text-slate-400">
                                     Don't have an account?
                                 </span>
                             </div>
                         </div>
+
 
                         <div className="mt-6">
                             <Link to={`/signup?role=${role}`}>

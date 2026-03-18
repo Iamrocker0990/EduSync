@@ -86,16 +86,18 @@ const TeacherCourses = () => {
                         <input
                             type="text"
                             placeholder="Search courses..."
-                            className="pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none w-64"
+                            className="pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all w-64"
                         />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">
+
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
                     </div>
-                    <select className="px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white text-slate-600">
+                    <select className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300">
                         <option>All Categories</option>
+
                         <option>Programming</option>
                         <option>Design</option>
                         <option>Data Science</option>
@@ -119,8 +121,8 @@ const TeacherCourses = () => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-slate-50 border-b border-slate-200">
-                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 w-10">
+                            <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700">
+                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 w-10">
                                     <input
                                         type="checkbox"
                                         onChange={handleSelectAll}
@@ -128,18 +130,20 @@ const TeacherCourses = () => {
                                         className="rounded border-gray-300 text-primary focus:ring-primary"
                                     />
                                 </th>
-                                <th className="px-6 py-4 text-sm font-semibold text-slate-700">Course Name</th>
-                                <th className="px-6 py-4 text-sm font-semibold text-slate-700">Category</th>
-                                <th className="px-6 py-4 text-sm font-semibold text-slate-700">Students</th>
-                                <th className="px-6 py-4 text-sm font-semibold text-slate-700">Status</th>
-                                <th className="px-6 py-4 text-sm font-semibold text-slate-700">Last Updated</th>
-                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Actions</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Course Name</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Category</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Students</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Status</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Last Updated</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+
+                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                             {courses.map((course) => (
-                                <tr key={course.id} className={`hover:bg-slate-50 transition-colors ${selectedCourses.includes(course.id) ? 'bg-blue-50' : ''}`}>
+                                <tr key={course.id} className={`hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${selectedCourses.includes(course.id) ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}>
                                     <td className="px-6 py-4">
+
                                         <input
                                             type="checkbox"
                                             checked={selectedCourses.includes(course.id)}
@@ -150,18 +154,20 @@ const TeacherCourses = () => {
                                     <td className="px-6 py-4">
                                         <div className="flex items-center space-x-3">
                                             <img src={course.image} alt="" className="h-10 w-10 rounded-lg object-cover" />
-                                            <span className="font-medium text-slate-900">{course.title}</span>
+                                            <span className="font-medium text-slate-900 dark:text-white">{course.title}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-slate-600">{course.category}</td>
-                                    <td className="px-6 py-4 text-slate-600">{course.students}</td>
+                                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{course.category}</td>
+                                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{course.students}</td>
                                     <td className="px-6 py-4">
+
                                         <Badge variant={course.status === 'Published' ? 'success' : 'neutral'}>
                                             {course.status}
                                         </Badge>
                                     </td>
-                                    <td className="px-6 py-4 text-slate-600 text-sm">{course.lastUpdated}</td>
+                                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400 text-sm">{course.lastUpdated}</td>
                                     <td className="px-6 py-4 text-right">
+
                                         <div className="flex items-center justify-end space-x-2">
                                             <button
                                                 className="p-1 text-slate-400 hover:text-primary transition-colors"

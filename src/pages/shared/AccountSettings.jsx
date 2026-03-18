@@ -121,8 +121,8 @@ const AccountSettings = () => {
     return (
         <div className="max-w-2xl space-y-6">
             {/* Profile Settings Card */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Profile Settings</h2>
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Profile Settings</h2>
 
                 {message && (
                     <div className="mb-6 p-4 bg-green-50 text-green-700 rounded-xl border border-green-100 font-medium">
@@ -138,47 +138,48 @@ const AccountSettings = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             Username
                         </label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-slate-400 font-medium"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-slate-400 font-medium"
                             placeholder="Enter your username"
                             disabled={isLoading}
                         />
+
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             Email <span className="text-slate-400 font-normal">(Cannot be changed)</span>
                         </label>
                         <input
                             type="email"
                             value={email}
                             disabled
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 cursor-not-allowed font-medium"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 cursor-not-allowed font-medium"
                         />
                     </div>
 
                     {/* Teacher Qualifications Section */}
                     {role === 'teacher' && (
-                        <div className="pt-6 border-t border-slate-100">
+                        <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
                             <div className="flex items-center gap-2 mb-5">
-                                <div className="p-2 bg-blue-50 rounded-lg">
-                                    <GraduationCap className="h-5 w-5 text-blue-600" />
+                                <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                                    <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-900">Teacher Qualifications</h3>
+                                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Teacher Qualifications</h3>
                             </div>
-                            <p className="text-sm text-slate-500 mb-5">
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mb-5">
                                 This information will be automatically linked to every course you create.
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                                         <span className="flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5 text-slate-400" /> Years of Experience</span>
                                     </label>
                                     <input
@@ -186,49 +187,49 @@ const AccountSettings = () => {
                                         value={experienceYears}
                                         onChange={(e) => setExperienceYears(e.target.value)}
                                         min="0"
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
                                         placeholder="e.g. 5"
                                         disabled={isLoading}
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                                         <span className="flex items-center gap-1.5"><GraduationCap className="h-3.5 w-3.5 text-slate-400" /> Specialization</span>
                                     </label>
                                     <input
                                         type="text"
                                         value={specialization}
                                         onChange={(e) => setSpecialization(e.target.value)}
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
                                         placeholder="e.g. Full Stack Development"
                                         disabled={isLoading}
                                     />
                                 </div>
 
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                                         <span className="flex items-center gap-1.5"><LinkIcon className="h-3.5 w-3.5 text-slate-400" /> Portfolio Link</span>
                                     </label>
                                     <input
                                         type="url"
                                         value={portfolioLink}
                                         onChange={(e) => setPortfolioLink(e.target.value)}
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
                                         placeholder="https://yourportfolio.com"
                                         disabled={isLoading}
                                     />
                                 </div>
 
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                                         <span className="flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-slate-400" /> Certifications</span>
                                     </label>
                                     <input
                                         type="text"
                                         value={certifications}
                                         onChange={(e) => setCertifications(e.target.value)}
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium"
                                         placeholder="e.g. AWS Certified, Google Cloud Professional"
                                         disabled={isLoading}
                                     />

@@ -56,17 +56,19 @@ const InstitutionDashboard = () => {
     }
 
     const statCards = [
-        { title: 'Total Teachers', value: stats.totalTeachers, icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', link: '/institution/teachers' },
-        { title: 'Pending Teachers', value: stats.pendingTeachers, icon: Clock, color: 'text-yellow-600', bg: 'bg-yellow-100', link: '/institution/teachers' },
-        { title: 'Pending Courses', value: stats.pendingCourses, icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100', link: '/institution/courses' },
+        { title: 'Total Teachers', value: stats.totalTeachers, icon: Users, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', link: '/institution/teachers' },
+        { title: 'Pending Teachers', value: stats.pendingTeachers, icon: Clock, color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-100 dark:bg-yellow-900/30', link: '/institution/teachers' },
+        { title: 'Pending Courses', value: stats.pendingCourses, icon: BookOpen, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-100 dark:bg-purple-900/30', link: '/institution/courses' },
     ];
+
 
     return (
         <DashboardLayout userType="institution" title="Institution Overview">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Welcome to your Institution Portal</h2>
-                <p className="text-slate-500">Manage your teachers and monitor course activities.</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Welcome to your Institution Portal</h2>
+                <p className="text-slate-500 dark:text-slate-400">Manage your teachers and monitor course activities.</p>
             </div>
+
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 {statCards.map((stat, index) => (
@@ -75,32 +77,34 @@ const InstitutionDashboard = () => {
                             <stat.icon className={`h-8 w-8 ${stat.color}`} />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-slate-500">{stat.title}</p>
-                            <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{stat.title}</p>
+                            <p className="text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
                         </div>
+
                     </Card>
                 ))}
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h3 className="text-lg font-bold text-slate-900 mb-4">Quick Actions</h3>
+            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Quick Actions</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <button onClick={() => navigate('/institution/teachers')} className="flex items-center p-4 border border-slate-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-left">
+                    <button onClick={() => navigate('/institution/teachers')} className="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-primary dark:hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors text-left">
                         <Clock className="h-6 w-6 text-primary mr-3" />
                         <div>
-                            <h4 className="font-semibold text-slate-900">Review Teachers</h4>
-                            <p className="text-sm text-slate-500">Approve or reject teacher applications</p>
+                            <h4 className="font-semibold text-slate-900 dark:text-white">Review Teachers</h4>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">Approve or reject teacher applications</p>
                         </div>
                     </button>
-                    <button onClick={() => navigate('/institution/courses')} className="flex items-center p-4 border border-slate-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-left">
+                    <button onClick={() => navigate('/institution/courses')} className="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-primary dark:hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors text-left">
                         <BookOpen className="h-6 w-6 text-primary mr-3" />
                         <div>
-                            <h4 className="font-semibold text-slate-900">Review Courses</h4>
-                            <p className="text-sm text-slate-500">Approve or reject pending courses</p>
+                            <h4 className="font-semibold text-slate-900 dark:text-white">Review Courses</h4>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">Approve or reject pending courses</p>
                         </div>
                     </button>
                 </div>
             </div>
+
         </DashboardLayout>
     );
 };
