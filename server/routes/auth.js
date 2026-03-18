@@ -5,6 +5,7 @@ const User = require('../models/User');
 const OTP = require('../models/OTP');
 const { protect } = require('../middleware/auth');
 const crypto = require('crypto');
+const mailSender = require('../utils/mailSender');
 
 // Generate JWT
 const generateToken = (id) => {
@@ -51,10 +52,28 @@ router.post('/send-otp', async (req, res) => {
             { upsert: true, new: true }
         );
 
-        // In a real app, you'd send an actual email here using nodemailer.
-        console.log(`------------------------------`);
-        console.log(`OTP for ${email}: ${otp}`);
-        console.log(`------------------------------`);
+        // Send actual email using nodemailer
+        const emailTemplate = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #333; text-align: center;">EduSync Verification OTP</h2>
+                <p style="font-size: 16px; color: #555;">Hello,</p>
+                <p style="font-size: 16px; color: #555;">Your One-Time Password (OTP) for EduSync is:</p>
+                <div style="background-color: #f4f4f4; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
+                    <h1 style="color: #0056b3; margin: 0; letter-spacing: 5px;">${otp}</h1>
+                </div>
+                <p style="font-size: 14px; color: #777;">This OTP is valid for 10 minutes. Please do not share this code with anyone.</p>
+                <p style="font-size: 14px; color: #777;">If you did not request this OTP, please ignore this email.</p>
+                <br>
+                <p style="font-size: 14px; color: #555;">Best Regards,</p>
+                <p style="font-size: 14px; color: #333; font-weight: bold;">EduSync Team</p>
+            </div>
+        `;
+        
+        await mailSender(
+            email,
+            "Verification Email from EduSync",
+            emailTemplate
+        );
 
         res.status(200).json({ message: 'OTP sent successfully. Check server console for code.' });
     } catch (error) {
