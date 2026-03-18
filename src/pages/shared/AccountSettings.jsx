@@ -82,8 +82,9 @@ const AccountSettings = () => {
 
     return (
         <div className="max-w-2xl">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Profile Settings</h2>
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Profile Settings</h2>
+
 
                 {message && (
                     <div className="mb-6 p-4 bg-green-50 text-green-700 rounded-xl border border-green-100 font-medium">
@@ -99,30 +100,32 @@ const AccountSettings = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             Username
                         </label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-slate-400 font-medium"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-slate-400 font-medium"
                             placeholder="Enter your username"
                             disabled={isLoading}
                         />
+
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             Email <span className="text-slate-400 font-normal">(Cannot be changed)</span>
                         </label>
                         <input
                             type="email"
                             value={email}
                             disabled
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 cursor-not-allowed font-medium"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 cursor-not-allowed font-medium"
                         />
                     </div>
+
 
                     <div className="pt-4 flex items-center gap-4">
                         <Button

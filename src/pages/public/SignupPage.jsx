@@ -130,24 +130,28 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <Link to="/" className="flex items-center justify-center space-x-3 mb-8 group">
                     <div className="bg-primary/10 p-2.5 rounded-2xl group-hover:rotate-12 transition-transform duration-300">
                         <GraduationCap className="h-8 w-8 text-primary" />
                     </div>
-                    <span className="text-3xl font-extrabold text-slate-900 tracking-tight">EduSync</span>
+                    <span className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">EduSync</span>
                 </Link>
-                <h2 className="text-center text-3xl font-extrabold text-slate-900">
+                <h2 className="text-center text-3xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">
                     Create Account
                 </h2>
-                <p className="mt-3 text-center text-slate-500 font-medium">
+
+                <p className="mt-3 text-center text-slate-500 dark:text-slate-400 font-medium">
                     Start your learning journey today
                 </p>
+
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
-                <Card className="py-10 px-6 sm:px-12 border-none shadow-2xl shadow-slate-200/50">
+                <Card className="py-10 px-6 sm:px-12 border-none shadow-2xl shadow-slate-200/50 dark:shadow-none">
+
                     <div className="flex gap-4 mb-8">
                         {[
                             { id: 'student', icon: User, label: 'Student' },
@@ -159,9 +163,10 @@ const SignupPage = () => {
                                 type="button"
                                 onClick={() => setRole(r.id)}
                                 className={`flex-1 flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all ${role === r.id
-                                    ? 'border-primary bg-primary/5 text-primary'
-                                    : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-slate-200'
+                                    ? 'border-primary bg-primary/5 dark:bg-primary/10 text-primary'
+                                    : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-600 hover:border-slate-200 dark:hover:border-slate-700'
                                     }`}
+
                             >
                                 <r.icon className="h-6 w-6 mb-2" />
                                 <span className="font-bold text-xs uppercase tracking-widest">{r.label}</span>
@@ -190,15 +195,17 @@ const SignupPage = () => {
 
                         {role === 'teacher' && (
                             <div className="space-y-1">
-                                <label className="block text-sm font-bold text-slate-700">
+                                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300">
                                     Institution <span className="text-red-500">*</span>
                                 </label>
+
                                 <select
                                     required
                                     value={institutionId}
                                     onChange={(e) => setInstitutionId(e.target.value)}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                                 >
+
                                     <option value="">Select an institution</option>
                                     {institutionsList.map(inst => (
                                         <option key={inst._id} value={inst._id}>{inst.name}</option>
@@ -243,9 +250,10 @@ const SignupPage = () => {
                                     onChange={(e) => setOtp(e.target.value)}
                                     className="h-12 tracking-widest text-center font-mono text-lg"
                                 />
-                                <p className="text-xs text-slate-500 mt-1 text-center">
+                                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 text-center font-medium">
                                     Check your server console for the code
                                 </p>
+
                             </div>
                         )}
 
@@ -283,8 +291,9 @@ const SignupPage = () => {
                         )}
                     </form>
 
-                    <div className="mt-10 pt-8 border-t border-slate-100 text-center">
-                        <p className="text-sm text-slate-500 font-medium">
+                    <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 text-center">
+                        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+
                             Already have an account?{' '}
                             <Link to={`/login?role=${role}`} className="text-primary font-bold hover:underline">
                                 Sign in instead

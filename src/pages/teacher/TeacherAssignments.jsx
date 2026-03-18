@@ -110,17 +110,18 @@ const TeacherAssignments = () => {
 
     return (
         <DashboardLayout userType="teacher" title="Assignments">
-            <div className="mb-6 border-b border-slate-200">
+            <div className="mb-6 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex space-x-8">
-                    <button onClick={() => setActiveTab('all')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'all' ? 'text-primary' : 'text-slate-500 hover:text-slate-700'}`}>
+                    <button onClick={() => setActiveTab('all')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'all' ? 'text-primary' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>
                         All Assignments
                         {activeTab === 'all' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                     </button>
-                    <button onClick={() => setActiveTab('create')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'create' ? 'text-primary' : 'text-slate-500 hover:text-slate-700'}`}>
+                    <button onClick={() => setActiveTab('create')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'create' ? 'text-primary' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>
                         Create Assignment
                         {activeTab === 'create' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                     </button>
                 </div>
+
             </div>
 
             {loading ? (
@@ -131,51 +132,54 @@ const TeacherAssignments = () => {
                 <div className="space-y-6">
                     <div className="flex justify-between items-center">
                         <div className="relative w-64">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
                             <input
                                 type="text"
                                 placeholder="Search assignments..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                             />
                         </div>
                         <div className="flex space-x-2">
-                            <select value={selectedCourseFilter} onChange={(e) => setSelectedCourseFilter(e.target.value)} className="px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white text-slate-600">
+                            <select value={selectedCourseFilter} onChange={(e) => setSelectedCourseFilter(e.target.value)} className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300">
                                 <option value="all">All Courses</option>
                                 {courses.map(c => <option key={c._id} value={c._id}>{c.title}</option>)}
                             </select>
-                            <select value={selectedStatusFilter} onChange={(e) => setSelectedStatusFilter(e.target.value)} className="px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white text-slate-600">
+                            <select value={selectedStatusFilter} onChange={(e) => setSelectedStatusFilter(e.target.value)} className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300">
                                 <option value="all">All Status</option>
                                 <option value="active">Active</option>
                                 <option value="closed">Closed</option>
                             </select>
                         </div>
+
                     </div>
 
                     <Card className="overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse">
                                 <thead>
-                                    <tr className="bg-slate-50 border-b border-slate-200">
-                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Assignment Title</th>
-                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Course</th>
-                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Due Date</th>
-                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700">Status</th>
-                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Actions</th>
+                                    <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700">
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Assignment Title</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Course</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Due Date</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Status</th>
+                                        <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 text-right">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-100">
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+
                                     {filteredAssignments.length > 0 ? (
                                         filteredAssignments.map((assignment) => {
                                             const isPast = new Date(assignment.dueDate) < new Date();
                                             const statusLabel = isPast ? 'Closed' : 'Active';
                                             return (
-                                                <tr key={assignment._id} className="hover:bg-slate-50 transition-colors">
-                                                    <td className="px-6 py-4 font-medium text-slate-900">{assignment.title}</td>
-                                                    <td className="px-6 py-4 text-slate-600 truncate max-w-[200px]">{assignment.courseName}</td>
-                                                    <td className="px-6 py-4 text-slate-600">{new Date(assignment.dueDate).toLocaleString()}</td>
+                                                <tr key={assignment._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                                    <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{assignment.title}</td>
+                                                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400 truncate max-w-[200px]">{assignment.courseName}</td>
+                                                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{new Date(assignment.dueDate).toLocaleString()}</td>
                                                     <td className="px-6 py-4">
+
                                                         <Badge variant={statusLabel === 'Active' ? 'primary' : 'neutral'}>
                                                             {statusLabel}
                                                         </Badge>
@@ -190,8 +194,9 @@ const TeacherAssignments = () => {
                                         })
                                     ) : (
                                         <tr>
-                                            <td colSpan="5" className="px-6 py-12 text-center text-slate-500">
+                                            <td colSpan="5" className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                                                 No assignments found.
+
                                             </td>
                                         </tr>
                                     )}
@@ -203,29 +208,32 @@ const TeacherAssignments = () => {
             ) : (
                 <div className="max-w-3xl mx-auto">
                     <Card className="p-8">
-                        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center">
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center">
                             <FileText className="mr-2 text-primary h-6 w-6" /> Create New Assignment
                         </h2>
+
                         <form onSubmit={handleCreateAssignment} className="space-y-6">
                             <Input label="Assignment Title" name="title" value={formData.title} onChange={handleInputChange} placeholder="e.g., Final Project Proposal" required />
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Course</label>
-                                <select name="courseId" value={formData.courseId} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white" required>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Course</label>
+                                <select name="courseId" value={formData.courseId} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white dark:bg-slate-800 text-slate-700 dark:text-white" required>
                                     <option value="">Select Course</option>
+
                                     {courses.map(c => <option key={c._id} value={c._id}>{c.title}</option>)}
                                 </select>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
                                 <textarea
                                     name="description"
                                     value={formData.description}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none h-32 resize-none"
+                                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none h-32 resize-none"
                                     placeholder="Instructions for students..."
                                     required
+
                                 ></textarea>
                             </div>
 
@@ -239,9 +247,10 @@ const TeacherAssignments = () => {
                                     <Input label="Total Points" type="number" name="maxMarks" value={formData.maxMarks} onChange={handleInputChange} required />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Submission Type</label>
-                                    <select name="submissionType" value={formData.submissionType} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white" required>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Submission Type</label>
+                                    <select name="submissionType" value={formData.submissionType} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-white dark:bg-slate-800 text-slate-700 dark:text-white" required>
                                         <option value="file">File Upload</option>
+
                                         <option value="text">Text Only</option>
                                         <option value="both">File & Text</option>
                                     </select>
@@ -249,8 +258,8 @@ const TeacherAssignments = () => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Attachments (Optional)</label>
-                                <div className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-colors cursor-pointer group ${selectedFile ? 'border-green-300 bg-green-50' : 'border-slate-300 hover:border-primary hover:bg-slate-50'}`}>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Attachments (Optional)</label>
+                                <div className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-colors cursor-pointer group ${selectedFile ? 'border-green-300 bg-green-50' : 'border-slate-300 dark:border-slate-700 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800/50'}`}>
                                     <input type="file" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
                                     {selectedFile ? (
                                         <div className="flex flex-col items-center">
@@ -260,9 +269,10 @@ const TeacherAssignments = () => {
                                     ) : (
                                         <div className="flex flex-col items-center">
                                             <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2 group-hover:text-primary transition-colors" />
-                                            <p className="text-sm font-medium text-slate-700">Click or drag a file to upload</p>
+                                            <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Click or drag a file to upload</p>
                                         </div>
                                     )}
+
                                 </div>
                             </div>
 

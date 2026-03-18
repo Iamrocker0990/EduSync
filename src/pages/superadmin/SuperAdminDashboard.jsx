@@ -52,37 +52,41 @@ const SuperAdminDashboard = () => {
     return (
         <DashboardLayout userType="superadmin" title="Super Admin Dashboard" sidebarItems={[{ icon: Shield, label: 'Dashboard', href: '/superadmin' }]}>
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Institution Management</h2>
-                <p className="text-slate-500">Approve or reject institution applications.</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Institution Management</h2>
+                <p className="text-slate-500 dark:text-slate-400">Approve or reject institution applications.</p>
             </div>
+
 
             {error && <div className="p-4 bg-red-100 text-red-700 rounded mb-4">{error}</div>}
 
-            <div className="bg-white rounded-lg shadow">
-                <div className="px-6 py-4 border-b">
-                    <h3 className="text-lg font-medium text-slate-900">Pending Approvals</h3>
+            <div className="bg-white dark:bg-slate-900 rounded-lg shadow dark:border dark:border-slate-800">
+                <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white">Pending Approvals</h3>
                 </div>
+
                 {pendingInstitutions.length === 0 ? (
-                    <div className="p-6 text-center text-slate-500">No pending applications.</div>
+                    <div className="p-6 text-center text-slate-500 dark:text-slate-400">No pending applications.</div>
                 ) : (
-                    <ul className="divide-y divide-slate-200">
+                    <ul className="divide-y divide-slate-200 dark:divide-slate-800">
                         {pendingInstitutions.map(inst => (
-                            <li key={inst._id} className="p-6 hover:bg-slate-50">
+                            <li key={inst._id} className="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/50">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
-                                        <Building className="h-10 w-10 text-slate-400 mr-4" />
+                                        <Building className="h-10 w-10 text-slate-400 dark:text-slate-500 mr-4" />
                                         <div>
-                                            <h4 className="text-sm font-medium text-slate-900">{inst.name}</h4>
-                                            <p className="text-sm text-slate-500">{inst.email}</p>
+                                            <h4 className="text-sm font-medium text-slate-900 dark:text-white">{inst.name}</h4>
+                                            <p className="text-sm text-slate-500 dark:text-slate-400">{inst.email}</p>
                                         </div>
+
                                     </div>
                                     <div className="flex space-x-2">
                                         <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => handleStatusUpdate(inst._id, 'approve')}>
                                             <Check className="h-4 w-4 mr-1" /> Approve
                                         </Button>
-                                        <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50" onClick={() => handleStatusUpdate(inst._id, 'reject')}>
+                                        <Button size="sm" variant="outline" className="text-red-600 dark:text-red-400 border-red-200 dark:border-red-900 hover:bg-red-50 dark:hover:bg-red-900/30" onClick={() => handleStatusUpdate(inst._id, 'reject')}>
                                             <X className="h-4 w-4 mr-1" /> Reject
                                         </Button>
+
                                     </div>
                                 </div>
                             </li>
@@ -91,29 +95,31 @@ const SuperAdminDashboard = () => {
                 )}
             </div>
 
-            <div className="bg-white rounded-lg shadow mt-8">
-                <div className="px-6 py-4 border-b">
-                    <h3 className="text-lg font-medium text-slate-900">Approved Institutions</h3>
+            <div className="bg-white dark:bg-slate-900 rounded-lg shadow mt-8 dark:border dark:border-slate-800">
+                <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white">Approved Institutions</h3>
                 </div>
                 {approvedInstitutions.length === 0 ? (
-                    <div className="p-6 text-center text-slate-500">No approved institutions yet.</div>
+                    <div className="p-6 text-center text-slate-500 dark:text-slate-400">No approved institutions yet.</div>
                 ) : (
-                    <ul className="divide-y divide-slate-200">
+                    <ul className="divide-y divide-slate-200 dark:divide-slate-800">
                         {approvedInstitutions.map(inst => (
                             <li key={inst._id} className="p-6">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
                                         <Building className="h-10 w-10 text-primary mr-4" />
                                         <div>
-                                            <h4 className="text-sm font-medium text-slate-900">{inst.name}</h4>
-                                            <p className="text-sm text-slate-500">{inst.email}</p>
+                                            <h4 className="text-sm font-medium text-slate-900 dark:text-white">{inst.name}</h4>
+                                            <p className="text-sm text-slate-500 dark:text-slate-400">{inst.email}</p>
                                         </div>
+
                                     </div>
                                     <div>
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400">
                                             Active
                                         </span>
                                     </div>
+
                                 </div>
                             </li>
                         ))}

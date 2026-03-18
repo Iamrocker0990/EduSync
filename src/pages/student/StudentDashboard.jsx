@@ -43,7 +43,8 @@ const StudentDashboard = () => {
                     <div
                         className="h-12 w-12 border-4 border-primary border-t-transparent rounded-full animate-spin"
                     />
-                    <p className="text-slate-500 font-medium animate-pulse">Loading your dashboard...</p>
+                    <p className="text-slate-500 dark:text-slate-400 font-medium animate-pulse">Loading your dashboard...</p>
+
                 </div>
             </DashboardLayout>
         );
@@ -59,20 +60,22 @@ const StudentDashboard = () => {
                 {/* Hero Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[
-                        { label: 'Active Courses', value: totalCourses, icon: BookOpen, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-                        { label: 'Lessons Done', value: totalCompletedLessons, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                        { label: 'Study Hours', value: '12.5h', icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
-                        { label: 'Achievements', value: '4', icon: Award, color: 'text-purple-600', bg: 'bg-purple-50' },
+                        { label: 'Active Courses', value: totalCourses, icon: BookOpen, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-900/30' },
+                        { label: 'Lessons Done', value: totalCompletedLessons, icon: CheckCircle, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/30' },
+                        { label: 'Study Hours', value: '12.5h', icon: Clock, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/30' },
+                        { label: 'Achievements', value: '4', icon: Award, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-900/30' },
                     ].map((stat, index) => (
+
                         <Card key={index} className="p-6 border-none ring-1 ring-slate-100 shadow-sm hover:ring-primary/20 transition-all">
                             <div className="flex items-center space-x-4">
                                 <div className={`p-3 rounded-2xl ${stat.bg}`}>
                                     <stat.icon className={`h-6 w-6 ${stat.color}`} />
                                 </div>
                                 <div>
-                                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
-                                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">{stat.label}</p>
+                                    <p className="text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">{stat.label}</p>
                                 </div>
+
                             </div>
                         </Card>
                     ))}
@@ -82,11 +85,12 @@ const StudentDashboard = () => {
                     {/* Active Courses */}
                     <div className="lg:col-span-2 space-y-6">
                         <div className="flex justify-between items-center">
-                            <h2 className="text-2xl font-bold text-slate-900">Continue Learning</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Continue Learning</h2>
                             <Link to="/student/courses" className="text-primary font-bold text-sm hover:underline flex items-center">
                                 View all <ArrowRight className="ml-1 h-4 w-4" />
                             </Link>
                         </div>
+
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {dashboardData?.courses?.length > 0 ? (
@@ -110,11 +114,12 @@ const StudentDashboard = () => {
                                                 </div>
                                             </div>
                                             <div className="p-6">
-                                                <h3 className="font-bold text-slate-900 mb-4 line-clamp-1 group-hover:text-primary transition-colors">{course.title}</h3>
+                                                <h3 className="font-bold text-slate-900 dark:text-white mb-4 line-clamp-1 group-hover:text-primary transition-colors">{course.title}</h3>
                                                 <div className="flex items-center justify-between mb-6">
-                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{course.progress}% Complete</span>
-                                                    <span className="text-xs font-bold text-primary bg-primary/5 px-2 py-1 rounded">Resume</span>
+                                                    <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{course.progress}% Complete</span>
+                                                    <span className="text-xs font-bold text-primary bg-primary/5 dark:bg-primary/10 px-2 py-1 rounded">Resume</span>
                                                 </div>
+
                                                 <Link to={`/student/courses/${course._id}`}>
                                                     <Button size="sm" className="w-full group-hover:bg-primary group-hover:text-white border-none ring-1 ring-primary/10">
                                                         Continue Lesson
@@ -138,23 +143,25 @@ const StudentDashboard = () => {
                     {/* Quick Activity / Sidebar */}
                     <div className="space-y-8">
                         <div>
-                            <h2 className="text-2xl font-bold text-slate-900 mb-6">Learning Path</h2>
-                            <Card className="p-6 space-y-6 border-none ring-1 ring-slate-100">
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Learning Path</h2>
+                            <Card className="p-6 space-y-6 border-none ring-1 ring-slate-100 dark:ring-slate-800">
+
                                 <div className="space-y-4">
                                     {[
                                         { title: 'Complete HOC Module', status: 'In Progress', icon: PlayCircle, color: 'text-blue-500' },
                                         { title: 'Take Python Quiz', status: 'Pending', icon: Clock, color: 'text-amber-500' },
                                         { title: 'Watch Intro Video', status: 'Completed', icon: CheckCircle, color: 'text-emerald-500' },
                                     ].map((item, i) => (
-                                        <div key={i} className="flex items-center space-x-4 p-3 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer group">
+                                        <div key={i} className="flex items-center space-x-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors cursor-pointer group">
                                             <div className={`${item.color} group-hover:scale-110 transition-transform`}>
                                                 <item.icon className="h-5 w-5" />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-bold text-slate-900 truncate">{item.title}</p>
-                                                <p className="text-xs text-slate-500 font-medium">{item.status}</p>
+                                                <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{item.title}</p>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{item.status}</p>
                                             </div>
                                         </div>
+
                                     ))}
                                 </div>
                                 <Button variant="outline" className="w-full text-xs h-10">View Full Schedule</Button>
@@ -162,7 +169,8 @@ const StudentDashboard = () => {
                         </div>
 
                         <div>
-                            <h2 className="text-2xl font-bold text-slate-900 mb-6">Upcoming Live</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Upcoming Live</h2>
+
                             <div className="space-y-4">
                                 <div className="p-5 bg-gradient-to-br from-primary to-indigo-600 rounded-3xl text-white shadow-lg shadow-primary/20">
                                     <p className="text-xs font-bold uppercase tracking-widest opacity-80 mb-2">Happening Soon</p>

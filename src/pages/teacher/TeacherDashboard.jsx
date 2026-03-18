@@ -76,44 +76,48 @@ const TeacherDashboard = () => {
             {/* 1. DYNAMIC STATS ROW */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {[
-                    { label: 'Total Courses', value: dashboardData.stats.totalCourses, icon: BookOpen, color: 'text-blue-600', bg: 'bg-blue-100' },
-                    { label: 'Total Students', value: dashboardData.stats.totalStudents, icon: Users, color: 'text-green-600', bg: 'bg-green-100' },
-                    { label: 'Assignments', value: dashboardData.stats.totalAssignments, icon: FileText, color: 'text-orange-600', bg: 'bg-orange-100' },
-                    { label: 'Pending Quizzes', value: dashboardData.stats.pendingQuizzes, icon: Award, color: 'text-purple-600', bg: 'bg-purple-100' },
+                    { label: 'Total Courses', value: dashboardData.stats.totalCourses, icon: BookOpen, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+                    { label: 'Total Students', value: dashboardData.stats.totalStudents, icon: Users, color: 'text-green-600 dark:text-green-400', bg: 'bg-green-100 dark:bg-green-900/30' },
+                    { label: 'Assignments', value: dashboardData.stats.totalAssignments, icon: FileText, color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-100 dark:bg-orange-900/30' },
+                    { label: 'Pending Quizzes', value: dashboardData.stats.pendingQuizzes, icon: Award, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-100 dark:bg-purple-900/30' },
                 ].map((stat, index) => (
+
                     <Card key={index} className="p-6 flex items-center space-x-4">
                         <div className={`p-3 rounded-full ${stat.bg}`}>
                             <stat.icon className={`h-6 w-6 ${stat.color}`} />
                         </div>
                         <div>
-                            <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
-                            <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{stat.label}</p>
+                            <p className="text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
                         </div>
                     </Card>
+
                 ))}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                 {/* 2. RECENT ACTIVITY (Real Enrollments) */}
                 <Card className="lg:col-span-2 p-6">
-                    <h2 className="text-xl font-bold text-slate-900 mb-6">Recent Enrollments</h2>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Recent Enrollments</h2>
                     <div className="space-y-6">
                         {dashboardData.recentActivity.length === 0 ? (
-                            <p className="text-slate-500 text-sm">No students have enrolled yet.</p>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">No students have enrolled yet.</p>
+
                         ) : (
                             dashboardData.recentActivity.map((activity, index) => (
-                                <div key={index} className="flex items-start space-x-4 pb-4 border-b border-slate-100 last:border-0">
-                                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0">
+                                <div key={index} className="flex items-start space-x-4 pb-4 border-b border-slate-100 dark:border-slate-800 last:border-0">
+                                    <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold shrink-0">
                                         {activity.user.charAt(0)}
                                     </div>
                                     <div>
-                                        <p className="text-sm text-slate-900">
-                                            <span className="font-bold">{activity.user}</span> {activity.action} <span className="font-medium text-blue-600">{activity.target}</span>
+                                        <p className="text-sm text-slate-900 dark:text-slate-300">
+                                            <span className="font-bold text-slate-900 dark:text-white">{activity.user}</span> {activity.action} <span className="font-medium text-blue-600 dark:text-blue-400">{activity.target}</span>
                                         </p>
-                                        <p className="text-xs text-slate-500 mt-1">{activity.time}</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{activity.time}</p>
                                     </div>
                                 </div>
                             ))
+
                         )}
                     </div>
                 </Card>
@@ -121,9 +125,10 @@ const TeacherDashboard = () => {
                 {/* 3. QUICK ACTIONS */}
                 <Card className="p-6">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-bold text-slate-900">Quick Actions</h2>
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Quick Actions</h2>
                     </div>
                     <div className="space-y-4">
+
                         <Button className="w-full" onClick={() => navigate('/teacher/create-course')}>
                             <Plus className="h-4 w-4 mr-2" /> Create New Course
                         </Button>

@@ -349,13 +349,13 @@ const CreateCourse = () => {
     return (
         <DashboardLayout userType="teacher" title={isEditMode ? "Edit Course" : "Create New Course"}>
             <div className="max-w-4xl mx-auto">
-                <Link to="/teacher/courses" className="inline-flex items-center text-sm text-slate-500 hover:text-blue-600 mb-6">
+                <Link to="/teacher/courses" className="inline-flex items-center text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-6">
                     <ArrowLeft className="h-4 w-4 mr-1" /> Back to My Courses
                 </Link>
 
                 <div className="flex justify-between mb-8 max-w-xl mx-auto relative">
                     {/* Progress Bar Background */}
-                    <div className="absolute top-4 md:top-5 left-0 w-full h-1 bg-slate-200 z-0 rounded-full"></div>
+                    <div className="absolute top-4 md:top-5 left-0 w-full h-1 bg-slate-200 dark:bg-slate-800 z-0 rounded-full"></div>
 
                     {/* Progress Bar Fill */}
                     <div
@@ -365,12 +365,13 @@ const CreateCourse = () => {
 
                     {[1, 2, 3, 4].map((s) => (
                         <div key={s} className="flex flex-col items-center relative z-10">
-                            <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold transition-colors ${step >= s ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-200 text-slate-500 bg-white border-4 border-slate-50'}`}>
+                            <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold transition-colors ${step >= s ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-900'}`}>
                                 {step > s ? <Check className="h-5 w-5" /> : s}
                             </div>
-                            <span className={`hidden md:block text-xs font-medium mt-2 ${step >= s ? 'text-blue-600' : 'text-slate-500'}`}>
+                            <span className={`hidden md:block text-xs font-medium mt-2 ${step >= s ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}>
                                 {s === 1 ? 'Basic' : s === 2 ? 'Teacher' : s === 3 ? 'Structure' : 'Content'}
                             </span>
+
                         </div>
                     ))}
                 </div>
@@ -379,14 +380,15 @@ const CreateCourse = () => {
                     {/* STEP 1: BASIC INFO */}
                     {step === 1 && (
                         <div className="space-y-6 animate-in slide-in-from-right fade-in duration-300">
-                            <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Basic Information</h2>
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 border-b dark:border-slate-800 pb-2">Basic Information</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="md:col-span-2">
                                     <Input label="Course Title *" name="title" value={formData.title} onChange={handleChange} required />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Category *</label>
-                                    <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white">
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Category *</label>
+                                    <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white dark:bg-slate-800 dark:text-white text-slate-900">
+
                                         <option value="">Select Category</option>
                                         <option value="Programming">Programming</option>
                                         <option value="Design">Design</option>
@@ -394,8 +396,9 @@ const CreateCourse = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Level *</label>
-                                    <select name="level" value={formData.level} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white">
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Level *</label>
+                                    <select name="level" value={formData.level} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white dark:bg-slate-800 dark:text-white text-slate-900">
+
                                         <option value="">Select Level</option>
                                         <option value="Beginner">Beginner</option>
                                         <option value="Intermediate">Intermediate</option>
@@ -406,15 +409,17 @@ const CreateCourse = () => {
                                     <Input label="Short Description" name="shortDescription" value={formData.shortDescription} onChange={handleChange} />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Detailed Description *</label>
-                                    <textarea name="description" value={formData.description} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 shadow-sm focus:border-primary focus:ring-4 h-32 outline-none" required></textarea>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Detailed Description *</label>
+                                    <textarea name="description" value={formData.description} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 h-32 outline-none dark:bg-slate-800 dark:text-white bg-white text-slate-900" required></textarea>
                                 </div>
+
                                 <div>
                                     <Input label="Price ($)" type="number" name="price" value={formData.price} onChange={handleChange} min="0" />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Thumbnail</label>
-                                    <input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={handleFileChange} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Thumbnail</label>
+                                    <input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={handleFileChange} className="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 dark:file:bg-blue-900/40 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/60" />
+
                                     {previewUrl && <img src={previewUrl} alt="Preview" className="h-32 mt-4 rounded-lg object-cover" />}
                                 </div>
                             </div>
@@ -424,8 +429,9 @@ const CreateCourse = () => {
                     {/* STEP 2: TEACHER INFO */}
                     {step === 2 && (
                         <div className="space-y-6 animate-in slide-in-from-right fade-in duration-300">
-                            <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Teacher Qualifications</h2>
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 border-b dark:border-slate-800 pb-2">Teacher Qualifications</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
                                 <div><Input label="Years of Experience *" type="number" name="experienceYears" value={formData.experienceYears} onChange={handleChange} min="0" required /></div>
                                 <div><Input label="Specialization *" name="specialization" value={formData.specialization} onChange={handleChange} required /></div>
                                 <div className="md:col-span-2"><Input label="Portfolio Link" name="portfolioLink" value={formData.portfolioLink} onChange={handleChange} /></div>
@@ -437,43 +443,47 @@ const CreateCourse = () => {
                     {/* STEP 3: STRUCTURE */}
                     {step === 3 && (
                         <div className="space-y-6 animate-in slide-in-from-right fade-in duration-300">
-                            <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Course Structure</h2>
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 border-b dark:border-slate-800 pb-2">Course Structure</h2>
                             <Input label="Estimated Duration (Hours) *" type="number" name="estimatedDuration" value={formData.estimatedDuration} onChange={handleChange} min="0" required />
 
+
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Learning Outcomes *</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Learning Outcomes *</label>
                                 {formData.learningOutcomes.map((item, i) => (
                                     <div key={i} className="flex gap-2 mb-2">
                                         <div className="flex-1"><Input value={item} onChange={(e) => handleArrayChange('learningOutcomes', i, e.target.value)} /></div>
                                         <Button variant="outline" onClick={() => removeArrayItem('learningOutcomes', i)}>X</Button>
                                     </div>
                                 ))}
-                                <Button variant="ghost" size="sm" onClick={() => addArrayItem('learningOutcomes')} className="text-blue-600"><Plus className="h-4 w-4 mr-1" /> Add Outcome</Button>
+                                <Button variant="ghost" size="sm" onClick={() => addArrayItem('learningOutcomes')} className="text-blue-600 dark:text-blue-400"><Plus className="h-4 w-4 mr-1" /> Add Outcome</Button>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Prerequisites</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Prerequisites</label>
                                 {formData.prerequisites.map((item, i) => (
                                     <div key={i} className="flex gap-2 mb-2">
                                         <div className="flex-1"><Input value={item} onChange={(e) => handleArrayChange('prerequisites', i, e.target.value)} /></div>
                                         <Button variant="outline" onClick={() => removeArrayItem('prerequisites', i)}>X</Button>
                                     </div>
                                 ))}
-                                <Button variant="ghost" size="sm" onClick={() => addArrayItem('prerequisites')} className="text-blue-600"><Plus className="h-4 w-4 mr-1" /> Add Prerequisite</Button>
+                                <Button variant="ghost" size="sm" onClick={() => addArrayItem('prerequisites')} className="text-blue-600 dark:text-blue-400"><Plus className="h-4 w-4 mr-1" /> Add Prerequisite</Button>
                             </div>
+
                         </div>
                     )}
 
                     {/* STEP 4: CURRICULUM */}
                     {step === 4 && (
                         <div className="space-y-6 animate-in slide-in-from-right fade-in duration-300">
-                            <div className="flex justify-between items-center mb-4 border-b pb-2">
-                                <h2 className="text-xl font-bold text-slate-900">Course Content</h2>
+                            <div className="flex justify-between items-center mb-4 border-b dark:border-slate-800 pb-2">
+                                <h2 className="text-xl font-bold text-slate-900 dark:text-white">Course Content</h2>
                                 <Button size="sm" onClick={addModule}><Plus className="h-4 w-4 mr-1" /> Add Module</Button>
                             </div>
 
+
                             {formData.modules.map((module, mIndex) => (
-                                <div key={mIndex} className="border rounded-lg p-4 bg-slate-50 mb-4">
+                                <div key={mIndex} className="border dark:border-slate-800 rounded-lg p-4 bg-slate-50 dark:bg-slate-900 mb-4">
+
                                     <div className="flex gap-4 mb-4">
                                         <div className="flex-1">
                                             <Input
@@ -486,9 +496,10 @@ const CreateCourse = () => {
                                         <Button variant="outline" className="text-red-500 mt-7" onClick={() => removeModule(mIndex)}><Trash className="h-4 w-4" /></Button>
                                     </div>
 
-                                    <div className="space-y-3 pl-4 border-l-2 border-slate-200">
+                                    <div className="space-y-3 pl-4 border-l-2 border-slate-200 dark:border-slate-700">
                                         {module.lessons.map((lesson, lIndex) => (
-                                            <div key={lIndex} className="bg-white p-3 rounded border border-slate-200 relative">
+                                            <div key={lIndex} className="bg-white dark:bg-slate-800 p-3 rounded border border-slate-200 dark:border-slate-700 relative">
+
                                                 <div className="absolute right-2 top-2">
                                                     <Button variant="ghost" size="sm" className="text-red-400 h-6 w-6 p-0" onClick={() => removeLesson(mIndex, lIndex)}><Trash className="h-3 w-3" /></Button>
                                                 </div>
@@ -502,12 +513,13 @@ const CreateCourse = () => {
                                                             placeholder="Title"
                                                         />
                                                         <div>
-                                                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Type</label>
+                                                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Type</label>
                                                             <select
                                                                 value={lesson.type || 'video'}
                                                                 onChange={(e) => updateLesson(mIndex, lIndex, 'type', e.target.value)}
-                                                                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                                                                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
                                                             >
+
                                                                 <option value="video">Video Lesson</option>
                                                                 <option value="quiz">Quiz</option>
                                                             </select>
@@ -517,7 +529,8 @@ const CreateCourse = () => {
                                                     {/* VIDEO INPUTS */}
                                                     {(lesson.type === 'video' || !lesson.type) && (
                                                         <div>
-                                                            <label className="block text-xs font-medium text-slate-500 mb-1">Video File *</label>
+                                                            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Video File *</label>
+
                                                             <input
                                                                 type="file"
                                                                 accept="video/*"
@@ -530,7 +543,8 @@ const CreateCourse = () => {
 
                                                     {/* ASSIGNMENT INPUTS */}
                                                     {lesson.type === 'assignment' && (
-                                                        <div className="space-y-3 bg-slate-50 p-3 rounded text-sm">
+                                                        <div className="space-y-3 bg-slate-50 dark:bg-slate-900/50 p-3 rounded text-sm">
+
                                                             <Input
                                                                 label="Description"
                                                                 value={lesson.description || ''}
@@ -546,23 +560,25 @@ const CreateCourse = () => {
                                                                     className="w-24"
                                                                 />
                                                                 <div className="flex-1">
-                                                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Due Date</label>
+                                                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Due Date</label>
                                                                     <input
                                                                         type="date"
-                                                                        className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                                                                        className="w-full px-3 py-2 border dark:border-slate-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white"
                                                                         value={lesson.dueDate || ''}
                                                                         onChange={(e) => updateLesson(mIndex, lIndex, 'dueDate', e.target.value)}
                                                                     />
                                                                 </div>
+
                                                             </div>
                                                         </div>
                                                     )}
 
                                                     {/* QUIZ INPUTS */}
                                                     {lesson.type === 'quiz' && (
-                                                        <div className="space-y-3 bg-slate-50 p-3 rounded text-sm">
+                                                        <div className="space-y-3 bg-slate-50 dark:bg-slate-900/50 p-3 rounded text-sm">
                                                             <div className="flex justify-between items-center">
-                                                                <label className="font-semibold text-slate-700">Questions</label>
+                                                                <label className="font-semibold text-slate-700 dark:text-slate-300">Questions</label>
+
                                                                 <Button
                                                                     size="sm"
                                                                     variant="outline"
@@ -576,7 +592,8 @@ const CreateCourse = () => {
                                                                 </Button>
                                                             </div>
                                                             {(lesson.questions || []).map((q, qIndex) => (
-                                                                <div key={qIndex} className="border p-2 rounded bg-white">
+                                                                <div key={qIndex} className="border dark:border-slate-700 p-2 rounded bg-white dark:bg-slate-800">
+
                                                                     <div className="flex justify-between mb-2">
                                                                         <span className="text-xs font-bold">Q{qIndex + 1}</span>
                                                                         <button
@@ -608,8 +625,9 @@ const CreateCourse = () => {
                                                                                     newQs[qIndex][opt] = e.target.value;
                                                                                     updateLesson(mIndex, lIndex, 'questions', newQs);
                                                                                 }}
-                                                                                className="px-2 py-1 border rounded text-xs w-full"
+                                                                                className="px-2 py-1 border dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded text-xs w-full"
                                                                             />
+
                                                                         ))}
                                                                     </div>
                                                                     <div className="flex items-center gap-2">
@@ -621,8 +639,9 @@ const CreateCourse = () => {
                                                                                 newQs[qIndex].ans = Number(e.target.value);
                                                                                 updateLesson(mIndex, lIndex, 'questions', newQs);
                                                                             }}
-                                                                            className="text-xs border rounded p-1 w-20"
+                                                                            className="text-xs border dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded p-1 w-20"
                                                                         >
+
                                                                             <option value={1}>Option 1</option>
                                                                             <option value={2}>Option 2</option>
                                                                             <option value={3}>Option 3</option>
@@ -644,8 +663,9 @@ const CreateCourse = () => {
                             ))}
 
                             {formData.modules.length === 0 && (
-                                <div className="text-center py-8 text-slate-500 italic">No modules added. Click "Add Module" to start.</div>
+                                <div className="text-center py-8 text-slate-500 dark:text-slate-400 italic">No modules added. Click "Add Module" to start.</div>
                             )}
+
                         </div>
                     )}
 

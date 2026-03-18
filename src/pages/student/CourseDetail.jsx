@@ -128,8 +128,9 @@ const CourseDetail = () => {
         return (
             <DashboardLayout userType="student" title="Loading course">
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                 </div>
+
             </DashboardLayout>
         );
     }
@@ -137,7 +138,8 @@ const CourseDetail = () => {
     if (error || !course) {
         return (
             <DashboardLayout userType="student" title="Course">
-                <div className="p-6 text-red-600">{error || 'Course not found'}</div>
+                <div className="p-6 text-red-600 dark:text-red-400">{error || 'Course not found'}</div>
+
             </DashboardLayout>
         );
     }
@@ -154,10 +156,11 @@ const CourseDetail = () => {
                     {/* Video Player */}
                     <div className="bg-slate-900 rounded-xl overflow-hidden aspect-video mb-6 relative">
                         {lesson?.type === 'quiz' ? (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-slate-800 p-6 text-center">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-slate-800 dark:bg-slate-900 p-6 text-center">
                                 <BookOpen className="h-16 w-16 opacity-70 mb-4" />
-                                <h3 className="text-2xl font-bold mb-2">{lesson.title}</h3>
-                                <p className="text-slate-300 mb-6">This lesson is a quiz component. Click below to begin the assessment.</p>
+                                <h3 className="text-2xl font-bold mb-2 text-white">{lesson.title}</h3>
+                                <p className="text-slate-300 dark:text-slate-400 mb-6">This lesson is a quiz component. Click below to begin the assessment.</p>
+
                                 <Button onClick={() => navigate(`/student/quiz/${lesson.content}`, { state: { courseId: course._id, lessonId: lesson._id } })}>
                                     Start Quiz
                                 </Button>
@@ -195,9 +198,10 @@ const CourseDetail = () => {
                     <div className="mb-6">
                         <div className="flex items-center justify-between mb-4">
                             <div>
-                                <h1 className="text-2xl font-bold text-slate-900 mb-2">{course.title}</h1>
-                                <p className="text-slate-500">Instructor: <span className="font-medium text-slate-700">{course.instructor?.name || 'Instructor'}</span></p>
+                                <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{course.title}</h1>
+                                <p className="text-slate-500 dark:text-slate-400">Instructor: <span className="font-medium text-slate-700 dark:text-slate-300">{course.instructor?.name || 'Instructor'}</span></p>
                             </div>
+
                             {progress === 100 && (
                                 <Button onClick={() => setShowCertificate(true)}>
                                     <Award className="h-4 w-4 mr-2" />
@@ -207,13 +211,14 @@ const CourseDetail = () => {
                         </div>
 
                         <div className="flex items-center space-x-4">
-                            <div className="flex-1 bg-slate-100 rounded-full h-2">
+                            <div className="flex-1 bg-slate-100 dark:bg-slate-800 rounded-full h-2">
                                 <div
                                     className="bg-primary h-2 rounded-full transition-all duration-500"
                                     style={{ width: `${progress}%` }}
                                 />
                             </div>
-                            <span className="text-sm font-medium text-slate-700">{progress}% Complete</span>
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{progress}% Complete</span>
+
                             {lesson && isCompleted && (
                                 <Badge variant="success" className="flex items-center">
                                     <CheckCircle className="h-4 w-4 mr-1" />
@@ -224,7 +229,8 @@ const CourseDetail = () => {
                     </div>
 
                     {/* Tabs */}
-                    <div className="mb-6 border-b border-slate-200">
+                    <div className="mb-6 border-b border-slate-200 dark:border-slate-800">
+
                         <div className="flex space-x-8 overflow-x-auto">
                             {['Overview', 'Assignments', 'Discussion'].map((tab) => (
                                 <button
@@ -232,8 +238,9 @@ const CourseDetail = () => {
                                     onClick={() => setActiveTab(tab.toLowerCase())}
                                     className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === tab.toLowerCase()
                                         ? 'text-primary'
-                                        : 'text-slate-500 hover:text-slate-700'
+                                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
                                         }`}
+
                                 >
                                     {tab}
                                     {activeTab === tab.toLowerCase() && (
@@ -247,11 +254,13 @@ const CourseDetail = () => {
                     {/* Tab Content */}
                     <div className="min-h-[200px]">
                         {activeTab === 'overview' && (
-                            <div className="space-y-8 text-slate-700">
+                            <div className="space-y-8 text-slate-700 dark:text-slate-300">
+
                                 <div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-4">About this Course</h3>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">About this Course</h3>
                                     <p className="whitespace-pre-wrap leading-relaxed">{course.description}</p>
                                 </div>
+
 
                                 {/* Learning Outcomes */}
                                 {course.learningOutcomes?.length > 0 && (
@@ -260,55 +269,59 @@ const CourseDetail = () => {
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                             {course.learningOutcomes.map((outcome, i) => (
                                                 <div key={i} className="flex items-start">
-                                                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 shrink-0 mt-0.5" />
-                                                    <span className="text-slate-700 text-sm">{outcome}</span>
+                                                    <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400 mr-2 shrink-0 mt-0.5" />
+                                                    <span className="text-slate-700 dark:text-slate-300 text-sm">{outcome}</span>
                                                 </div>
                                             ))}
+
                                         </div>
                                     </div>
                                 )}
 
                                 {/* Instructor Info */}
                                 <div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-4">Meet your Instructor</h3>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Meet your Instructor</h3>
                                     <div className="flex items-start gap-4">
-                                        <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-2xl shrink-0">
+                                        <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-2xl shrink-0">
                                             {course.instructor?.name?.charAt(0) || 'I'}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-slate-900 text-lg">{course.instructor?.name}</h4>
-                                            <p className="text-blue-600 font-medium mb-2">{course.specialization || 'Instructor'}</p>
-                                            <div className="flex gap-4 text-sm text-slate-500 mb-2">
+                                            <h4 className="font-bold text-slate-900 dark:text-white text-lg">{course.instructor?.name}</h4>
+                                            <p className="text-primary font-medium mb-2">{course.specialization || 'Instructor'}</p>
+                                            <div className="flex gap-4 text-sm text-slate-500 dark:text-slate-400 mb-2">
                                                 <span className="flex items-center"><Award className="h-4 w-4 mr-1" /> {course.experienceYears || 0}+ Years Exp</span>
                                                 {course.portfolioLink && (
-                                                    <a href={course.portfolioLink} target="_blank" rel="noreferrer" className="flex items-center hover:text-blue-600">
+                                                    <a href={course.portfolioLink} target="_blank" rel="noreferrer" className="flex items-center hover:text-primary dark:hover:text-primary-light">
                                                         <BookOpen className="h-4 w-4 mr-1" /> Portfolio
                                                     </a>
                                                 )}
                                             </div>
                                             {course.certifications && (
-                                                <p className="text-sm text-slate-500"><span className="font-medium">Certifications:</span> {course.certifications}</p>
+                                                <p className="text-sm text-slate-500 dark:text-slate-400"><span className="font-medium text-slate-700 dark:text-slate-300">Certifications:</span> {course.certifications}</p>
                                             )}
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         )}
 
                         {activeTab === 'assignments' && (
                             <div className="space-y-4">
                                 {assignments.length === 0 ? (
-                                    <div className="text-center py-8 text-slate-500">No assignments available.</div>
+                                    <div className="text-center py-8 text-slate-500 dark:text-slate-400">No assignments available.</div>
                                 ) : (
+
                                     assignments.map(assign => (
-                                        <div key={assign._id} className="bg-white border border-slate-200 rounded-xl p-6 flex justify-between items-start hover:border-blue-400 transition-colors">
+                                        <div key={assign._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 flex justify-between items-start hover:border-primary dark:hover:border-primary-light transition-colors">
                                             <div>
-                                                <h4 className="text-lg font-bold text-slate-900 mb-1">{assign.title}</h4>
-                                                <p className="text-slate-600 text-sm mb-3">Due: {new Date(assign.dueDate).toLocaleDateString()}</p>
+                                                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{assign.title}</h4>
+                                                <p className="text-slate-600 dark:text-slate-400 text-sm mb-3">Due: {new Date(assign.dueDate).toLocaleDateString()}</p>
                                                 <div className="flex gap-2">
                                                     <Badge variant="neutral">{assign.maxMarks} Marks</Badge>
                                                 </div>
                                             </div>
+
                                             <Button size="sm" onClick={() => navigate(`/student/assignment/${assign._id}`)}>
                                                 View Assignment
                                             </Button>
@@ -327,27 +340,28 @@ const CourseDetail = () => {
                 {/* Right Sidebar */}
                 <div className="lg:w-80 space-y-6">
                     <Card className="p-6">
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">Course Content</h3>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Course Content</h3>
+
                         <div className="space-y-4">
                             {course.modules?.map((m, mIndex) => (
-                                <div key={mIndex} className="border border-slate-200 rounded-xl overflow-hidden">
-                                    <div className="bg-slate-50 px-4 py-3 flex items-center justify-between">
+                                <div key={mIndex} className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                                    <div className="bg-slate-50 dark:bg-slate-800/80 px-4 py-3 flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-semibold text-slate-900">{m.title}</p>
-                                            <p className="text-xs text-slate-500">{m.lessons.length} Lessons</p>
+                                            <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{m.title}</p>
+                                            <p className="text-xs text-slate-500 dark:text-slate-400">{m.lessons.length} Lessons</p>
                                         </div>
-                                        <span className="text-xs text-slate-500">
+                                        <span className="text-xs text-slate-500 dark:text-slate-400">
                                             {m.lessons.filter((l) => completedLessons.some((id) => id === l._id || id?._id === l._id)).length}/{m.lessons.length} completed
                                         </span>
                                     </div>
-                                    <div className="divide-y divide-slate-100">
+                                    <div className="divide-y divide-slate-100 dark:divide-slate-800">
                                         {m.lessons.map((l, lIndex) => {
                                             const lessonDone = completedLessons.some((id) => id === l._id || id?._id === l._id);
                                             const isCurrent = currentLesson.moduleIndex === mIndex && currentLesson.lessonIndex === lIndex;
                                             return (
                                                 <button
                                                     key={l._id || lIndex}
-                                                    className={`w-full px-4 py-3 flex items-center space-x-3 hover:bg-primary/5 transition-colors text-left ${isCurrent ? 'bg-primary/5' : ''}`}
+                                                    className={`w-full px-4 py-3 flex items-center space-x-3 hover:bg-primary/5 transition-colors text-left ${isCurrent ? 'bg-primary/5 dark:bg-primary/10' : ''}`}
                                                     onClick={() => {
                                                         if (l.type === 'quiz') {
                                                             navigate(`/student/quiz/${l.content}`, { state: { courseId: course._id, lessonId: l._id } });
@@ -356,18 +370,19 @@ const CourseDetail = () => {
                                                         }
                                                     }}
                                                 >
-                                                    <div className={`h-8 w-8 rounded-full flex items-center justify-center ${lessonDone ? 'bg-green-100 text-green-600' : 'bg-slate-100 text-slate-500'}`}>
+                                                    <div className={`h-8 w-8 rounded-full flex items-center justify-center ${lessonDone ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                                                         {lessonDone ? <CheckCircle className="h-4 w-4" /> : (l.type === 'quiz' ? <BookOpen className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />)}
                                                     </div>
                                                     <div className="flex-1">
-                                                        <p className="text-sm font-medium text-slate-900">{l.title}</p>
-                                                        <p className="text-xs text-slate-500">{l.duration || ''}</p>
+                                                        <p className={`text-sm font-medium ${isCurrent ? 'text-primary' : 'text-slate-900 dark:text-white'}`}>{l.title}</p>
+                                                        <p className="text-xs text-slate-500 dark:text-slate-400">{l.duration || ''}</p>
                                                     </div>
                                                 </button>
                                             );
                                         })}
                                     </div>
                                 </div>
+
                             ))}
                         </div>
                     </Card>
@@ -376,8 +391,9 @@ const CourseDetail = () => {
 
             {/* Certificate Modal */}
             {showCertificate && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full relative">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-50">
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-5xl w-full relative">
+
                         <button
                             onClick={() => setShowCertificate(false)}
                             className="absolute top-3 right-3 text-slate-400 hover:text-slate-600"
