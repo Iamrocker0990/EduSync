@@ -40,7 +40,7 @@ const LandingPage = () => {
             try {
                 const data = await courseService.getAllApprovedCourses();
                 // Take top 4 or random 4
-                setFeaturedCourses(data.slice(0, 4));
+                setFeaturedCourses(Array.isArray(data) ? data.slice(0, 4) : []);
             } catch (error) {
                 console.error("Failed to fetch featured courses", error);
             }
