@@ -464,7 +464,7 @@ const CreateCourse = () => {
                                 </div>
 
                                 <div>
-                                    <Input label="Price ($)" type="number" name="price" value={formData.price} onChange={handleChange} min="0" />
+                                    <Input label="Price (Rs)" type="number" name="price" value={formData.price} onChange={handleChange} min="0" />
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Thumbnail</label>

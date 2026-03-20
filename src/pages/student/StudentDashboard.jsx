@@ -35,6 +35,10 @@ const StudentDashboard = () => {
 
     const totalCourses = dashboardData?.stats?.totalCourses || 0;
     const totalCompletedLessons = dashboardData?.stats?.totalCompletedLessons || 0;
+    const completedCourses = dashboardData?.courses?.filter(c => c.progress === 100).length || 0;
+    const avgProgress = totalCourses > 0 
+        ? Math.round(dashboardData.courses.reduce((acc, curr) => acc + (curr.progress || 0), 0) / totalCourses) + '%'
+        : '0%';
 
     if (loading) {
         return (
@@ -62,8 +66,8 @@ const StudentDashboard = () => {
                     {[
                         { label: 'Active Courses', value: totalCourses, icon: BookOpen, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-900/30' },
                         { label: 'Lessons Done', value: totalCompletedLessons, icon: CheckCircle, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/30' },
-                        { label: 'Study Hours', value: '12.5h', icon: Clock, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/30' },
-                        { label: 'Achievements', value: '4', icon: Award, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-900/30' },
+                        { label: 'Avg Progress', value: avgProgress, icon: TrendingUp, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/30' },
+                        { label: 'Completed Courses', value: completedCourses, icon: Award, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-900/30' },
                     ].map((stat, index) => (
 
                         <Card key={index} className="p-6 border-none ring-1 ring-slate-100 shadow-sm hover:ring-primary/20 transition-all">
@@ -81,9 +85,9 @@ const StudentDashboard = () => {
                     ))}
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div className="grid grid-cols-1 gap-10">
                     {/* Active Courses */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="space-y-6">
                         <div className="flex justify-between items-center">
                             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Continue Learning</h2>
                             <Link to="/student/courses" className="text-primary font-bold text-sm hover:underline flex items-center">
@@ -92,7 +96,7 @@ const StudentDashboard = () => {
                         </div>
 
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {dashboardData?.courses?.length > 0 ? (
                                 dashboardData.courses.slice(0, 4).map((course) => (
                                     <div key={course._id}>
@@ -145,50 +149,6 @@ const StudentDashboard = () => {
                                     </Link>
                                 </div>
                             )}
-                        </div>
-                    </div>
-
-                    {/* Quick Activity / Sidebar */}
-                    <div className="space-y-8">
-                        <div>
-                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Learning Path</h2>
-                            <Card className="p-6 space-y-6 border-none ring-1 ring-slate-100 dark:ring-slate-800">
-
-                                <div className="space-y-4">
-                                    {[
-                                        { title: 'Complete HOC Module', status: 'In Progress', icon: PlayCircle, color: 'text-blue-500' },
-                                        { title: 'Take Python Quiz', status: 'Pending', icon: Clock, color: 'text-amber-500' },
-                                        { title: 'Watch Intro Video', status: 'Completed', icon: CheckCircle, color: 'text-emerald-500' },
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-center space-x-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors cursor-pointer group">
-                                            <div className={`${item.color} group-hover:scale-110 transition-transform`}>
-                                                <item.icon className="h-5 w-5" />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{item.title}</p>
-                                                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{item.status}</p>
-                                            </div>
-                                        </div>
-
-                                    ))}
-                                </div>
-                                <Button variant="outline" className="w-full text-xs h-10">View Full Schedule</Button>
-                            </Card>
-                        </div>
-
-                        <div>
-                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Upcoming Live</h2>
-
-                            <div className="space-y-4">
-                                <div className="p-5 bg-gradient-to-br from-primary to-indigo-600 rounded-3xl text-white shadow-lg shadow-primary/20">
-                                    <p className="text-xs font-bold uppercase tracking-widest opacity-80 mb-2">Happening Soon</p>
-                                    <h4 className="text-lg font-bold mb-4 leading-tight">Advanced React Architecture with Sarah</h4>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm font-medium">Starts in 45m</span>
-                                        <Button size="sm" className=" text-primary hover:bg-slate-50 border-none px-4 py-1 h-8 text-xs font-bold">Set Reminder</Button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
