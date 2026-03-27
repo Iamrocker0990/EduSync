@@ -55,7 +55,7 @@ const FeaturedSection: React.FC = () => {
                 </span>
               </button>
               
-              <button className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-200">
+              <button className="px-8 py-4 bg-white dark:bg-slate-900/10 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/20 hover:bg-white dark:bg-slate-900/20 transition-all duration-200">
                 View Preview
               </button>
             </div>
@@ -71,14 +71,14 @@ const FeaturedSection: React.FC = () => {
               />
               
               {/* Floating Progress Card */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-xl p-6 shadow-xl animate-bounce delay-300">
+              <div className="absolute -bottom-6 -left-6 bg-white dark:bg-slate-900 rounded-xl p-6 shadow-xl animate-bounce delay-300">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
                     <CheckCircle className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-slate-800">Course Completed</div>
-                    <div className="text-xs text-slate-600">React Fundamentals</div>
+                    <div className="text-sm font-semibold text-slate-800 dark:text-gray-100">Course Completed</div>
+                    <div className="text-xs text-slate-600 dark:text-gray-300">React Fundamentals</div>
                     <div className="w-32 h-2 bg-slate-200 rounded-full mt-2">
                       <div className="w-full h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
                     </div>

@@ -44,7 +44,7 @@ const AddQuestion = ({ onAddQuestion }) => {
         <div className="h-10 w-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 mr-3">
           <HelpCircle className="h-5 w-5" />
         </div>
-        <h4 className="text-lg font-bold text-slate-900">Add New Question</h4>
+        <h4 className="text-lg font-bold text-slate-900 dark:text-white">Add New Question</h4>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -64,7 +64,7 @@ const AddQuestion = ({ onAddQuestion }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[1, 2, 3, 4].map((num) => (
             <div key={num}>
-              <label className="label text-xs uppercase tracking-wide text-slate-500 mb-1">Option {num}</label>
+              <label className="label text-xs uppercase tracking-wide text-slate-500 dark:text-gray-400 mb-1">Option {num}</label>
               <div className="relative">
                 <div className={`absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full border flex items-center justify-center text-xs font-bold ${questionData.ans === num ? 'border-primary text-primary bg-primary/10' : 'border-slate-300 text-slate-400'}`}>
                   {num}
@@ -92,7 +92,7 @@ const AddQuestion = ({ onAddQuestion }) => {
                 onClick={() => setQuestionData(prev => ({ ...prev, ans: num }))}
                 className={`flex-1 p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-center ${questionData.ans === num
                     ? 'bg-green-600 text-white border-green-600 shadow-md shadow-green-200 transform scale-105'
-                    : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-gray-300 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800'
                   }`}
               >
                 {questionData.ans === num && <CheckCircle className="h-4 w-4 mr-2" />}
@@ -102,7 +102,7 @@ const AddQuestion = ({ onAddQuestion }) => {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-100 flex justify-end">
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
           <Button type="submit" className="bg-primary text-white hover:bg-primary/90">
             <PlusCircle className="h-4 w-4 mr-2" /> Add Question
           </Button>

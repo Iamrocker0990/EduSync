@@ -8,7 +8,7 @@ const QuizList = ({ quizzes, userType, startQuiz, setView }) => {
     if (quizzes.length === 0) {
         return (
             <div className="text-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-800">
-                <div className="h-12 w-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-500 mx-auto mb-4">
+                <div className="h-12 w-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-500 dark:text-gray-400 mx-auto mb-4">
                     <HelpCircle className="h-6 w-6" />
                 </div>
                 <h3 className="text-lg font-medium text-slate-900 dark:text-white">No quizzes yet</h3>

@@ -109,7 +109,7 @@ const Chatbot = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] bg-white rounded-2xl shadow-2xl border flex flex-col overflow-hidden">
+        <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border flex flex-col overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 flex justify-between">
             <div>
@@ -121,7 +121,7 @@ const Chatbot = () => {
               <select
                 value={currentLanguage}
                 onChange={(e) => setCurrentLanguage(e.target.value)}
-                className="bg-white/20 text-white rounded px-2"
+                className="bg-white dark:bg-slate-900/20 text-white rounded px-2"
               >
                 <option value="en">🇺🇸 EN</option>
                 <option value="hi">🇮🇳 HI</option>
@@ -135,13 +135,13 @@ const Chatbot = () => {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-800">
             {messages.map(msg => (
               <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`p-3 rounded-xl max-w-[80%] ${
                   msg.sender === 'user'
                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                    : 'bg-white border'
+                    : 'bg-white dark:bg-slate-900 border'
                 }`}>
                   <p>{msg.text}</p>
                   <div className="flex justify-between text-xs mt-1">

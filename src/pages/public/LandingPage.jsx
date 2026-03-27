@@ -155,7 +155,7 @@ const LandingPage = () => {
                             { icon: Shield, title: 'Built for Trust', desc: 'Enterprise-grade security ensuring your personal data remains private.' },
                         ].map((feature, index) => (
                             <motion.div key={index} variants={itemVariants}>
-                                <div className="group p-8 rounded-3xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-400 ease-out hover:shadow-md hover:-translate-y-1 border border-transparent hover:border-slate-100 dark:hover:border-slate-700">
+                                <div className="group p-8 rounded-3xl hover:bg-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all duration-400 ease-out hover:shadow-md hover:-translate-y-1 border border-transparent hover:border-slate-100 dark:border-slate-800 dark:hover:border-slate-700">
                                     <div className="bg-primary/5 dark:bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-colors">
                                         <feature.icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
                                     </div>
@@ -203,7 +203,7 @@ const LandingPage = () => {
                                                 alt={course.title}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                                             />
-                                            <div className="absolute top-3 left-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold text-secondary dark:text-white shadow-sm uppercase tracking-wider">
+                                            <div className="absolute top-3 left-3 bg-white dark:bg-slate-900/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold text-secondary dark:text-white shadow-sm uppercase tracking-wider">
                                                 {course.level || 'All Levels'}
                                             </div>
 
@@ -213,7 +213,7 @@ const LandingPage = () => {
                                                 <div className="text-xs font-semibold text-primary uppercase tracking-widest mb-1">{course.category || 'General'}</div>
                                                 {course.duration && (
                                                     <div className="flex items-center text-xs text-slate-500 dark:text-slate-400 font-medium bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
-                                                        <Clock className="w-3 h-3 mr-1 text-slate-400 dark:text-slate-500" />
+                                                        <Clock className="w-3 h-3 mr-1 text-slate-400 dark:text-slate-500 dark:text-gray-400" />
                                                         {course.duration}
                                                     </div>
                                                 )}

@@ -55,9 +55,9 @@ const StudentsList = () => {
                     </button>
                 </Card>
             ) : students.length === 0 ? (
-                <Card className="p-16 text-center border-dashed border-2 border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+                <Card className="p-16 text-center border-dashed border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 dark:bg-slate-900/50">
                     <div className="mx-auto w-16 h-16 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center shadow-sm mb-4">
-                        <User className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                        <User className="h-8 w-8 text-slate-400 dark:text-slate-500 dark:text-gray-400" />
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No Students Enrolled Yet</h3>
                     <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Once students enroll in your published courses, their detailed learning progress will be displayed here.</p>
@@ -68,7 +68,7 @@ const StudentsList = () => {
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-slate-50/80 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                                <tr className="bg-slate-50 dark:bg-slate-800/80 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                                     <th className="p-4 px-6 md:px-8">Student</th>
                                     <th className="p-4 px-6">Enrolled Course</th>
                                     <th className="p-4 px-6">Join Date</th>
@@ -77,7 +77,7 @@ const StudentsList = () => {
                             </thead>
                             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                                 {students.map((student) => (
-                                    <tr key={student._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <tr key={student._id} className="hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800/50 dark:hover:bg-slate-800/50 transition-colors">
 
                                         <td className="p-4 px-6 md:px-8">
                                             <div className="flex items-center gap-3">
@@ -107,7 +107,7 @@ const StudentsList = () => {
 
                                         <td className="p-4 px-6">
                                             <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-                                                <Calendar className="h-4 w-4 mr-2 text-slate-400 dark:text-slate-500" />
+                                                <Calendar className="h-4 w-4 mr-2 text-slate-400 dark:text-slate-500 dark:text-gray-400" />
 
                                                 {new Date(student.enrolledAt).toLocaleDateString(undefined, {
                                                     month: 'short',

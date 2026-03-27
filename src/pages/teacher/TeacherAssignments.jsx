@@ -112,11 +112,11 @@ const TeacherAssignments = () => {
         <DashboardLayout userType="teacher" title="Assignments">
             <div className="mb-6 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex space-x-8">
-                    <button onClick={() => setActiveTab('all')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'all' ? 'text-primary' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>
+                    <button onClick={() => setActiveTab('all')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'all' ? 'text-primary' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-gray-200 dark:hover:text-slate-200'}`}>
                         All Assignments
                         {activeTab === 'all' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                     </button>
-                    <button onClick={() => setActiveTab('create')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'create' ? 'text-primary' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>
+                    <button onClick={() => setActiveTab('create')} className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'create' ? 'text-primary' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-gray-200 dark:hover:text-slate-200'}`}>
                         Create Assignment
                         {activeTab === 'create' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                     </button>
@@ -132,7 +132,7 @@ const TeacherAssignments = () => {
                 <div className="space-y-6">
                     <div className="flex justify-between items-center">
                         <div className="relative w-64">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500 dark:text-gray-400" />
                             <input
                                 type="text"
                                 placeholder="Search assignments..."
@@ -174,7 +174,7 @@ const TeacherAssignments = () => {
                                             const isPast = new Date(assignment.dueDate) < new Date();
                                             const statusLabel = isPast ? 'Closed' : 'Active';
                                             return (
-                                                <tr key={assignment._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                                <tr key={assignment._id} className="hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-800/50 transition-colors">
                                                     <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{assignment.title}</td>
                                                     <td className="px-6 py-4 text-slate-600 dark:text-slate-400 truncate max-w-[200px]">{assignment.courseName}</td>
                                                     <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{new Date(assignment.dueDate).toLocaleString()}</td>
@@ -259,7 +259,7 @@ const TeacherAssignments = () => {
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Attachments (Optional)</label>
-                                <div className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-colors cursor-pointer group ${selectedFile ? 'border-green-300 bg-green-50' : 'border-slate-300 dark:border-slate-700 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800/50'}`}>
+                                <div className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-colors cursor-pointer group ${selectedFile ? 'border-green-300 bg-green-50' : 'border-slate-300 dark:border-slate-700 hover:border-primary dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-800/50'}`}>
                                     <input type="file" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
                                     {selectedFile ? (
                                         <div className="flex flex-col items-center">
@@ -276,7 +276,7 @@ const TeacherAssignments = () => {
                                 </div>
                             </div>
 
-                            <div className="flex justify-end pt-6 border-t border-slate-100">
+                            <div className="flex justify-end pt-6 border-t border-slate-100 dark:border-slate-800">
                                 <Button type="submit" disabled={submitting}>
                                     {submitting ? 'Creating Assignment...' : 'Create Assignment'}
                                 </Button>

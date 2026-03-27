@@ -51,7 +51,7 @@ const CourseContent = () => {
     return (
         <DashboardLayout userType="teacher" title={course.title}>
             {/* Header / Tabs */}
-            <div className="mb-6 border-b border-slate-200">
+            <div className="mb-6 border-b border-slate-200 dark:border-slate-700">
                 <div className="flex space-x-8 overflow-x-auto">
                     {[
                         { id: 'details', label: 'Course Details' },
@@ -62,7 +62,7 @@ const CourseContent = () => {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === tab.id ? 'text-primary' : 'text-slate-500 hover:text-slate-700'
+                            className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === tab.id ? 'text-primary' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-gray-200'
                                 }`}
                         >
                             {tab.label}
@@ -79,27 +79,27 @@ const CourseContent = () => {
                 {activeTab === 'assignments' && (
                     <div className="space-y-6">
                         <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-bold text-slate-900">Assignments</h2>
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Assignments</h2>
                             <Button onClick={() => navigate(`/teacher/course/${courseId}/assignments/create`)}>
                                 <Plus className="h-4 w-4 mr-2" /> Create Assignment
                             </Button>
                         </div>
 
                         {assignments.length === 0 ? (
-                            <div className="text-center py-12 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                            <div className="text-center py-12 bg-slate-50 dark:bg-slate-800 rounded-xl border border-dashed border-slate-300">
                                 <FileText className="h-12 w-12 text-slate-300 mx-auto mb-3" />
-                                <h3 className="text-lg font-medium text-slate-900">No assignments yet</h3>
-                                <p className="text-slate-500 mb-4">Create your first assignment to get started</p>
+                                <h3 className="text-lg font-medium text-slate-900 dark:text-white">No assignments yet</h3>
+                                <p className="text-slate-500 dark:text-gray-400 mb-4">Create your first assignment to get started</p>
                             </div>
                         ) : (
                             <div className="grid gap-4">
                                 {assignments.map((assignment) => (
-                                    <div key={assignment._id} className="bg-white p-6 rounded-xl border border-slate-200 hover:border-blue-400 transition-colors shadow-sm">
+                                    <div key={assignment._id} className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-400 transition-colors shadow-sm">
                                         <div className="flex justify-between items-start">
                                             <div>
-                                                <h3 className="text-lg font-bold text-slate-900 mb-2">{assignment.title}</h3>
-                                                <p className="text-slate-600 mb-4 line-clamp-2">{assignment.description}</p>
-                                                <div className="flex flex-wrap gap-4 text-sm text-slate-500">
+                                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{assignment.title}</h3>
+                                                <p className="text-slate-600 dark:text-gray-300 mb-4 line-clamp-2">{assignment.description}</p>
+                                                <div className="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-gray-400">
                                                     <span className="flex items-center">
                                                         <Calendar className="h-4 w-4 mr-1.5" />
                                                         Due: {new Date(assignment.dueDate).toLocaleDateString()}
@@ -133,19 +133,19 @@ const CourseContent = () => {
                 {/* Course Details Tab */}
                 {activeTab === 'details' && (
                     <Card className="p-6">
-                        <h2 className="text-xl font-bold text-slate-900 mb-4">Course Info</h2>
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Course Info</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <p className="text-sm font-medium text-slate-500 mb-1">Title</p>
-                                <p className="text-lg text-slate-900">{course.title}</p>
+                                <p className="text-sm font-medium text-slate-500 dark:text-gray-400 mb-1">Title</p>
+                                <p className="text-lg text-slate-900 dark:text-white">{course.title}</p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-slate-500 mb-1">Category</p>
+                                <p className="text-sm font-medium text-slate-500 dark:text-gray-400 mb-1">Category</p>
                                 <Badge>{course.category}</Badge>
                             </div>
                             <div className="md:col-span-2">
-                                <p className="text-sm font-medium text-slate-500 mb-1">Description</p>
-                                <p className="text-slate-700 whitespace-pre-wrap">{course.description}</p>
+                                <p className="text-sm font-medium text-slate-500 dark:text-gray-400 mb-1">Description</p>
+                                <p className="text-slate-700 dark:text-gray-200 whitespace-pre-wrap">{course.description}</p>
                             </div>
                         </div>
                     </Card>
@@ -155,8 +155,8 @@ const CourseContent = () => {
                 {activeTab === 'students' && (
                     <div className="text-center py-12">
                         <Users className="h-12 w-12 text-slate-300 mx-auto mb-3" />
-                        <h3 className="text-lg font-medium text-slate-900">Student Management</h3>
-                        <p className="text-slate-500">Feature coming in next update.</p>
+                        <h3 className="text-lg font-medium text-slate-900 dark:text-white">Student Management</h3>
+                        <p className="text-slate-500 dark:text-gray-400">Feature coming in next update.</p>
                     </div>
                 )}
 

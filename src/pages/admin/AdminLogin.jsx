@@ -122,7 +122,7 @@ const AdminLogin = () => {
                                     className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all hover:border-slate-600"
                                     placeholder="••••••••"
                                 />
-                                <Lock className="absolute right-3 top-3.5 h-5 w-5 text-slate-500" />
+                                <Lock className="absolute right-3 top-3.5 h-5 w-5 text-slate-500 dark:text-gray-400" />
                             </div>
                         </div>
 
@@ -136,11 +136,11 @@ const AdminLogin = () => {
                     </form>
                 </Card>
 
-                <p className="mt-6 text-center text-xs text-slate-500">
+                <p className="mt-6 text-center text-xs text-slate-500 dark:text-gray-400">
                     Secure Admin Authentication System v1.0
                 </p>
                 <div className="mt-4 text-center">
-                    <Link to="/login" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+                    <Link to="/login" className="text-xs text-slate-500 dark:text-gray-400 hover:text-slate-300 transition-colors">
                         ← Back to Standard Login
                     </Link>
                 </div>

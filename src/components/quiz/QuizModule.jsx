@@ -82,7 +82,7 @@ const QuizModule = ({ userType = 'student', courseId = null, initialView = 'list
         <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
           <button
             onClick={() => setView('list')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${view === 'list' ? 'bg-white dark:bg-slate-700 text-primary dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${view === 'list' ? 'bg-white dark:bg-slate-700 text-primary dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-gray-200 dark:hover:text-slate-200'}`}
           >
 
             <div className="flex items-center"><List className="h-4 w-4 mr-2" /> All Quizzes</div>
@@ -90,7 +90,7 @@ const QuizModule = ({ userType = 'student', courseId = null, initialView = 'list
           {userType === 'teacher' && (
             <button
               onClick={() => setView('add')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${view === 'add' ? 'bg-white dark:bg-slate-700 text-primary dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${view === 'add' ? 'bg-white dark:bg-slate-700 text-primary dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-gray-200 dark:hover:text-slate-200'}`}
             >
               <div className="flex items-center"><Plus className="h-4 w-4 mr-2" /> Create Quiz</div>
             </button>

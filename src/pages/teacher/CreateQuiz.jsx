@@ -12,12 +12,12 @@ const CreateQuiz = () => {
             <div className="mb-6">
                 <button
                     onClick={() => navigate(-1)}
-                    className="text-slate-500 hover:text-slate-700 mb-4 flex items-center"
+                    className="text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-gray-200 mb-4 flex items-center"
                 >
                     &larr; Back
                 </button>
-                <h1 className="text-2xl font-bold text-slate-900">Create Quiz for Course</h1>
-                <p className="text-slate-500">Add a new quiz to your course curriculum.</p>
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Create Quiz for Course</h1>
+                <p className="text-slate-500 dark:text-gray-400">Add a new quiz to your course curriculum.</p>
             </div>
 
             <QuizModule userType="teacher" courseId={courseId} />

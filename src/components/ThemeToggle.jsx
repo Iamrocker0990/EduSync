@@ -10,7 +10,7 @@ const ThemeToggle = () => {
             variant="ghost"
             size="sm"
             onClick={toggleTheme}
-            className="rounded-full w-10 h-10 p-0 flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+            className="rounded-full w-10 h-10 p-0 flex items-center justify-center text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
             aria-label="Toggle theme"
         >
             {theme === 'light' ? (

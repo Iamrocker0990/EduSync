@@ -437,7 +437,7 @@ const CreateCourse = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Category *</label>
-                                    <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white dark:bg-slate-800 dark:text-white text-slate-900">
+                                    <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white dark:bg-slate-800 dark:text-white text-slate-900 dark:text-white">
 
                                         <option value="">Select Category</option>
                                         <option value="Programming">Programming</option>
@@ -447,7 +447,7 @@ const CreateCourse = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Level *</label>
-                                    <select name="level" value={formData.level} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white dark:bg-slate-800 dark:text-white text-slate-900">
+                                    <select name="level" value={formData.level} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 outline-none bg-white dark:bg-slate-800 dark:text-white text-slate-900 dark:text-white">
 
                                         <option value="">Select Level</option>
                                         <option value="Beginner">Beginner</option>
@@ -460,7 +460,7 @@ const CreateCourse = () => {
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Detailed Description *</label>
-                                    <textarea name="description" value={formData.description} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 h-32 outline-none dark:bg-slate-800 dark:text-white bg-white text-slate-900" required></textarea>
+                                    <textarea name="description" value={formData.description} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm focus:border-primary focus:ring-4 h-32 outline-none dark:bg-slate-800 dark:text-white bg-white dark:bg-slate-900 text-slate-900 dark:text-white" required></textarea>
                                 </div>
 
                                 <div>
@@ -589,7 +589,7 @@ const CreateCourse = () => {
                                                                             video.src = URL.createObjectURL(file);
                                                                         }
                                                                     }}
-                                                                    className="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700"
+                                                                    className="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:bg-blue-50 dark:file:bg-blue-900/40 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/60"
                                                                 />
                                                                 {lesson.file && <span className="text-xs text-green-600 dark:text-green-400 mt-1 flex items-center"><Check className="h-3 w-3 mr-1" /> {lesson.file.name} selected</span>}
                                                             </div>
@@ -726,7 +726,7 @@ const CreateCourse = () => {
                                                 </div>
                                             </div>
                                         ))}
-                                        <Button variant="ghost" size="sm" onClick={() => addLesson(mIndex)} className="text-blue-600 pl-0">
+                                        <Button variant="ghost" size="sm" onClick={() => addLesson(mIndex)} className="text-blue-600 dark:text-blue-400 pl-0">
                                             <Plus className="h-4 w-4 mr-1" /> Add Content Item
                                         </Button>
                                     </div>
@@ -743,44 +743,44 @@ const CreateCourse = () => {
                     {/* STEP 4: CERTIFICATE */}
                     {step === 4 && (
                         <div className="space-y-6 animate-in slide-in-from-right fade-in duration-300">
-                            <h2 className="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Certificate Customization</h2>
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 border-b dark:border-slate-800 pb-2">Certificate Customization</h2>
 
                             <div className="space-y-8">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-3">Template Style *</label>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Template Style *</label>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         {['modern', 'classic', 'minimalistic'].map(t => (
                                             <div
                                                 key={t}
                                                 onClick={() => setFormData(prev => ({ ...prev, certificateSettings: { ...prev.certificateSettings, template: t } }))}
-                                                className={`cursor-pointer border-2 rounded-xl p-4 text-center transition-all ${formData.certificateSettings.template === t ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-600/20' : 'border-slate-200 hover:border-blue-300 bg-white'}`}
+                                                className={`cursor-pointer border-2 rounded-xl p-4 text-center transition-all ${formData.certificateSettings.template === t ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-600/20' : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 bg-white dark:bg-slate-800'}`}
                                             >
-                                                <div className="h-24 bg-slate-100 rounded mb-3 flex items-center justify-center border border-slate-200 shadow-sm relative overflow-hidden">
+                                                <div className="h-24 bg-slate-100 dark:bg-slate-700/50 rounded mb-3 flex items-center justify-center border border-slate-200 dark:border-slate-600 shadow-sm relative overflow-hidden">
                                                     {t === 'modern' && (
-                                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white">
+                                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 dark:from-blue-900/40 to-white dark:to-slate-800">
                                                             <div className="absolute top-2 left-2 right-2 flex flex-col items-center">
-                                                                <div className="w-8 h-8 rounded-full bg-blue-100 mb-1"></div>
-                                                                <div className="h-2 w-16 bg-slate-300 rounded mb-2"></div>
-                                                                <div className="h-3 w-24 bg-blue-200 rounded"></div>
+                                                                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-1"></div>
+                                                                <div className="h-2 w-16 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+                                                                <div className="h-3 w-24 bg-blue-200 dark:bg-blue-700/50 rounded"></div>
                                                             </div>
                                                         </div>
                                                     )}
                                                     {t === 'classic' && (
-                                                        <div className="absolute inset-2 border-2 text-center flex flex-col items-center justify-center border-amber-200">
-                                                            <div className="w-6 h-6 border rounded-sm border-amber-300 mb-1"></div>
-                                                            <div className="h-2 w-16 bg-slate-300 rounded mb-1"></div>
-                                                            <div className="h-4 w-24 border border-slate-200 italic flex items-center justify-center text-[8px] bg-slate-50">name</div>
+                                                        <div className="absolute inset-2 border-2 text-center flex flex-col items-center justify-center border-amber-200 dark:border-amber-800/50">
+                                                            <div className="w-6 h-6 border rounded-sm border-amber-300 dark:border-amber-700/50 mb-1"></div>
+                                                            <div className="h-2 w-16 bg-slate-300 dark:bg-slate-600 rounded mb-1"></div>
+                                                            <div className="h-4 w-24 border border-slate-200 dark:border-slate-600 italic flex items-center justify-center text-[8px] bg-slate-50 dark:bg-slate-800">name</div>
                                                         </div>
                                                     )}
                                                     {t === 'minimalistic' && (
-                                                        <div className="absolute inset-0 bg-white text-left p-3 flex flex-col justify-end">
-                                                            <div className="h-3 w-16 bg-slate-800 rounded mb-1"></div>
-                                                            <div className="h-2 w-24 bg-slate-300 rounded mb-1"></div>
+                                                        <div className="absolute inset-0 bg-white dark:bg-slate-800 text-left p-3 flex flex-col justify-end">
+                                                            <div className="h-3 w-16 bg-slate-800 dark:bg-slate-400 rounded mb-1"></div>
+                                                            <div className="h-2 w-24 bg-slate-300 dark:bg-slate-600 rounded mb-1"></div>
                                                             <div className="h-2 w-10 bg-blue-500 rounded"></div>
                                                         </div>
                                                     )}
                                                 </div>
-                                                <span className="font-semibold text-slate-800 capitalize">{t}</span>
+                                                <span className="font-semibold text-slate-800 dark:text-slate-200 capitalize">{t}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -788,26 +788,26 @@ const CreateCourse = () => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Custom Logo (Optional)</label>
-                                        <input type="file" accept=".png,.jpg,.jpeg,.svg" onChange={handleLogoFileChange} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mb-3" />
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Custom Logo (Optional)</label>
+                                        <input type="file" accept=".png,.jpg,.jpeg,.svg" onChange={handleLogoFileChange} className="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 dark:file:bg-blue-900/40 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/60 mb-3" />
                                         {logoPreviewUrl && (
-                                            <div className="mt-2 text-center p-4 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                                            <div className="mt-2 text-center p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
                                                 <img src={logoPreviewUrl} alt="Logo Preview" className="h-20 max-w-full mx-auto object-contain" />
                                                 <button onClick={() => { setCertificateLogoFile(null); setLogoPreviewUrl(null); setFormData(prev => ({ ...prev, certificateSettings: { ...prev.certificateSettings, logo: '' } })); }} className="text-red-500 text-xs mt-2 hover:underline">Remove Logo</button>
                                             </div>
                                         )}
-                                        <p className="text-xs text-slate-500 mt-2">Recommended size: 200x200px. Transparant PNG or SVG.</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Recommended size: 200x200px. Transparant PNG or SVG.</p>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Theme Color *</label>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Theme Color *</label>
                                         <div className="flex items-center gap-4">
                                             <input
                                                 type="color"
                                                 name="themeColor"
                                                 value={formData.certificateSettings?.themeColor || '#3b82f6'}
                                                 onChange={(e) => setFormData(prev => ({ ...prev, certificateSettings: { ...prev.certificateSettings, themeColor: e.target.value } }))}
-                                                className="w-16 h-16 p-1 rounded-lg cursor-pointer border-slate-200"
+                                                className="w-16 h-16 p-1 rounded-lg cursor-pointer border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
                                             />
                                             <div className="flex-1">
                                                 <Input
@@ -834,7 +834,7 @@ const CreateCourse = () => {
                     )}
 
                     {/* Footer Actions */}
-                    <div className="flex justify-between pt-8 mt-4 border-t border-slate-100">
+                    <div className="flex justify-between pt-8 mt-4 border-t border-slate-100 dark:border-slate-800">
                         {step > 1 ? (
                             <Button variant="outline" onClick={prevStep} disabled={isLoading}>Back</Button>
                         ) : <div></div>}

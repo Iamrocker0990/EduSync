@@ -52,19 +52,19 @@ const Assignments = () => {
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200">
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Assignment Title</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 hidden md:table-cell">Course</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Due Date</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Status</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Score</th>
-                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700">Action</th>
+                                <tr className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Assignment Title</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 hidden md:table-cell">Course</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Due Date</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Status</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Score</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100">
+                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                                 {loading ? (
                                     <tr>
-                                        <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
+                                        <td colSpan="6" className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                                             <div className="flex justify-center items-center">
                                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                                             </div>
@@ -72,26 +72,26 @@ const Assignments = () => {
                                     </tr>
                                 ) : assignments.length === 0 ? (
                                     <tr>
-                                        <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
+                                        <td colSpan="6" className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                                             No assignments found for your enrolled courses.
                                         </td>
                                     </tr>
                                 ) : (
                                     assignments.map((assignment) => (
-                                        <tr key={assignment.id} className="hover:bg-slate-50 transition-colors">
+                                        <tr key={assignment.id} className="hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-800/50 transition-colors">
                                             <td className="px-6 py-4">
-                                                <p className="font-medium text-slate-900">{assignment.title}</p>
-                                                <p className="text-xs text-slate-500 md:hidden">{assignment.course}</p>
+                                                <p className="font-medium text-slate-900 dark:text-white">{assignment.title}</p>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400 md:hidden">{assignment.course}</p>
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-slate-600 hidden md:table-cell">{assignment.course}</td>
-                                            <td className="px-6 py-4 text-sm text-slate-600">
+                                            <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300 hidden md:table-cell">{assignment.course}</td>
+                                            <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
                                                 <div className="flex items-center">
-                                                    <Clock className="h-3 w-3 mr-1.5 text-slate-400" />
+                                                    <Clock className="h-3 w-3 mr-1.5 text-slate-400 dark:text-slate-500 dark:text-gray-400" />
                                                     {new Date(assignment.dueDate).toLocaleString()}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">{getStatusBadge(assignment.status)}</td>
-                                            <td className="px-6 py-4 text-sm font-medium text-slate-900">
+                                            <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white">
                                                 {assignment.score || '-'}
                                             </td>
                                             <td className="px-6 py-4">

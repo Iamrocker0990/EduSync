@@ -69,10 +69,10 @@ const SuperAdminDashboard = () => {
                 ) : (
                     <ul className="divide-y divide-slate-200 dark:divide-slate-800">
                         {pendingInstitutions.map(inst => (
-                            <li key={inst._id} className="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                            <li key={inst._id} className="p-6 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-800/50">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
-                                        <Building className="h-10 w-10 text-slate-400 dark:text-slate-500 mr-4" />
+                                        <Building className="h-10 w-10 text-slate-400 dark:text-slate-500 dark:text-gray-400 mr-4" />
                                         <div>
                                             <h4 className="text-sm font-medium text-slate-900 dark:text-white">{inst.name}</h4>
                                             <p className="text-sm text-slate-500 dark:text-slate-400">{inst.email}</p>

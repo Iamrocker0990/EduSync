@@ -53,8 +53,8 @@ const AdminDashboard = () => {
     return (
         <DashboardLayout userType="admin" title="Admin Dashboard">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Course Review Queue</h2>
-                <p className="text-slate-500">Review and approve courses submitted by instructors.</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Course Review Queue</h2>
+                <p className="text-slate-500 dark:text-gray-400">Review and approve courses submitted by instructors.</p>
             </div>
 
             {error && <div className="p-4 bg-red-100 text-red-700 rounded mb-4">{error}</div>}
@@ -64,8 +64,8 @@ const AdminDashboard = () => {
                     <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
                         <Check className="h-8 w-8 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900">All Caught Up!</h3>
-                    <p className="text-slate-500 mt-2">There are no pending courses to review at the moment.</p>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">All Caught Up!</h3>
+                    <p className="text-slate-500 dark:text-gray-400 mt-2">There are no pending courses to review at the moment.</p>
                 </Card>
             ) : (
                 <div className="grid gap-6">
@@ -90,17 +90,17 @@ const AdminDashboard = () => {
                                                     <span className="px-2 py-0.5 rounded text-xs font-semibold bg-yellow-100 text-yellow-700 flex items-center">
                                                         <Clock className="h-3 w-3 mr-1" /> Pending Review
                                                     </span>
-                                                    <span className="text-sm text-slate-500">
+                                                    <span className="text-sm text-slate-500 dark:text-gray-400">
                                                         Submitted {new Date(course.createdAt).toLocaleDateString()}
                                                     </span>
                                                 </div>
-                                                <h3 className="text-lg font-bold text-slate-900 mb-1">{course.title}</h3>
-                                                <p className="text-sm text-slate-600 mb-2 line-clamp-2">{course.description}</p>
-                                                <p className="text-sm text-slate-500">
-                                                    Instructor: <span className="font-semibold text-slate-900">{course.instructor?.name || 'Unknown'}</span> ({course.instructor?.email})
+                                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{course.title}</h3>
+                                                <p className="text-sm text-slate-600 dark:text-gray-300 mb-2 line-clamp-2">{course.description}</p>
+                                                <p className="text-sm text-slate-500 dark:text-gray-400">
+                                                    Instructor: <span className="font-semibold text-slate-900 dark:text-white">{course.instructor?.name || 'Unknown'}</span> ({course.instructor?.email})
                                                 </p>
-                                                <p className="text-sm text-slate-500 mt-1">
-                                                    Price: <span className="font-semibold text-slate-900">{course.price ? `$${course.price}` : 'Free'}</span>
+                                                <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">
+                                                    Price: <span className="font-semibold text-slate-900 dark:text-white">{course.price ? `$${course.price}` : 'Free'}</span>
                                                 </p>
                                             </div>
                                         </div>

@@ -149,16 +149,16 @@ export default function ChatDashboard({ userType }) {
     const displayUser = (conv) => userType === 'student' ? conv.teacher : conv.student;
 
     return (
-        <div className="flex h-[80vh] bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+        <div className="flex h-[80vh] bg-white dark:bg-slate-900 rounded-xl shadow-sm overflow-hidden border border-slate-200 dark:border-slate-800">
             {/* Sidebar */}
-            <div className={`w-full md:w-1/3 border-r border-slate-200 flex flex-col bg-slate-50 ${activeChat ? 'hidden md:flex' : 'flex'}`}>
-                <div className="p-4 border-b border-slate-200 bg-white shadow-sm z-10">
+            <div className={`w-full md:w-1/3 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-slate-900 ${activeChat ? 'hidden md:flex' : 'flex'}`}>
+                <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm z-10">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-bold text-slate-800">Private Doubts</h2>
+                        <h2 className="text-xl font-bold text-slate-800 dark:text-white">Private Doubts</h2>
                         {userType === 'student' && !showNewChatPanel && (
                             <button
                                 onClick={handleNewChatClick}
-                                className="bg-blue-100 text-blue-700 p-2 rounded-lg hover:bg-blue-200 transition-colors"
+                                className="bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 p-2 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/60 transition-colors"
                                 title="New Conversation"
                             >
                                 <Plus className="h-5 w-5" />
@@ -167,7 +167,7 @@ export default function ChatDashboard({ userType }) {
                         {showNewChatPanel && (
                             <button
                                 onClick={() => setShowNewChatPanel(false)}
-                                className="text-slate-500 hover:text-slate-700 p-2"
+                                className="text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 p-2"
                             >
                                 <ArrowLeft className="h-5 w-5" />
                             </button>
@@ -178,20 +178,20 @@ export default function ChatDashboard({ userType }) {
                 <div className="flex-1 overflow-y-auto">
                     {showNewChatPanel ? (
                         <div className="p-2 space-y-1">
-                            <p className="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Start new chat regarding...</p>
+                            <p className="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Start new chat regarding...</p>
                             {eligibleTeachers.map((pair, idx) => (
                                 <div
                                     key={idx}
                                     onClick={() => startNewConversation(pair)}
-                                    className="p-3 mx-2 bg-white border border-slate-100 rounded-lg hover:border-blue-300 hover:shadow-sm cursor-pointer transition-all"
+                                    className="p-3 mx-2 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-lg hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm cursor-pointer transition-all"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">
+                                        <div className="h-10 w-10 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center font-bold">
                                             {pair.teacherName.charAt(0)}
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-semibold text-slate-800">{pair.teacherName}</h4>
-                                            <p className="text-xs text-blue-600 flex items-center gap-1 mt-0.5">
+                                            <h4 className="text-sm font-semibold text-slate-800 dark:text-white">{pair.teacherName}</h4>
+                                            <p className="text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1 mt-0.5">
                                                 <Book className="h-3 w-3" /> {pair.courseTitle}
                                             </p>
                                         </div>
@@ -199,7 +199,7 @@ export default function ChatDashboard({ userType }) {
                                 </div>
                             ))}
                             {eligibleTeachers.length === 0 && (
-                                <p className="p-4 text-sm text-slate-500 text-center">You are not enrolled in any courses yet.</p>
+                                <p className="p-4 text-sm text-slate-500 dark:text-slate-400 text-center">You are not enrolled in any courses yet.</p>
                             )}
                         </div>
                     ) : (
@@ -209,20 +209,20 @@ export default function ChatDashboard({ userType }) {
                                     key={conv._id}
                                     onClick={() => handleSelectConversation(conv)}
                                     className={`p-3 mx-2 rounded-lg cursor-pointer transition-all flex items-center gap-3 ${activeChat?._id === conv._id
-                                            ? 'bg-blue-50 border border-blue-200'
-                                            : 'bg-transparent border border-transparent hover:bg-slate-100 hover:border-slate-200'
+                                            ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'
+                                            : 'bg-transparent border border-transparent hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-800 hover:border-slate-200 dark:border-slate-700 dark:hover:border-slate-700'
                                         }`}
                                 >
                                     <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full flex items-center justify-center font-bold shrink-0">
                                         {displayUser(conv)?.name?.charAt(0) || 'U'}
                                     </div>
                                     <div className="flex-1 overflow-hidden">
-                                        <h4 className="text-sm font-semibold text-slate-800 truncate">{displayUser(conv)?.name || 'User'}</h4>
-                                        <p className="text-xs text-slate-500 truncate mt-0.5">
+                                        <h4 className="text-sm font-semibold text-slate-800 dark:text-white truncate">{displayUser(conv)?.name || 'User'}</h4>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
                                             {conv.lastMessage ? conv.lastMessage.text : 'New Conversation'}
                                         </p>
                                         <div className="flex items-center gap-1 mt-1">
-                                            <span className="inline-flex text-[10px] items-center text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded px-2">
+                                            <span className="inline-flex text-[10px] items-center text-blue-700 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/40 px-1.5 py-0.5 rounded px-2">
                                                 <Book className="h-2.5 w-2.5 mr-1" /> {conv.course?.title}
                                             </span>
                                         </div>
@@ -231,11 +231,11 @@ export default function ChatDashboard({ userType }) {
                             ))}
                             {conversations.length === 0 && (
                                 <div className="text-center p-6">
-                                    <p className="text-sm text-slate-500">No active conversations.</p>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">No active conversations.</p>
                                     {userType === 'student' && (
                                         <button
                                             onClick={handleNewChatClick}
-                                            className="mt-4 text-sm text-blue-600 hover:underline inline-flex items-center"
+                                            className="mt-4 text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center"
                                         >
                                             <Plus className="h-4 w-4 mr-1" /> Start one now
                                         </button>
@@ -248,24 +248,24 @@ export default function ChatDashboard({ userType }) {
             </div>
 
             {/* Chat Window */}
-            <div className={`w-full md:w-2/3 flex flex-col bg-[#f0f2f5] relative ${!activeChat ? 'hidden md:flex' : 'flex'}`}>
+            <div className={`w-full md:w-2/3 flex flex-col bg-[#f0f2f5] dark:bg-slate-900 relative ${!activeChat ? 'hidden md:flex' : 'flex'}`}>
                 {activeChat ? (
                     <>
                         {/* Header */}
-                        <div className="p-4 bg-white shadow-[0_2px_5px_rgba(0,0,0,0.05)] flex items-center justify-between z-10 border-b border-slate-200">
+                        <div className="p-4 bg-white dark:bg-slate-900 shadow-[0_2px_5px_rgba(0,0,0,0.05)] flex items-center justify-between z-10 border-b border-slate-200 dark:border-slate-800">
                             <div className="flex items-center gap-3">
-                                <button className="md:hidden text-slate-500 mr-2" onClick={() => setActiveChat(null)}>
+                                <button className="md:hidden text-slate-500 dark:text-slate-400 mr-2" onClick={() => setActiveChat(null)}>
                                     <ArrowLeft className="h-5 w-5" />
                                 </button>
                                 <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
                                     {(activeChat.isNew ? activeChat.teacher.name : displayUser(activeChat).name).charAt(0)}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-800 text-sm">
+                                    <h3 className="font-bold text-slate-800 dark:text-white text-sm">
                                         {activeChat.isNew ? activeChat.teacher.name : displayUser(activeChat).name}
                                     </h3>
                                     {/* The Contextual Course Tag */}
-                                    <span className="inline-flex items-center gap-1 mt-0.5 text-xs font-medium text-slate-500">
+                                    <span className="inline-flex items-center gap-1 mt-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                                         <Book className="h-3 w-3" /> {activeChat.course.title}
                                     </span>
                                 </div>
@@ -280,10 +280,10 @@ export default function ChatDashboard({ userType }) {
                                     <div key={idx} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`rounded-xl px-4 py-2 max-w-[80%] shadow-sm ${isMine
                                                 ? 'bg-blue-600 text-white rounded-tr-none'
-                                                : 'bg-white text-slate-800 rounded-tl-none border border-slate-200'
+                                                : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-tl-none border border-slate-200 dark:border-slate-700'
                                             }`}>
                                             <p className="text-[15px] leading-relaxed">{msg.text}</p>
-                                            <span className={`text-[10px] mt-1 block ${isMine ? 'text-blue-200 text-right' : 'text-slate-400'}`}>
+                                            <span className={`text-[10px] mt-1 block ${isMine ? 'text-blue-200 text-right' : 'text-slate-400 dark:text-slate-500 dark:text-gray-400'}`}>
                                                 {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                         </div>
@@ -292,7 +292,7 @@ export default function ChatDashboard({ userType }) {
                             })}
                             {activeChat.isNew && (
                                 <div className="text-center w-full mt-10">
-                                    <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1.5 rounded-full shadow-sm">
+                                    <span className="bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-500 text-xs px-3 py-1.5 rounded-full shadow-sm">
                                         This is the beginning of your conversation regarding {activeChat.course.title}.
                                     </span>
                                 </div>
@@ -301,7 +301,7 @@ export default function ChatDashboard({ userType }) {
                         </div>
 
                         {/* Message Input Container */}
-                        <div className="p-3 bg-white border-t border-slate-200 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
+                        <div className="p-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
                             <div className="flex items-center gap-2 max-w-4xl mx-auto">
                                 <input
                                     type="text"
@@ -309,12 +309,12 @@ export default function ChatDashboard({ userType }) {
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                                     placeholder="Type a message..."
-                                    className="flex-1 bg-slate-100 border-none rounded-full px-5 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-700 shadow-inner"
+                                    className="flex-1 bg-slate-100 dark:bg-slate-800 border-none rounded-full px-5 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-700 dark:text-white shadow-inner"
                                 />
                                 <button
                                     onClick={handleSendMessage}
                                     disabled={!input.trim()}
-                                    className="h-11 w-11 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white flex items-center justify-center transition-colors shadow-md"
+                                    className="h-11 w-11 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 text-white flex items-center justify-center transition-colors shadow-md"
                                 >
                                     <Send className="h-5 w-5 ml-1" />
                                 </button>
@@ -322,12 +322,12 @@ export default function ChatDashboard({ userType }) {
                         </div>
                     </>
                 ) : (
-                    <div className="flex-1 flex flex-col items-center justify-center text-slate-400 bg-slate-50/50">
-                        <div className="h-24 w-24 bg-blue-50 rounded-full flex items-center justify-center mb-4">
-                            <Send className="h-10 w-10 text-blue-200" />
+                    <div className="flex-1 flex flex-col items-center justify-center text-slate-400 bg-slate-50 dark:bg-slate-800/50 dark:bg-slate-900">
+                        <div className="h-24 w-24 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-4">
+                            <Send className="h-10 w-10 text-blue-200 dark:text-blue-800" />
                         </div>
-                        <p className="text-lg font-medium text-slate-500">Select a chat or start a new one</p>
-                        <p className="text-sm mt-2 text-slate-400">Your "Private Doubts" with instructors will appear here.</p>
+                        <p className="text-lg font-medium text-slate-500 dark:text-slate-400">Select a chat or start a new one</p>
+                        <p className="text-sm mt-2 text-slate-400 dark:text-slate-500 dark:text-gray-400">Your "Private Doubts" with instructors will appear here.</p>
                     </div>
                 )}
             </div>

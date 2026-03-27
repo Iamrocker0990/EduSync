@@ -121,9 +121,9 @@ const UploadContent = () => {
                 {/* Left Panel: Course Structure */}
                 <div className="lg:col-span-1 space-y-6">
                     <Card className="p-6">
-                        <h3 className="font-bold text-slate-900 mb-4">Select Course</h3>
+                        <h3 className="font-bold text-slate-900 dark:text-white mb-4">Select Course</h3>
                         <select
-                            className="w-full px-4 py-3 rounded-lg border border-slate-200 shadow-sm focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none bg-white mb-6 hover:border-slate-300 transition-all duration-200 cursor-pointer"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm hover:border-slate-300 dark:hover:border-slate-600 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200 cursor-pointer"
                             value={selectedCourse}
                             onChange={(e) => setSelectedCourse(e.target.value)}
                         >
@@ -136,7 +136,7 @@ const UploadContent = () => {
                         </select>
 
                         {selectedCourse && (
-                            <div className="text-sm text-slate-600">
+                            <div className="text-sm text-slate-600 dark:text-slate-400 mt-2">
                                 Lessons will be added to this course.
                             </div>
                         )}
@@ -146,7 +146,7 @@ const UploadContent = () => {
                 {/* Right Panel: Upload Form */}
                 <div className="lg:col-span-2">
                     <Card className="p-8">
-                        <h2 className="text-xl font-bold text-slate-900 mb-6">Add New Lesson</h2>
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Add New Lesson</h2>
 
                         <div className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -169,7 +169,7 @@ const UploadContent = () => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-3">Content Type</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Content Type</label>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="flex flex-col items-center justify-center p-4 rounded-xl border-2 border-primary bg-primary/5 text-primary transition-all">
                                         <Video className="h-6 w-6 mb-2" />
@@ -178,27 +178,27 @@ const UploadContent = () => {
                                 </div>
                             </div>
 
-                            <div {...getRootProps()} className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer ${isDragActive ? 'border-primary bg-primary/5' : 'border-slate-300 hover:border-primary hover:bg-primary/5'}`}>
+                            <div {...getRootProps()} className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer ${isDragActive ? 'border-primary bg-primary/5' : 'border-slate-300 dark:border-slate-600 hover:border-primary hover:bg-primary/5'}`}>
                                 <input {...getInputProps()} />
                                 <Upload className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                                 {isDragActive ? (
                                     <p className="text-lg font-medium text-primary">Drop the files here ...</p>
                                 ) : (
                                     <>
-                                        <p className="text-lg font-medium text-slate-900">Drag and drop video file</p>
-                                        <p className="text-sm text-slate-500 mt-2">MP4, WebM up to 2GB</p>
+                                        <p className="text-lg font-medium text-slate-900 dark:text-white">Drag and drop video file</p>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">MP4, WebM up to 2GB</p>
                                     </>
                                 )}
                                 <Button variant="outline" className="mt-6" type="button">Browse Files</Button>
                             </div>
 
                             {uploadedFile && (
-                                <div className="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
+                                <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-between">
                                     <div className="flex items-center">
                                         <Video className="h-5 w-5 text-primary mr-3" />
                                         <div>
-                                            <p className="text-sm font-medium text-slate-900">{uploadedFile.name}</p>
-                                            <p className="text-xs text-slate-500">{(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+                                            <p className="text-sm font-medium text-slate-900 dark:text-white">{uploadedFile.name}</p>
+                                            <p className="text-xs text-slate-500 dark:text-slate-400">{(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
                                         </div>
                                     </div>
                                     <button onClick={() => setUploadedFile(null)} className="text-slate-400 hover:text-red-500">
@@ -208,17 +208,17 @@ const UploadContent = () => {
                             )}
 
                             {error && (
-                                <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+                                <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
                                     {error}
                                 </div>
                             )}
                             {success && (
-                                <div className="p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm">
+                                <div className="p-3 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-sm">
                                     {success}
                                 </div>
                             )}
 
-                            <div className="flex justify-end pt-6 border-t border-slate-100">
+                            <div className="flex justify-end pt-6 border-t border-slate-100 dark:border-slate-800">
                                 <Button onClick={handleSubmit} isLoading={isSubmitting}>Add Lesson to Course</Button>
                             </div>
                         </div>

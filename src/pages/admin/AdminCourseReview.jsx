@@ -92,9 +92,9 @@ const AdminCourseReview = () => {
                             </div>
                         </div>
                         <div className="p-8">
-                            <h1 className="text-3xl font-bold text-slate-900 mb-4">{course.title}</h1>
+                            <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{course.title}</h1>
 
-                            <div className="flex flex-wrap gap-4 mb-6 text-sm text-slate-600">
+                            <div className="flex flex-wrap gap-4 mb-6 text-sm text-slate-600 dark:text-gray-300">
                                 <div className="flex items-center">
                                     <User className="h-4 w-4 mr-2" />
                                     {course.instructor?.name || 'Unknown Instructor'}
@@ -109,8 +109,8 @@ const AdminCourseReview = () => {
                                 </div>
                             </div>
 
-                            <div className="prose max-w-none text-slate-600">
-                                <h3 className="text-lg font-bold text-slate-900 mb-2">Description</h3>
+                            <div className="prose max-w-none text-slate-600 dark:text-gray-300">
+                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Description</h3>
                                 <p className="whitespace-pre-wrap">{course.description}</p>
                             </div>
                         </div>
@@ -118,30 +118,30 @@ const AdminCourseReview = () => {
 
                     {/* Teacher & Structure Info */}
                     <Card className="p-6">
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">Teacher Qualifications</h3>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Teacher Qualifications</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <div>
-                                <p className="text-sm text-slate-500">Experience</p>
+                                <p className="text-sm text-slate-500 dark:text-gray-400">Experience</p>
                                 <p className="font-medium">{course.experienceYears} Years</p>
                             </div>
                             <div>
-                                <p className="text-sm text-slate-500">Specialization</p>
+                                <p className="text-sm text-slate-500 dark:text-gray-400">Specialization</p>
                                 <p className="font-medium">{course.specialization}</p>
                             </div>
                             {course.portfolioLink && (
                                 <div className="md:col-span-2">
-                                    <p className="text-sm text-slate-500">Portfolio</p>
+                                    <p className="text-sm text-slate-500 dark:text-gray-400">Portfolio</p>
                                     <a href={course.portfolioLink} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{course.portfolioLink}</a>
                                 </div>
                             )}
                         </div>
 
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">What Students Will Learn</h3>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">What Students Will Learn</h3>
                         <ul className="space-y-2">
                             {course.learningOutcomes?.map((outcome, i) => (
                                 <li key={i} className="flex items-start">
                                     <Check className="h-5 w-5 text-green-500 mr-2 shrink-0" />
-                                    <span className="text-slate-700">{outcome}</span>
+                                    <span className="text-slate-700 dark:text-gray-200">{outcome}</span>
                                 </li>
                             ))}
                         </ul>
@@ -149,13 +149,13 @@ const AdminCourseReview = () => {
 
                     {/* Modules/Lessons Preview (Optional but helpful) */}
                     <Card className="p-6">
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">Course Content</h3>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Course Content</h3>
                         {course.modules && course.modules.length > 0 ? (
                             <div className="space-y-4">
                                 {course.modules.map((module, i) => (
                                     <div key={i} className="border rounded-lg p-4">
                                         <h4 className="font-semibold">{module.title}</h4>
-                                        <ul className="mt-2 space-y-1 ml-4 list-disc text-sm text-slate-600">
+                                        <ul className="mt-2 space-y-1 ml-4 list-disc text-sm text-slate-600 dark:text-gray-300">
                                             {module.lessons.map((lesson, j) => (
                                                 <li key={j}>{lesson.title} ({lesson.type})</li>
                                             ))}
@@ -164,7 +164,7 @@ const AdminCourseReview = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-slate-500 italic">No content added yet.</p>
+                            <p className="text-slate-500 dark:text-gray-400 italic">No content added yet.</p>
                         )}
                     </Card>
                 </div>
@@ -172,8 +172,8 @@ const AdminCourseReview = () => {
                 {/* Sidebar / Actions */}
                 <div className="space-y-6">
                     <Card className="p-6">
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">Action Required</h3>
-                        <p className="text-sm text-slate-500 mb-6">Review the course details and content compliance before making a decision.</p>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Action Required</h3>
+                        <p className="text-sm text-slate-500 dark:text-gray-400 mb-6">Review the course details and content compliance before making a decision.</p>
 
                         <div className="space-y-3">
                             <Button
@@ -193,18 +193,18 @@ const AdminCourseReview = () => {
                     </Card>
 
                     <Card className="p-6">
-                        <h3 className="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider text-xs">Metadata</h3>
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3 uppercase tracking-wider text-xs">Metadata</h3>
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between">
-                                <span className="text-slate-500">Price</span>
+                                <span className="text-slate-500 dark:text-gray-400">Price</span>
                                 <span className="font-medium font-mono">${course.price}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-slate-500">Level</span>
+                                <span className="text-slate-500 dark:text-gray-400">Level</span>
                                 <span className="font-medium">{course.level}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-slate-500">Duration</span>
+                                <span className="text-slate-500 dark:text-gray-400">Duration</span>
                                 <span className="font-medium">{course.duration}</span>
                             </div>
                         </div>

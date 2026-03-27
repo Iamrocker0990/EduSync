@@ -80,15 +80,15 @@ const CreateAssignment = () => {
     return (
         <DashboardLayout userType="teacher" title="Create Assignment">
             <div className="max-w-3xl mx-auto">
-                <Button variant="ghost" className="mb-6 pl-0 hover:bg-transparent text-slate-500 hover:text-blue-600 transition-colors" onClick={() => navigate(-1)}>
+                <Button variant="ghost" className="mb-6 pl-0 hover:bg-transparent text-slate-500 dark:text-gray-400 hover:text-blue-600 transition-colors" onClick={() => navigate(-1)}>
                     <ChevronLeft className="h-4 w-4 mr-1" /> Back to Course
                 </Button>
 
                 <Card className="p-8 border-t-4 border-t-primary shadow-lg">
-                    <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
+                    <div className="flex items-center justify-between mb-8 border-b border-slate-100 dark:border-slate-800 pb-4">
                         <div>
-                            <h2 className="text-2xl font-bold text-slate-900">Create New Assignment</h2>
-                            <p className="text-slate-500 text-sm mt-1">Fill in the details below to assign work to your students.</p>
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Create New Assignment</h2>
+                            <p className="text-slate-500 dark:text-gray-400 text-sm mt-1">Fill in the details below to assign work to your students.</p>
                         </div>
                         <div className="h-12 w-12 bg-blue-50 rounded-full flex items-center justify-center text-primary">
                             <FileText className="h-6 w-6" />
@@ -170,7 +170,7 @@ const CreateAssignment = () => {
                                     name="submissionType"
                                     value={formData.submissionType}
                                     onChange={handleChange}
-                                    className="input-field bg-white"
+                                    className="input-field bg-white dark:bg-slate-900"
                                 >
                                     <option value="file">File Upload</option>
                                     <option value="text">Text Only</option>
@@ -181,7 +181,7 @@ const CreateAssignment = () => {
 
                         <div>
                             <label className="label">Attachments (Optional)</label>
-                            <div className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer group ${selectedFile || formData.fileUrl ? 'border-green-300 bg-green-50' : 'border-slate-300 hover:border-primary hover:bg-slate-50'}`}>
+                            <div className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer group ${selectedFile || formData.fileUrl ? 'border-green-300 bg-green-50' : 'border-slate-300 hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800'}`}>
                                 <input
                                     type="file"
                                     onChange={handleFileChange}
@@ -198,17 +198,17 @@ const CreateAssignment = () => {
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center">
-                                        <div className="h-12 w-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-3 group-hover:bg-blue-50 group-hover:text-primary transition-colors">
+                                        <div className="h-12 w-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 mb-3 group-hover:bg-blue-50 group-hover:text-primary transition-colors">
                                             <Upload className="h-6 w-6" />
                                         </div>
-                                        <p className="text-sm font-medium text-slate-700">Click or drag a file to upload</p>
-                                        <p className="text-xs text-slate-500 mt-1">PDF, DOCX, Images supported</p>
+                                        <p className="text-sm font-medium text-slate-700 dark:text-gray-200">Click or drag a file to upload</p>
+                                        <p className="text-xs text-slate-500 dark:text-gray-400 mt-1">PDF, DOCX, Images supported</p>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <div className="flex justify-end pt-8 mt-4 border-t border-slate-100">
+                        <div className="flex justify-end pt-8 mt-4 border-t border-slate-100 dark:border-slate-800">
                             <Button type="button" variant="ghost" onClick={() => navigate(-1)} className="mr-4">
                                 Cancel
                             </Button>
@@ -225,8 +225,8 @@ const CreateAssignment = () => {
             </div>
 
             <style>{`
-                .label { @apply block text-sm font-medium text-slate-700 mb-2; }
-                .input-field { @apply w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-slate-400 text-slate-700; }
+                .label { @apply block text-sm font-medium text-slate-700 dark:text-gray-200 mb-2; }
+                .input-field { @apply w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-slate-400 text-slate-700 dark:text-gray-200; }
             `}</style>
         </DashboardLayout>
     );

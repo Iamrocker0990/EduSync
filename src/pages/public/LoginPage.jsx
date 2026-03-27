@@ -121,7 +121,7 @@ const LoginPage = () => {
                             onClick={() => setRole('student')}
                             className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${role === 'student'
                                 ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                                : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'
+                                : 'text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:text-white dark:hover:text-slate-300'
                                 }`}
                         >
 
@@ -132,7 +132,7 @@ const LoginPage = () => {
                             onClick={() => setRole('teacher')}
                             className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${role === 'teacher'
                                 ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                                : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'
+                                : 'text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:text-white dark:hover:text-slate-300'
                                 }`}
                         >
 
@@ -143,7 +143,7 @@ const LoginPage = () => {
                             onClick={() => setRole('institution')}
                             className={`flex-1 rounded-md py-2 text-sm font-medium transition-all ${role === 'institution'
                                 ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                                : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'
+                                : 'text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:text-white dark:hover:text-slate-300'
                                 }`}
                         >
 
@@ -237,7 +237,7 @@ const LoginPage = () => {
                         </div>
                     </div>
                     <div className="mt-6 text-center">
-                        <Link to="/admin/login" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">
+                        <Link to="/admin/login" className="text-xs text-slate-400 hover:text-slate-600 dark:text-gray-300 transition-colors">
                             Admin Access
                         </Link>
                     </div>

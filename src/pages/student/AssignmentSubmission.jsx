@@ -126,22 +126,22 @@ const AssignmentSubmission = () => {
                     <div className="lg:col-span-2 space-y-6">
                         <Card className="p-6">
                             <div className="flex justify-between items-start mb-4">
-                                <h1 className="text-2xl font-bold text-slate-900">{assignment.title}</h1>
+                                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{assignment.title}</h1>
                                 <Badge variant={isPastDue ? 'danger' : 'neutral'}>
                                     {isPastDue ? 'Closed' : 'Open'}
                                 </Badge>
                             </div>
 
                             <div className="prose prose-slate max-w-none mb-6">
-                                <h3 className="font-semibold text-slate-900">Instructions</h3>
+                                <h3 className="font-semibold text-slate-900 dark:text-white">Instructions</h3>
                                 <p className="whitespace-pre-wrap">{assignment.description}</p>
                             </div>
 
                             {assignment.fileUrl && (
-                                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 flex items-center justify-between">
+                                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-between">
                                     <div className="flex items-center">
                                         <FileText className="h-5 w-5 text-blue-500 mr-3" />
-                                        <span className="text-sm font-medium text-slate-700">Reference Material</span>
+                                        <span className="text-sm font-medium text-slate-700 dark:text-gray-200">Reference Material</span>
                                     </div>
                                     <a href={assignment.fileUrl} target="_blank" rel="noreferrer" className="text-sm text-blue-600 hover:underline font-medium">
                                         Download
@@ -153,7 +153,7 @@ const AssignmentSubmission = () => {
                         {/* Submission Form (if not submitted) */}
                         {!submission && (
                             <Card className="p-6">
-                                <h3 className="text-lg font-bold text-slate-900 mb-4">Your Submission</h3>
+                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Your Submission</h3>
                                 {isPastDue ? (
                                     <div className="bg-red-50 text-red-600 p-4 rounded-lg flex items-center">
                                         <AlertCircle className="h-5 w-5 mr-2" />
@@ -163,11 +163,11 @@ const AssignmentSubmission = () => {
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         {['text', 'both'].includes(assignment.submissionType) && (
                                             <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Text Submission</label>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-gray-200 mb-1.5">Text Submission</label>
                                                 <textarea
                                                     value={textSubmission}
                                                     onChange={(e) => setTextSubmission(e.target.value)}
-                                                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none h-32 resize-none"
+                                                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none h-32 resize-none"
                                                     placeholder="Type your answer here..."
                                                 ></textarea>
                                             </div>
@@ -175,7 +175,7 @@ const AssignmentSubmission = () => {
 
                                         {['file', 'both'].includes(assignment.submissionType) && (
                                             <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1.5">File Upload</label>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-gray-200 mb-1.5">File Upload</label>
                                                 <div className="relative border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer">
                                                     <input
                                                         type="file"
@@ -192,14 +192,14 @@ const AssignmentSubmission = () => {
                                                     ) : (
                                                         <>
                                                             <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                                                            <p className="text-sm text-slate-600">Click or drag a file to upload</p>
+                                                            <p className="text-sm text-slate-600 dark:text-gray-300">Click or drag a file to upload</p>
                                                         </>
                                                     )}
                                                 </div>
                                             </div>
                                         )}
 
-                                        <div className="flex justify-end border-t border-slate-100 pt-6">
+                                        <div className="flex justify-end border-t border-slate-100 dark:border-slate-800 pt-6">
                                             <Button type="submit" disabled={submitting}>
                                                 {submitting ? 'Submitting...' : 'Turn In Assignment'}
                                             </Button>
@@ -213,11 +213,11 @@ const AssignmentSubmission = () => {
                     {/* Right: Status */}
                     <div className="space-y-6">
                         <Card className="p-6">
-                            <h3 className="text-lg font-bold text-slate-900 mb-4">Submission Status</h3>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Submission Status</h3>
 
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                                    <span className="text-slate-500 font-medium">Status</span>
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800">
+                                    <span className="text-slate-500 dark:text-gray-400 font-medium">Status</span>
                                     {submission ? (
                                         <Badge variant={submission.status === 'graded' ? 'success' : 'warning'}>
                                             {submission.status === 'graded' ? 'Graded' : 'Submitted'}
@@ -227,20 +227,20 @@ const AssignmentSubmission = () => {
                                     )}
                                 </div>
 
-                                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                                    <span className="text-slate-500 font-medium">Due Date</span>
-                                    <span className="text-slate-900">{new Date(assignment.dueDate).toLocaleDateString()}</span>
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800">
+                                    <span className="text-slate-500 dark:text-gray-400 font-medium">Due Date</span>
+                                    <span className="text-slate-900 dark:text-white">{new Date(assignment.dueDate).toLocaleDateString()}</span>
                                 </div>
 
-                                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                                    <span className="text-slate-500 font-medium">Points</span>
-                                    <span className="text-slate-900">{submission?.marks || '-'} / {assignment.maxMarks}</span>
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800">
+                                    <span className="text-slate-500 dark:text-gray-400 font-medium">Points</span>
+                                    <span className="text-slate-900 dark:text-white">{submission?.marks || '-'} / {assignment.maxMarks}</span>
                                 </div>
 
                                 {submission && (
                                     <div className="pt-2">
-                                        <span className="text-slate-500 font-medium block mb-2">Submitted on</span>
-                                        <span className="text-slate-900 block text-sm">
+                                        <span className="text-slate-500 dark:text-gray-400 font-medium block mb-2">Submitted on</span>
+                                        <span className="text-slate-900 dark:text-white block text-sm">
                                             {new Date(submission.submittedAt).toLocaleString()}
                                         </span>
                                     </div>

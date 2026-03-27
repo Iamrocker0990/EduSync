@@ -59,29 +59,29 @@ const MyEnrollments = () => {
                                 )}
                             </div>
                             <div className="p-5 flex-1 flex flex-col">
-                                <h3 className="font-bold text-slate-900 mb-2 truncate" title={enrollment.course.title}>
+                                <h3 className="font-bold text-slate-900 dark:text-white mb-2 truncate" title={enrollment.course.title}>
                                     {enrollment.course.title}
                                 </h3>
-                                <p className="text-sm text-slate-500 mb-4 line-clamp-2">
+                                <p className="text-sm text-slate-500 dark:text-gray-400 mb-4 line-clamp-2">
                                     {enrollment.course.description}
                                 </p>
 
                                 {enrollment.course.duration && (
-                                    <div className="flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-2 py-1 rounded-md mb-4 max-w-max">
+                                    <div className="flex items-center text-xs text-slate-500 dark:text-gray-400 font-medium bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md mb-4 max-w-max">
                                         <Clock className="w-3 h-3 mr-1 text-slate-400" />
                                         {enrollment.course.duration}
                                     </div>
                                 )}
 
                                 <div className="mt-auto">
-                                    <div className="w-full bg-slate-100 rounded-full h-2 mb-4">
+                                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mb-4">
                                         <div
                                             className="bg-blue-600 h-2 rounded-full"
                                             style={{ width: `${enrollment.progress}%` }}
                                         ></div>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs text-slate-500">{enrollment.progress}% Complete</span>
+                                        <span className="text-xs text-slate-500 dark:text-gray-400">{enrollment.progress}% Complete</span>
                                         <Link to={`/student/courses/${enrollment.course._id}`}>
                                             <Button size="sm" className="flex items-center">
                                                 <PlayCircle className="h-4 w-4 mr-2" /> Continue
@@ -93,10 +93,10 @@ const MyEnrollments = () => {
                         </Card>
                     ))
                 ) : (
-                    <div className="col-span-full py-16 text-center bg-slate-50 rounded-lg border-2 border-dashed border-slate-200">
+                    <div className="col-span-full py-16 text-center bg-slate-50 dark:bg-slate-800 rounded-lg border-2 border-dashed border-slate-200 dark:border-slate-700">
                         <BookOpen className="h-12 w-12 mx-auto text-slate-300 mb-4" />
-                        <h3 className="text-lg font-medium text-slate-900">No Enrollments Yet</h3>
-                        <p className="text-slate-500 mb-6">Explore our catalog and start learning today!</p>
+                        <h3 className="text-lg font-medium text-slate-900 dark:text-white">No Enrollments Yet</h3>
+                        <p className="text-slate-500 dark:text-gray-400 mb-6">Explore our catalog and start learning today!</p>
                         <Button onClick={() => navigate('/student/catalog')}>Browse Courses</Button>
                     </div>
                 )}

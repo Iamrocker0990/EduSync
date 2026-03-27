@@ -242,7 +242,7 @@ const CourseDetail = () => {
                                     onClick={() => setActiveTab(tab.toLowerCase())}
                                     className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === tab.toLowerCase()
                                         ? 'text-primary'
-                                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+                                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-gray-200 dark:hover:text-slate-200'
                                         }`}
 
                                 >
@@ -268,8 +268,8 @@ const CourseDetail = () => {
 
                                 {/* Learning Outcomes */}
                                 {course.learningOutcomes?.length > 0 && (
-                                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                                        <h3 className="text-lg font-bold text-slate-900 mb-4">What you'll learn</h3>
+                                    <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">What you'll learn</h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                             {course.learningOutcomes.map((outcome, i) => (
                                                 <div key={i} className="flex items-start">
@@ -336,7 +336,7 @@ const CourseDetail = () => {
                         )}
 
                         {activeTab === 'discussion' && (
-                            <div className="text-sm text-slate-500">Discussion coming soon.</div>
+                            <div className="text-sm text-slate-500 dark:text-gray-400">Discussion coming soon.</div>
                         )}
                     </div>
                 </div>
@@ -399,18 +399,18 @@ const CourseDetail = () => {
                     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-5xl w-full relative my-8">
                         <button
                             onClick={() => setShowCertificate(false)}
-                            className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 z-20"
+                            className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 dark:text-gray-300 z-20"
                         >
                             <X className="h-6 w-6" />
                         </button>
 
-                        <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                             <div>
-                                <h3 className="text-xl font-bold text-slate-800">Your Certificate</h3>
-                                <p className="text-sm text-slate-500">Issued to <span className="font-semibold text-slate-700">{userName}</span></p>
+                                <h3 className="text-xl font-bold text-slate-800 dark:text-gray-100">Your Certificate</h3>
+                                <p className="text-sm text-slate-500 dark:text-gray-400">Issued to <span className="font-semibold text-slate-700 dark:text-gray-200">{userName}</span></p>
                             </div>
-                            <div className="flex items-center gap-3 pr-8 bg-slate-50 p-2 px-4 rounded-xl border border-slate-200">
-                                <label className="text-sm font-medium text-slate-700">Customize Color Theme:</label>
+                            <div className="flex items-center gap-3 pr-8 bg-slate-50 dark:bg-slate-800 p-2 px-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <label className="text-sm font-medium text-slate-700 dark:text-gray-200">Customize Color Theme:</label>
                                 <input
                                     type="color"
                                     value={customThemeColor || course.certificateSettings?.themeColor || '#3b82f6'}
@@ -421,7 +421,7 @@ const CourseDetail = () => {
                             </div>
                         </div>
 
-                        <div className="p-8 flex justify-center bg-slate-50 overflow-x-auto min-h-[400px]">
+                        <div className="p-8 flex justify-center bg-slate-50 dark:bg-slate-800 overflow-x-auto min-h-[400px]">
                             <div ref={certificateRef} className="shadow-lg transform scale-90 md:scale-100 origin-top">
                                 <CertificateTemplate
                                     studentName={userName}
@@ -436,7 +436,7 @@ const CourseDetail = () => {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-white rounded-b-2xl border-t border-slate-100 flex justify-end">
+                        <div className="p-6 bg-white dark:bg-slate-900 rounded-b-2xl border-t border-slate-100 dark:border-slate-800 flex justify-end">
                             <Button onClick={handleDownloadCertificate}>
                                 <Download className="h-4 w-4 mr-2" />
                                 Download PDF Certificate

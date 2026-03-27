@@ -174,7 +174,7 @@ const SignupPage = () => {
                                 onClick={() => setRole(r.id)}
                                 className={`flex-1 flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all ${role === r.id
                                     ? 'border-primary bg-primary/5 dark:bg-primary/10 text-primary'
-                                    : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-600 hover:border-slate-200 dark:hover:border-slate-700'
+                                    : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-600 dark:text-gray-300 hover:border-slate-200 dark:border-slate-700 dark:hover:border-slate-700'
                                     }`}
 
                             >
@@ -301,7 +301,7 @@ const SignupPage = () => {
                                     onChange={(e) => setOtp(e.target.value)}
                                     className="h-12 tracking-widest text-center font-mono text-lg"
                                 />
-                                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 text-center font-medium">
+                                <p className="text-xs text-slate-500 dark:text-slate-500 dark:text-gray-400 mt-1 text-center font-medium">
                                     Check your server console for the code
                                 </p>
 

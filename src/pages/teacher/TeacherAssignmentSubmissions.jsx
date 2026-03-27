@@ -89,13 +89,13 @@ const TeacherAssignmentSubmissions = () => {
                     <ChevronLeft className="h-4 w-4 mr-1" /> Back to Assignments
                 </Button>
 
-                <div className="flex justify-between items-center bg-white p-6 rounded-xl border border-slate-200">
+                <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">{assignment?.title || 'Loading...'}</h1>
-                        <p className="text-slate-500 mt-1">Reviewing student submissions</p>
+                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{assignment?.title || 'Loading...'}</h1>
+                        <p className="text-slate-500 dark:text-gray-400 mt-1">Reviewing student submissions</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm font-medium text-slate-500">Total Submissions</p>
+                        <p className="text-sm font-medium text-slate-500 dark:text-gray-400">Total Submissions</p>
                         <p className="text-2xl font-bold text-primary">{submissions.length}</p>
                     </div>
                 </div>
@@ -104,28 +104,28 @@ const TeacherAssignmentSubmissions = () => {
                     {/* Left: Submissions List */}
                     <div className="lg:col-span-2">
                         <Card className="overflow-hidden">
-                            <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
-                                <h3 className="font-semibold text-slate-800">Student List</h3>
+                            <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 flex justify-between items-center">
+                                <h3 className="font-semibold text-slate-800 dark:text-gray-100">Student List</h3>
                             </div>
-                            <div className="divide-y divide-slate-100 max-h-[600px] overflow-y-auto">
+                            <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-[600px] overflow-y-auto">
                                 {loading ? (
-                                    <div className="p-8 text-center text-slate-500">Loading submissions...</div>
+                                    <div className="p-8 text-center text-slate-500 dark:text-gray-400">Loading submissions...</div>
                                 ) : submissions.length === 0 ? (
-                                    <div className="p-8 text-center text-slate-500">No submissions yet for this assignment.</div>
+                                    <div className="p-8 text-center text-slate-500 dark:text-gray-400">No submissions yet for this assignment.</div>
                                 ) : (
                                     submissions.map(sub => (
                                         <div
                                             key={sub._id}
                                             onClick={() => handleSelectSubmission(sub)}
-                                            className={`p-4 flex items-center justify-between cursor-pointer transition-colors ${selectedSubmission?._id === sub._id ? 'bg-blue-50 border-l-4 border-primary' : 'hover:bg-slate-50'}`}
+                                            className={`p-4 flex items-center justify-between cursor-pointer transition-colors ${selectedSubmission?._id === sub._id ? 'bg-blue-50 border-l-4 border-primary' : 'hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800'}`}
                                         >
                                             <div className="flex items-center space-x-4">
-                                                <div className="h-10 w-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-600 font-bold">
+                                                <div className="h-10 w-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-600 dark:text-gray-300 font-bold">
                                                     {sub.student?.name?.charAt(0) || 'S'}
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-slate-900">{sub.student?.name || 'Unknown Student'}</p>
-                                                    <p className="text-xs text-slate-500 flex items-center mt-1">
+                                                    <p className="font-medium text-slate-900 dark:text-white">{sub.student?.name || 'Unknown Student'}</p>
+                                                    <p className="text-xs text-slate-500 dark:text-gray-400 flex items-center mt-1">
                                                         <Clock className="h-3 w-3 mr-1" /> {new Date(sub.submittedAt).toLocaleString()}
                                                     </p>
                                                 </div>
@@ -135,7 +135,7 @@ const TeacherAssignmentSubmissions = () => {
                                                     {sub.status === 'graded' ? 'Graded' : 'Needs Grading'}
                                                 </Badge>
                                                 {sub.status === 'graded' && (
-                                                    <span className="text-sm font-semibold text-slate-700 mt-2">
+                                                    <span className="text-sm font-semibold text-slate-700 dark:text-gray-200 mt-2">
                                                         {sub.marks} / {assignment?.maxMarks}
                                                     </span>
                                                 )}
@@ -151,16 +151,16 @@ const TeacherAssignmentSubmissions = () => {
                     <div className="lg:col-span-1">
                         {selectedSubmission ? (
                             <Card className="p-6 sticky top-6">
-                                <div className="border-b border-slate-100 pb-4 mb-6">
-                                    <h3 className="text-lg font-bold text-slate-900">Evaluate Submission</h3>
-                                    <p className="text-sm text-slate-500">Student: {selectedSubmission.student?.name}</p>
+                                <div className="border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">Evaluate Submission</h3>
+                                    <p className="text-sm text-slate-500 dark:text-gray-400">Student: {selectedSubmission.student?.name}</p>
                                 </div>
 
                                 <div className="space-y-6">
                                     {selectedSubmission.submissionText && (
                                         <div>
-                                            <label className="block text-sm font-medium text-slate-700 mb-2">Text Answer</label>
-                                            <div className="bg-slate-50 p-4 rounded-lg text-sm text-slate-700 whitespace-pre-wrap border border-slate-200">
+                                            <label className="block text-sm font-medium text-slate-700 dark:text-gray-200 mb-2">Text Answer</label>
+                                            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg text-sm text-slate-700 dark:text-gray-200 whitespace-pre-wrap border border-slate-200 dark:border-slate-700">
                                                 {selectedSubmission.submissionText}
                                             </div>
                                         </div>
@@ -168,7 +168,7 @@ const TeacherAssignmentSubmissions = () => {
 
                                     {selectedSubmission.fileUrl && (
                                         <div>
-                                            <label className="block text-sm font-medium text-slate-700 mb-2">Attached File</label>
+                                            <label className="block text-sm font-medium text-slate-700 dark:text-gray-200 mb-2">Attached File</label>
                                             <a
                                                 href={selectedSubmission.fileUrl}
                                                 target="_blank"
@@ -181,9 +181,9 @@ const TeacherAssignmentSubmissions = () => {
                                         </div>
                                     )}
 
-                                    <form onSubmit={handleGradeSubmission} className="space-y-4 pt-4 border-t border-slate-100">
+                                    <form onSubmit={handleGradeSubmission} className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                                         <div>
-                                            <label className="block text-sm font-medium text-slate-700 mb-1.5 flex justify-between">
+                                            <label className="block text-sm font-medium text-slate-700 dark:text-gray-200 mb-1.5 flex justify-between">
                                                 <span>Marks Awarded</span>
                                                 <span className="text-slate-400">out of {assignment?.maxMarks || 100}</span>
                                             </label>
@@ -194,18 +194,18 @@ const TeacherAssignmentSubmissions = () => {
                                                 onChange={(e) => setGradingData({ ...gradingData, marks: e.target.value })}
                                                 max={assignment?.maxMarks || 100}
                                                 min="0"
-                                                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                                                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                                                 required
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Feedback (Optional)</label>
+                                            <label className="block text-sm font-medium text-slate-700 dark:text-gray-200 mb-1.5">Feedback (Optional)</label>
                                             <textarea
                                                 placeholder="Great work on..."
                                                 value={gradingData.feedback}
                                                 onChange={(e) => setGradingData({ ...gradingData, feedback: e.target.value })}
-                                                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none h-24 resize-none"
+                                                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none h-24 resize-none"
                                             ></textarea>
                                         </div>
 
@@ -216,9 +216,9 @@ const TeacherAssignmentSubmissions = () => {
                                 </div>
                             </Card>
                         ) : (
-                            <Card className="p-8 text-center flex flex-col items-center justify-center h-64 border-dashed border-2 bg-slate-50/50">
+                            <Card className="p-8 text-center flex flex-col items-center justify-center h-64 border-dashed border-2 bg-slate-50 dark:bg-slate-800/50">
                                 <Award className="h-12 w-12 text-slate-300 mb-4" />
-                                <h3 className="text-lg font-medium text-slate-600">No Submission Selected</h3>
+                                <h3 className="text-lg font-medium text-slate-600 dark:text-gray-300">No Submission Selected</h3>
                                 <p className="text-sm text-slate-400 mt-1">Select a student from the list to view and grade their work.</p>
                             </Card>
                         )}

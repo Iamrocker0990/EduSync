@@ -144,7 +144,7 @@ const StudentCourseList = () => {
                                                 <span className="truncate max-w-[100px]">{course.instructor?.name || 'Instructor'}</span>
                                             </div>
                                             {course.duration && (
-                                                <div className="flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-2 py-1 rounded-md">
+                                                <div className="flex items-center text-xs text-slate-500 dark:text-gray-400 font-medium bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
                                                     <Clock className="w-3 h-3 mr-1 text-slate-400" />
                                                     {course.duration}
                                                 </div>
@@ -177,7 +177,7 @@ const StudentCourseList = () => {
                     ) : (
                         <div className="col-span-full py-16 text-center">
                             <div className="inline-flex justify-center items-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
-                                <Search className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                                <Search className="h-8 w-8 text-slate-400 dark:text-slate-500 dark:text-gray-400" />
                             </div>
                             <h3 className="text-lg font-medium text-slate-900 dark:text-white">No courses found</h3>
                             <p className="text-slate-500 dark:text-slate-400">Try adjusting your search or filters.</p>

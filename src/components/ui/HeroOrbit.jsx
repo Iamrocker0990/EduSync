@@ -130,7 +130,7 @@ const HeroOrbit = () => {
                             }}
                         >
                             <div className={`
-                            relative flex items-center bg-white/95 backdrop-blur-md border border-slate-100/50 
+                            relative flex items-center bg-white dark:bg-slate-900/95 backdrop-blur-md border border-slate-100 dark:border-slate-800/50 
                             transition-all duration-400 ease-out overflow-hidden
                             ${isActive
                                     ? 'w-[200px] h-[72px] px-5 rounded-[24px] shadow-[0_8px_30px_rgba(99,102,241,0.15)] ring-2 ring-indigo-500/10 scale-125'
@@ -148,7 +148,7 @@ const HeroOrbit = () => {
                                 </div>
 
                                 <div className={`flex flex-col overflow-hidden transition-all duration-400 ${isActive ? 'opacity-100 w-full translate-x-0' : 'opacity-0 w-0 -translate-x-4'}`}>
-                                    <span className="text-[14px] font-bold text-slate-800 leading-tight whitespace-nowrap">{item.label}</span>
+                                    <span className="text-[14px] font-bold text-slate-800 dark:text-gray-100 leading-tight whitespace-nowrap">{item.label}</span>
                                     <span className="text-[11px] font-medium text-slate-400 mt-0.5 whitespace-nowrap">System Feature</span>
                                 </div>
                             </div>

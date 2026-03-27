@@ -109,10 +109,10 @@ const StudentDashboard = () => {
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                                 <div className="absolute bottom-4 left-4 right-4">
-                                                    <div className="w-full bg-white/20 rounded-full h-1.5 backdrop-blur-md overflow-hidden">
+                                                    <div className="w-full bg-white dark:bg-slate-900/20 rounded-full h-1.5 backdrop-blur-md overflow-hidden">
                                                         <div
                                                             style={{ width: `${course.progress}%` }}
-                                                            className="bg-white h-full"
+                                                            className="bg-white dark:bg-slate-900 h-full"
                                                         />
                                                     </div>
                                                 </div>
@@ -122,13 +122,13 @@ const StudentDashboard = () => {
                                                     <h3 className="font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors flex-1">{course.title}</h3>
                                                     {course.duration && (
                                                         <div className="flex flex-shrink-0 items-center text-xs text-slate-500 dark:text-slate-400 font-medium bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md ml-2">
-                                                            <Clock className="w-3 h-3 mr-1 text-slate-400 dark:text-slate-500" />
+                                                            <Clock className="w-3 h-3 mr-1 text-slate-400 dark:text-slate-500 dark:text-gray-400" />
                                                             {course.duration}
                                                         </div>
                                                     )}
                                                 </div>
                                                 <div className="flex items-center justify-between mb-6">
-                                                    <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{course.progress}% Complete</span>
+                                                    <span className="text-xs font-bold text-slate-400 dark:text-slate-500 dark:text-gray-400 uppercase tracking-widest">{course.progress}% Complete</span>
                                                     <span className="text-xs font-bold text-primary bg-primary/5 dark:bg-primary/10 px-2 py-1 rounded">Resume</span>
                                                 </div>
 
@@ -142,8 +142,8 @@ const StudentDashboard = () => {
                                     </div>
                                 ))
                             ) : (
-                                <div className="col-span-2 py-20 text-center bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
-                                    <p className="text-slate-500 font-medium mb-4">You haven't started any courses yet.</p>
+                                <div className="col-span-2 py-20 text-center bg-slate-50 dark:bg-slate-800 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-700">
+                                    <p className="text-slate-500 dark:text-gray-400 font-medium mb-4">You haven't started any courses yet.</p>
                                     <Link to="/">
                                         <Button variant="outline">Browse Catalog</Button>
                                     </Link>

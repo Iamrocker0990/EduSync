@@ -20,14 +20,14 @@ const Hero: React.FC = () => {
                 Trusted by 50M+ learners worldwide
               </div>
               
-              <h1 className="text-5xl lg:text-6xl font-bold text-slate-800 leading-tight">
+              <h1 className="text-5xl lg:text-6xl font-bold text-slate-800 dark:text-gray-100 leading-tight">
                 Learn Without
                 <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Limits
                 </span>
               </h1>
               
-              <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
+              <p className="text-xl text-slate-600 dark:text-gray-300 leading-relaxed max-w-lg">
                 Discover thousands of courses from expert instructors. Build skills that matter in today's world with our AI-powered learning platform.
               </p>
             </div>
@@ -41,7 +41,7 @@ const Hero: React.FC = () => {
                 </span>
               </button>
               
-              <button className="px-8 py-4 bg-white text-slate-700 font-semibold rounded-xl border-2 border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all duration-200 shadow-sm hover:shadow-lg">
+              <button className="px-8 py-4 bg-white dark:bg-slate-900 text-slate-700 dark:text-gray-200 font-semibold rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-blue-300 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 transition-all duration-200 shadow-sm hover:shadow-lg">
                 Browse Courses
               </button>
             </div>
@@ -52,31 +52,31 @@ const Hero: React.FC = () => {
                 <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl mb-3 mx-auto">
                   <Users className="h-6 w-6 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-slate-800">50M+</div>
-                <div className="text-sm text-slate-600">Students</div>
+                <div className="text-2xl font-bold text-slate-800 dark:text-gray-100">50M+</div>
+                <div className="text-sm text-slate-600 dark:text-gray-300">Students</div>
               </div>
               
               <div className="text-center">
                 <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl mb-3 mx-auto">
                   <Award className="h-6 w-6 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-slate-800">10K+</div>
-                <div className="text-sm text-slate-600">Courses</div>
+                <div className="text-2xl font-bold text-slate-800 dark:text-gray-100">10K+</div>
+                <div className="text-sm text-slate-600 dark:text-gray-300">Courses</div>
               </div>
               
               <div className="text-center">
                 <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-pink-500 to-red-500 rounded-xl mb-3 mx-auto">
                   <Star className="h-6 w-6 text-white fill-current" />
                 </div>
-                <div className="text-2xl font-bold text-slate-800">4.8</div>
-                <div className="text-sm text-slate-600">Average Rating</div>
+                <div className="text-2xl font-bold text-slate-800 dark:text-gray-100">4.8</div>
+                <div className="text-sm text-slate-600 dark:text-gray-300">Average Rating</div>
               </div>
             </div>
           </div>
 
           {/* Hero Image */}
           <div className="relative">
-            <div className="relative z-10 bg-white rounded-2xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-700">
+            <div className="relative z-10 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-700">
               <img
                 src="https://images.pexels.com/photos/5427674/pexels-photo-5427674.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt="Students learning online"
@@ -84,19 +84,19 @@ const Hero: React.FC = () => {
               />
               
               {/* Floating Cards */}
-              <div className="absolute -top-4 -left-4 bg-white rounded-xl p-4 shadow-lg animate-bounce delay-300">
+              <div className="absolute -top-4 -left-4 bg-white dark:bg-slate-900 rounded-xl p-4 shadow-lg animate-bounce delay-300">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                     <Play className="h-4 w-4 text-white fill-current" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-slate-800">Course Progress</div>
-                    <div className="text-xs text-slate-600">85% Complete</div>
+                    <div className="text-sm font-semibold text-slate-800 dark:text-gray-100">Course Progress</div>
+                    <div className="text-xs text-slate-600 dark:text-gray-300">85% Complete</div>
                   </div>
                 </div>
               </div>
               
-              <div className="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-lg animate-bounce delay-700">
+              <div className="absolute -bottom-4 -right-4 bg-white dark:bg-slate-900 rounded-xl p-4 shadow-lg animate-bounce delay-700">
                 <div className="flex items-center space-x-3">
                   <div className="flex -space-x-2">
                     <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-white"></div>
@@ -104,8 +104,8 @@ const Hero: React.FC = () => {
                     <div className="w-6 h-6 bg-pink-500 rounded-full border-2 border-white"></div>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-slate-800">12K+ Students</div>
-                    <div className="text-xs text-slate-600">Enrolled</div>
+                    <div className="text-sm font-semibold text-slate-800 dark:text-gray-100">12K+ Students</div>
+                    <div className="text-xs text-slate-600 dark:text-gray-300">Enrolled</div>
                   </div>
                 </div>
               </div>

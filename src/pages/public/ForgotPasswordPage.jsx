@@ -69,23 +69,23 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-800 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <Link to="/" className="flex items-center justify-center space-x-3 mb-8 group">
                     <div className="bg-primary/10 p-2.5 rounded-2xl group-hover:rotate-12 transition-transform duration-300">
                         <GraduationCap className="h-8 w-8 text-primary" />
                     </div>
-                    <span className="text-3xl font-extrabold text-slate-900 tracking-tight">EduSync</span>
+                    <span className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">EduSync</span>
                 </Link>
 
                 <div className="text-center">
                     <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
                         <KeyRound className="h-8 w-8 text-primary" />
                     </div>
-                    <h2 className="text-3xl font-extrabold text-slate-900">
+                    <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">
                         Reset Password
                     </h2>
-                    <p className="mt-3 text-slate-500 font-medium">
+                    <p className="mt-3 text-slate-500 dark:text-gray-400 font-medium">
                         {step === 1
                             ? "Enter your email to receive a verification code"
                             : "Enter the OTP and your new password"
@@ -136,7 +136,7 @@ const ForgotPasswordPage = () => {
                     {/* Step 2: OTP + New Password */}
                     {step === 2 && (
                         <form onSubmit={handleResetPassword} className="space-y-5">
-                            <div className="p-3 bg-slate-50 rounded-xl text-sm text-slate-600 text-center">
+                            <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm text-slate-600 dark:text-gray-300 text-center">
                                 Sending OTP to <strong>{email}</strong>
                                 <button
                                     type="button"

@@ -68,7 +68,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`fixed w-full top-0 z-50 transition-all duration-300 ease-in-out ${isScrolled ? 'bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 shadow-sm py-2' : 'bg-transparent border-transparent py-4'
+        <nav className={`fixed w-full top-0 z-50 transition-all duration-300 ease-in-out ${isScrolled ? 'bg-white dark:bg-slate-900/70 dark:bg-slate-900/70 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 shadow-sm py-2' : 'bg-transparent border-transparent py-4'
             }`}>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -162,7 +162,7 @@ const Navbar = () => {
                                 </a>
                             ))}
 
-                            <div className="flex flex-col space-y-3 pt-6 border-t border-slate-100">
+                            <div className="flex flex-col space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800">
                                 {userInfo ? (
                                     <>
                                         <Link to={getDashboardLink(userInfo.role)} onClick={() => setIsMenuOpen(false)}>
@@ -176,7 +176,7 @@ const Navbar = () => {
 
                                     <>
                                         <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                                            <Button variant="secondary" className="w-full h-12 text-md rounded-xl border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800 dark:text-white">Log In</Button>
+                                            <Button variant="secondary" className="w-full h-12 text-md rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 dark:bg-slate-800 dark:text-white">Log In</Button>
                                         </Link>
 
                                         <Link to="/signup" onClick={() => setIsMenuOpen(false)}>

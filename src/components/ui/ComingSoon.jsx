@@ -12,8 +12,8 @@ const ComingSoon = ({ title, message = "We're working hard to bring you this fea
             <div className="bg-primary/10 p-6 rounded-full mb-6">
                 <Rocket className="h-16 w-16 text-primary animate-pulse" />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">{title || 'Updates Coming Soon'}</h2>
-            <p className="text-slate-500 max-w-md mb-8 text-lg">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{title || 'Updates Coming Soon'}</h2>
+            <p className="text-slate-500 dark:text-gray-400 max-w-md mb-8 text-lg">
                 {message}
             </p>
             <div className="flex gap-4">

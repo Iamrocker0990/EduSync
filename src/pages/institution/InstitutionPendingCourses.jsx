@@ -52,30 +52,30 @@ const InstitutionPendingCourses = () => {
     return (
         <DashboardLayout userType="institution" title="Manage Courses" sidebarItems={institutionSidebarItems}>
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Course Management</h2>
-                <p className="text-slate-500">Approve or reject courses created by teachers in your institution.</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Course Management</h2>
+                <p className="text-slate-500 dark:text-gray-400">Approve or reject courses created by teachers in your institution.</p>
             </div>
 
             {error && <div className="p-4 bg-red-100 text-red-700 rounded mb-4">{error}</div>}
 
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-white dark:bg-slate-900 rounded-lg shadow">
                 <div className="px-6 py-4 border-b">
-                    <h3 className="text-lg font-medium text-slate-900">Pending Course Approvals</h3>
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white">Pending Course Approvals</h3>
                 </div>
                 {pendingCourses.length === 0 ? (
-                    <div className="p-6 text-center text-slate-500">No pending courses.</div>
+                    <div className="p-6 text-center text-slate-500 dark:text-gray-400">No pending courses.</div>
                 ) : (
                     <ul className="divide-y divide-slate-200">
                         {pendingCourses.map(course => (
-                            <li key={course._id} className="p-6 hover:bg-slate-50">
+                            <li key={course._id} className="p-6 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="h-10 w-10 min-w-[40px] rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mr-4">
                                             <BookOpen className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-medium text-slate-900">{course.title}</h4>
-                                            <p className="text-sm text-slate-500">
+                                            <h4 className="text-sm font-medium text-slate-900 dark:text-white">{course.title}</h4>
+                                            <p className="text-sm text-slate-500 dark:text-gray-400">
                                                 Created by: {course.instructor ? course.instructor.name : 'Unknown Teacher'} • {course.category || 'Uncategorized'}
                                             </p>
                                         </div>
@@ -95,12 +95,12 @@ const InstitutionPendingCourses = () => {
                 )}
             </div>
 
-            <div className="bg-white rounded-lg shadow mt-8">
+            <div className="bg-white dark:bg-slate-900 rounded-lg shadow mt-8">
                 <div className="px-6 py-4 border-b">
-                    <h3 className="text-lg font-medium text-slate-900">Approved Courses</h3>
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white">Approved Courses</h3>
                 </div>
                 {approvedCourses.length === 0 ? (
-                    <div className="p-6 text-center text-slate-500">No approved courses yet.</div>
+                    <div className="p-6 text-center text-slate-500 dark:text-gray-400">No approved courses yet.</div>
                 ) : (
                     <ul className="divide-y divide-slate-200">
                         {approvedCourses.map(course => (
@@ -111,8 +111,8 @@ const InstitutionPendingCourses = () => {
                                             <BookOpen className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-medium text-slate-900">{course.title}</h4>
-                                            <p className="text-sm text-slate-500">
+                                            <h4 className="text-sm font-medium text-slate-900 dark:text-white">{course.title}</h4>
+                                            <p className="text-sm text-slate-500 dark:text-gray-400">
                                                 Created by: {course.instructor ? course.instructor.name : 'Unknown Teacher'}
                                             </p>
                                         </div>
