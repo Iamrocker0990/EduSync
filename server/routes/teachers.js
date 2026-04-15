@@ -4,9 +4,11 @@ const { protect, teacher } = require('../middleware/auth');
 const Course = require('../models/Course');
 const Enrollment = require('../models/Enrollment');
 const User = require('../models/User');
+const Assignment = require('../models/Assignment');
+const Quiz = require('../models/Quiz');
 
 // @desc    Get Teacher Dashboard Stats
-// @route   GET /api/teacher/dashboard
+// @route   GET /api/teachers/dashboard
 router.get('/dashboard', protect, teacher, async (req, res) => {
     try {
         const teacherId = req.user._id;
@@ -18,9 +20,22 @@ router.get('/dashboard', protect, teacher, async (req, res) => {
         // 2. Calculate Total Stats
         const totalCourses = courses.length;
 
-        // Count total enrollments in these courses
-        const totalEnrollments = await Enrollment.countDocuments({
-            course: { $in: courseIds }
+        // Count UNIQUE students enrolled across all teacher's courses
+        const uniqueStudents = await Enrollment.aggregate([
+            { $match: { course: { $in: courseIds } } },
+            { $group: { _id: "$student" } },
+            { $count: "total" }
+        ]);
+        const totalStudents = uniqueStudents.length > 0 ? uniqueStudents[0].total : 0;
+
+        // Count total assignments created by this teacher
+        const totalAssignments = await Assignment.countDocuments({
+            teacherId: teacherId
+        });
+
+        // Count total quizzes created by this teacher
+        const totalQuizzes = await Quiz.countDocuments({
+            instructor: teacherId
         });
 
         // 3. Get Recent Activity (Last 5 enrollments)
@@ -30,13 +45,15 @@ router.get('/dashboard', protect, teacher, async (req, res) => {
             .populate('student', 'name email')
             .populate('course', 'title');
 
-        const recentActivity = recentEnrollments.map(enroll => ({
-            type: 'enrollment',
-            user: enroll.student.name,
-            action: 'enrolled in',
-            target: enroll.course.title,
-            time: new Date(enroll.createdAt).toLocaleDateString()
-        }));
+        const recentActivity = recentEnrollments
+            .filter(enroll => enroll.student && enroll.course) // Guard against deleted refs
+            .map(enroll => ({
+                type: 'enrollment',
+                user: enroll.student.name,
+                action: 'enrolled in',
+                target: enroll.course.title,
+                time: new Date(enroll.createdAt).toLocaleDateString()
+            }));
 
         // 4. Calculate Data for "Active Students per Course" Chart
         // We group enrollments by course to see which is most popular
@@ -60,9 +77,9 @@ router.get('/dashboard', protect, teacher, async (req, res) => {
         res.json({
             stats: {
                 totalCourses,
-                totalStudents: totalEnrollments,
-                totalAssignments: 0, // Placeholder until Assignment model exists
-                pendingQuizzes: 0    // Placeholder until Quiz model exists
+                totalStudents,
+                totalAssignments,
+                pendingQuizzes: totalQuizzes
             },
             recentActivity,
             chartData,

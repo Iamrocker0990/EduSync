@@ -37,9 +37,31 @@ const getMessages = async (conversationId) => {
 
 // Send a new message
 const sendMessage = async (messageData) => {
-    // messageData: { receiverId, courseId, text }
+    // messageData: { receiverId, courseId, text, file }
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const response = await axios.post(`${API_URL}/messages`, messageData, {
+    
+    let payload = messageData;
+    let headers = {
+        Authorization: `Bearer ${userInfo.token}`,
+    };
+
+    if (messageData.file) {
+        payload = new FormData();
+        payload.append('receiverId', messageData.receiverId);
+        payload.append('courseId', messageData.courseId);
+        payload.append('text', messageData.text || "");
+        payload.append('file', messageData.file);
+    }
+
+    const response = await axios.post(`${API_URL}/messages`, payload, {
+        headers,
+    });
+    return response.data;
+};
+
+const deleteMessage = async (messageId) => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const response = await axios.delete(`${API_URL}/messages/${messageId}`, {
         headers: {
             Authorization: `Bearer ${userInfo.token}`,
         },
@@ -52,6 +74,7 @@ const chatService = {
     getConversations,
     getMessages,
     sendMessage,
+    deleteMessage,
 };
 
 export default chatService;

@@ -38,10 +38,10 @@ function killOnWindows(port) {
   for (const pid of pids) {
     try {
       execSync(`taskkill /PID ${pid} /F`, { stdio: 'ignore' });
-      // eslint-disable-next-line no-console
+       
       console.log(`[kill-port] Killed PID ${pid} on port ${port}`);
     } catch (e) {
-      // eslint-disable-next-line no-console
+       
       console.warn(`[kill-port] Failed to kill PID ${pid}: ${e.message}`);
     }
   }
@@ -67,10 +67,10 @@ function killOnPosix(port) {
   for (const pid of pids) {
     try {
       execSync(`kill -9 ${pid}`, { stdio: 'ignore' });
-      // eslint-disable-next-line no-console
+       
       console.log(`[kill-port] Killed PID ${pid} on port ${port}`);
     } catch (e) {
-      // eslint-disable-next-line no-console
+       
       console.warn(`[kill-port] Failed to kill PID ${pid}: ${e.message}`);
     }
   }
@@ -80,7 +80,7 @@ function main() {
   const portArg = process.argv[2];
   const port = Number(portArg);
   if (!port || Number.isNaN(port)) {
-    // eslint-disable-next-line no-console
+     
     console.error('Usage: node scripts/kill-port.js <port>');
     process.exit(1);
   }
@@ -93,7 +93,7 @@ function main() {
     }
   } catch (e) {
     // If netstat/findstr finds nothing it will throw; that's fine.
-    // eslint-disable-next-line no-console
+     
     console.log(`[kill-port] Nothing to kill on port ${port}`);
   }
 }

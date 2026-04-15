@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { CheckSquare, UploadCloud, TrendingUp, Radio, BarChart2 } from 'lucide-react';
+import { CheckSquare, UploadCloud, TrendingUp, BarChart2, MessageCircle } from 'lucide-react';
 
 const icons = [
     { id: 1, Icon: CheckSquare, label: 'Review Assignments', color: 'text-emerald-500', ring: 1, delay: 0 },
     { id: 2, Icon: UploadCloud, label: 'Upload Courses', color: 'text-blue-500', ring: 1, delay: 0.1 },
     { id: 3, Icon: TrendingUp, label: 'Track Progress', color: 'text-indigo-500', ring: 2, delay: 0.2 },
-    { id: 4, Icon: Radio, label: 'Live Classes', color: 'text-rose-500', ring: 2, delay: 0.3 },
-    { id: 5, Icon: BarChart2, label: 'Analytics', color: 'text-amber-500', ring: 2, delay: 0.4 },
+    { id: 4, Icon: BarChart2, label: 'Analytics', color: 'text-amber-500', ring: 2, delay: 0.3 },
+    { id: 5, Icon: MessageCircle, label: 'Chatting', color: 'text-rose-500', ring: 2, delay: 0.4 },
 ];
 
 const HeroOrbit = () => {

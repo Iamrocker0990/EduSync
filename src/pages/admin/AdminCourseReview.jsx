@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Check, X, ArrowLeft, BookOpen, Clock, User, DollarSign } from 'lucide-react';
+import { Check, X, ArrowLeft, BookOpen, Clock, User, IndianRupee } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -197,7 +197,7 @@ const AdminCourseReview = () => {
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-slate-500 dark:text-gray-400">Price</span>
-                                <span className="font-medium font-mono">${course.price}</span>
+                                <span className="font-medium font-mono">₹{course.price}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-slate-500 dark:text-gray-400">Level</span>

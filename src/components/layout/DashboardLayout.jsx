@@ -121,17 +121,7 @@ const DashboardLayout = ({ children, sidebarItems, userType, title }) => {
 
                     </div>
 
-                    <div className="flex-1 max-w-md mx-8 hidden md:block">
-                        <div className="relative group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors" />
-                            <input
-                                type="text"
-                                placeholder={`Search anything...`}
-                                className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all bg-slate-50 dark:bg-slate-800/50 dark:bg-slate-800/50 focus:bg-white dark:bg-slate-900 dark:focus:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 dark:text-gray-400"
-                            />
-
-                        </div>
-                    </div>
+                    
 
                     <div className="flex items-center space-x-2">
                         <ThemeToggle />

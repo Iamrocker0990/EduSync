@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Send, Book, Plus, ArrowLeft } from 'lucide-react';
+import { Search, Send, Book, Plus, ArrowLeft, Paperclip, X, FileText, Image as ImageIcon, Download, Trash2 } from 'lucide-react';
 import { io } from 'socket.io-client';
 import chatService from '../../services/chatService';
 
@@ -11,6 +11,8 @@ export default function ChatDashboard({ userType }) {
     const [showNewChatPanel, setShowNewChatPanel] = useState(false);
     const [eligibleTeachers, setEligibleTeachers] = useState([]);
     const [socket, setSocket] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const fileInputRef = useRef(null);
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const currentUserId = userInfo?._id;
@@ -48,10 +50,16 @@ export default function ChatDashboard({ userType }) {
             }
         };
 
+        const deleteHandler = ({ messageId }) => {
+            setMessages((prev) => prev.filter(m => m._id !== messageId));
+        };
+
         socket.on("message_received", messageHandler);
+        socket.on("message_deleted", deleteHandler);
 
         return () => {
             socket.off("message_received", messageHandler);
+            socket.off("message_deleted", deleteHandler);
         };
     }, [socket, activeChat]);
 
@@ -111,13 +119,13 @@ export default function ChatDashboard({ userType }) {
     };
 
     const handleSendMessage = async () => {
-        if (!input.trim() || !activeChat) return;
+        if ((!input.trim() && !selectedFile) || !activeChat) return;
 
         const receiverId = userType === 'student' ? activeChat.teacher._id : activeChat.student._id;
         const courseId = activeChat.course._id;
 
         try {
-            const newMessage = await chatService.sendMessage({ receiverId, courseId, text: input });
+            const newMessage = await chatService.sendMessage({ receiverId, courseId, text: input, file: selectedFile });
 
             // Emit via socket immediately
             if (socket) {
@@ -126,6 +134,8 @@ export default function ChatDashboard({ userType }) {
 
             setMessages((prev) => [...prev, newMessage]);
             setInput("");
+            setSelectedFile(null);
+            if (fileInputRef.current) fileInputRef.current.value = "";
 
             // If it's the very first message of a new chat, refresh everything to lock in DB _ids
             if (activeChat.isNew) {
@@ -138,6 +148,22 @@ export default function ChatDashboard({ userType }) {
         } catch (error) {
             console.error("Failed to send message", error);
             alert("Failed to send message.");
+        }
+    };
+
+    const handleDeleteMessage = async (messageId) => {
+        try {
+            await chatService.deleteMessage(messageId);
+            setMessages(prev => prev.filter(m => m._id !== messageId));
+            
+            // Emit via socket immediately
+            if (socket && activeChat) {
+                const receiverId = userType === 'student' ? activeChat.teacher._id : activeChat.student._id;
+                socket.emit("delete_message", { messageId, receiverId });
+            }
+        } catch (error) {
+            console.error("Failed to delete message", error);
+            alert("Failed to delete message.");
         }
     };
 
@@ -277,12 +303,36 @@ export default function ChatDashboard({ userType }) {
                             {messages.map((msg, idx) => {
                                 const isMine = msg.sender === currentUserId;
                                 return (
-                                    <div key={idx} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+                                    <div key={idx} className={`flex ${isMine ? 'justify-end' : 'justify-start'} group mb-4 items-center`}>
+                                        {isMine && (
+                                            <button 
+                                                onClick={() => handleDeleteMessage(msg._id)}
+                                                className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-400 hover:text-red-500 transition-opacity mr-2 bg-white dark:bg-slate-800 rounded-full shadow-sm"
+                                                title="Delete message"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </button>
+                                        )}
                                         <div className={`rounded-xl px-4 py-2 max-w-[80%] shadow-sm ${isMine
                                                 ? 'bg-blue-600 text-white rounded-tr-none'
                                                 : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-tl-none border border-slate-200 dark:border-slate-700'
                                             }`}>
-                                            <p className="text-[15px] leading-relaxed">{msg.text}</p>
+                                            {msg.fileUrl && (
+                                                <div className="mb-2">
+                                                    {msg.fileType?.includes('image') ? (
+                                                        <a href={msg.fileUrl} target="_blank" rel="noopener noreferrer">
+                                                            <img src={msg.fileUrl} alt="attachment" className="max-w-full max-h-60 rounded-lg object-contain bg-white/10" />
+                                                        </a>
+                                                    ) : (
+                                                        <a href={msg.fileUrl} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 p-2 rounded-lg ${isMine ? 'bg-blue-700/50 hover:bg-blue-700' : 'bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600'} transition-colors`}>
+                                                            <FileText className="h-8 w-8 shrink-0" />
+                                                            <span className="text-sm truncate max-w-[200px] font-medium" title={msg.fileName}>{msg.fileName || 'Document'}</span>
+                                                            <Download className="h-4 w-4 ml-2 shrink-0 opacity-70" />
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            )}
+                                            {msg.text && <p className="text-[15px] leading-relaxed break-words">{msg.text}</p>}
                                             <span className={`text-[10px] mt-1 block ${isMine ? 'text-blue-200 text-right' : 'text-slate-400 dark:text-slate-500 dark:text-gray-400'}`}>
                                                 {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </span>
@@ -302,19 +352,51 @@ export default function ChatDashboard({ userType }) {
 
                         {/* Message Input Container */}
                         <div className="p-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
+                            {selectedFile && (
+                                <div className="max-w-4xl mx-auto mb-2 px-4 py-2 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center justify-between border border-slate-200 dark:border-slate-700">
+                                    <div className="flex items-center gap-2 truncate">
+                                        {selectedFile.type.includes('image') ? <ImageIcon className="h-5 w-5 text-blue-500 shrink-0" /> : <FileText className="h-5 w-5 text-blue-500 shrink-0" />}
+                                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{selectedFile.name}</span>
+                                        <span className="text-xs text-slate-400 shrink-0">({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)</span>
+                                    </div>
+                                    <button 
+                                        onClick={() => { setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                                        className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors"
+                                    >
+                                        <X className="h-4 w-4 text-slate-500" />
+                                    </button>
+                                </div>
+                            )}
                             <div className="flex items-center gap-2 max-w-4xl mx-auto">
+                                <input 
+                                    type="file" 
+                                    ref={fileInputRef} 
+                                    hidden 
+                                    onChange={(e) => {
+                                        if (e.target.files && e.target.files[0]) {
+                                            setSelectedFile(e.target.files[0]);
+                                        }
+                                    }}
+                                />
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/40 rounded-full transition-colors flex-shrink-0"
+                                    title="Attach File"
+                                >
+                                    <Paperclip className="h-5 w-5" />
+                                </button>
                                 <input
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                                     placeholder="Type a message..."
-                                    className="flex-1 bg-slate-100 dark:bg-slate-800 border-none rounded-full px-5 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-700 dark:text-white shadow-inner"
+                                    className="flex-1 bg-slate-100 dark:bg-slate-800 border-none rounded-full px-5 py-3 focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-700 dark:text-white shadow-inner min-w-0"
                                 />
                                 <button
                                     onClick={handleSendMessage}
-                                    disabled={!input.trim()}
-                                    className="h-11 w-11 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 text-white flex items-center justify-center transition-colors shadow-md"
+                                    disabled={!input.trim() && !selectedFile}
+                                    className="h-11 w-11 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 text-white flex items-center justify-center transition-colors shadow-md flex-shrink-0"
                                 >
                                     <Send className="h-5 w-5 ml-1" />
                                 </button>

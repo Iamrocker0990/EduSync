@@ -62,10 +62,23 @@ exports.sendMessage = async (req, res) => {
             conversation = await Conversation.create({ student: studentId, teacher: teacherId, course: courseId });
         }
 
+        let fileUrl = null;
+        let fileName = null;
+        let fileType = null;
+
+        if (req.file) {
+            fileUrl = req.file.path;
+            fileName = req.file.originalname;
+            fileType = req.file.mimetype;
+        }
+
         const newMessage = await Message.create({
             conversationId: conversation._id,
             sender: senderId,
-            text
+            text: text || "",
+            fileUrl,
+            fileName,
+            fileType
         });
 
         // Update last message reference
@@ -127,5 +140,51 @@ exports.getMessages = async (req, res) => {
     } catch (error) {
         console.error("Error fetching messages:", error);
         res.status(500).json({ message: 'Failed to fetch messages' });
+    }
+};
+
+// DELETE /api/chat/messages/:messageId
+// Delete a specific message
+exports.deleteMessage = async (req, res) => {
+    try {
+        const { messageId } = req.params;
+        const userId = req.user._id;
+
+        const message = await Message.findById(messageId);
+        if (!message) {
+            return res.status(404).json({ message: 'Message not found' });
+        }
+
+        // Verify sender is deleting their own message
+        if (message.sender.toString() !== userId.toString()) {
+            return res.status(403).json({ message: 'Not authorized to delete this message' });
+        }
+
+        // Check if there is a cloudinary file attached to the message
+        if (message.fileUrl && message.fileUrl.includes('res.cloudinary.com')) {
+            try {
+                // Extract public ID from Cloudinary URL
+                // Example: https://res.cloudinary.com/cloudname/image/upload/v1234/edusync/general/filename.png
+                // Public ID is "edusync/general/filename"
+                const parts = message.fileUrl.split('/upload/');
+                if (parts.length === 2) {
+                    const idWithExtension = parts[1].split('/').slice(1).join('/'); // remove the v1234 version part
+                    const publicId = idWithExtension.substring(0, idWithExtension.lastIndexOf('.')) || idWithExtension;
+                    
+                    const cloudinary = require('../config/cloudinary');
+                    await cloudinary.uploader.destroy(publicId);
+                }
+            } catch (cloudError) {
+                console.error("Error deleting file from Cloudinary:", cloudError);
+                // We'll still delete the database record even if Cloudinary fails
+            }
+        }
+
+        await Message.findByIdAndDelete(messageId);
+
+        res.json({ message: 'Message deleted successfully', messageId });
+    } catch (error) {
+        console.error("Error deleting message:", error);
+        res.status(500).json({ message: 'Failed to delete message' });
     }
 };

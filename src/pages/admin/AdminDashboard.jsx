@@ -100,7 +100,7 @@ const AdminDashboard = () => {
                                                     Instructor: <span className="font-semibold text-slate-900 dark:text-white">{course.instructor?.name || 'Unknown'}</span> ({course.instructor?.email})
                                                 </p>
                                                 <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">
-                                                    Price: <span className="font-semibold text-slate-900 dark:text-white">{course.price ? `$${course.price}` : 'Free'}</span>
+                                                    Price: <span className="font-semibold text-slate-900 dark:text-white">{course.price ? `₹${course.price}` : 'Free'}</span>
                                                 </p>
                                             </div>
                                         </div>

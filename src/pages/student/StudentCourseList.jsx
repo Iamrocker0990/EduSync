@@ -153,7 +153,7 @@ const StudentCourseList = () => {
 
                                         <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 gap-2">
                                             <span className="text-lg font-bold text-slate-900 dark:text-white">
-                                                {course.price > 0 ? `$${course.price}` : <span className="text-green-600 dark:text-green-400">Free</span>}
+                                                {course.price > 0 ? `₹${course.price}` : <span className="text-green-600 dark:text-green-400">Free</span>}
                                             </span>
 
                                             {isEnrolled ? (

@@ -97,11 +97,11 @@ const CourseCard = ({ course }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-2xl font-bold text-slate-800 dark:text-gray-100">
-              ${course.price}
+              ₹{course.price}
             </span>
             {course.originalPrice && (
               <span className="text-lg text-slate-500 dark:text-gray-400 line-through">
-                ${course.originalPrice}
+                ₹{course.originalPrice}
               </span>
             )}
           </div>
